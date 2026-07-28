@@ -101,6 +101,57 @@ def bucket_age(age: int) -> str:
     return "65+"
 
 
+def aggregate_results(results: list) -> dict:
+    """מרכז את תוצאות ההרצה למבנה נתונים נוח לצריכה (למשל ע"י שכבת ה-API/דוחות
+    ב-service/), בלי תלות בהדפסה לקונסולה."""
+    ok = [(p, d) for p, d, e in results if d is not None]
+    failed = [(p, e) for p, d, e in results if d is None]
+
+    overall = Counter(d["stance"] for _, d in ok)
+
+    def breakdown(key_fn):
+        groups: dict = defaultdict(Counter)
+        totals: Counter = Counter()
+        for p, d in ok:
+            key = key_fn(p)
+            groups[key][d["stance"]] += 1
+            totals[key] += 1
+        return {
+            key: {"n": totals[key], "stances": dict(groups[key])}
+            for key in sorted(groups, key=lambda k: -totals[k])
+        }
+
+    quotes: dict = {}
+    rng = __import__("random").Random(1)
+    for stance in STANCES:
+        candidates = [(p, d) for p, d in ok if d["stance"] == stance]
+        if not candidates:
+            continue
+        quotes[stance] = [
+            {
+                "text": d["answer"],
+                "name": p["name"],
+                "age": p["age"],
+                "sector": p["sector"],
+                "region": p["region"],
+            }
+            for p, d in rng.sample(candidates, k=min(3, len(candidates)))
+        ]
+
+    return {
+        "total": len(results),
+        "answered": len(ok),
+        "failed": len(failed),
+        "overall": {s: overall.get(s, 0) for s in STANCES},
+        "breakdowns": {
+            "מגזר": breakdown(lambda p: p["sector"]),
+            "נטייה פוליטית": breakdown(lambda p: p["political_leaning"]),
+            "קבוצת גיל": breakdown(lambda p: bucket_age(p["age"])),
+        },
+        "quotes": quotes,
+    }
+
+
 def print_report(question: str, results: list, model: str):
     ok = [(p, d) for p, d, e in results if d is not None]
     failed = [(p, e) for p, d, e in results if d is None]
