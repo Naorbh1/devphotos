@@ -70,3 +70,26 @@ python panel/generate_profiles.py --n 220
 כל הרצה על כל הפאנל שולחת קריאת API אחת לכל פרופיל (כ-220 קריאות). לפני
 הרצה מלאה על שאלה חדשה, מומלץ לבדוק עם `--limit 20` כדי לוודא שהתוצאה
 נראית הגיונית.
+
+## שכבת שירות B2B (`service/`)
+
+מעבר לכלי ה-CLI, בריפו יש גם שכבת API שהופכת את הפאנל לשירות בתשלום
+ללקוחות עסקיים (סוכנויות פרסום/שיווק, צוותי מוצר, יועצי תקשורת) - בדיקת
+מסרים וקונספטים מהירה לפני השקה, עם דוח HTML ממותג לכל הרצה.
+
+```bash
+pip install -r service/requirements.txt
+export ANTHROPIC_API_KEY="..."
+uvicorn service.api:app --reload
+```
+
+```bash
+curl -X POST http://localhost:8000/v1/questions \
+  -H "X-API-Key: demo-key-please-replace" \
+  -H "Content-Type: application/json" \
+  -d '{"question": "האם כדאי להשיק את המוצר במחיר פרימיום או נגיש?"}'
+```
+
+ניהול לקוחות ומכסות קרדיט חודשיות ב-`service/clients.json` (ראו
+`service/clients.py` לתוכניות התמחור). לפרטי מודל התמחור, קהל היעד
+והדרך להגיע להכנסה של 70,000-80,000 ₪/חודש - ראו [`BUSINESS_PLAN.md`](BUSINESS_PLAN.md).
