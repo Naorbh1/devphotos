@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": { "type": "vendor", "settings": {} },
+        "title": { "type": "title", "settings": {} },
+        "rating": { "type": "rating", "settings": {} },
+        "price": { "type": "price", "settings": { "show_installments": true } },
+        "stock": { "type": "stock", "settings": {} },
+        "variant-picker": { "type": "variant_picker", "settings": {} },
+        "buy-buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
+        "trust": { "type": "trust", "settings": {} },
+        "description": { "type": "description", "settings": { "truncate": false } },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Shipping & returns",
+            "content": "<p>Ships in 1–2 business days. Free returns within 30 days.</p>"
+          }
+        },
+        "share": { "type": "share", "settings": {} }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "rating",
+        "price",
+        "stock",
+        "variant-picker",
+        "buy-buttons",
+        "trust",
+        "description",
+        "shipping",
+        "share"
+      ],
+      "settings": { "show_breadcrumbs": true }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": { "heading": "You may also like", "products_to_show": 6 }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": { "heading": "Recently viewed" }
+    }
+  },
+  "order": ["main", "recommendations", "recently-viewed"]
+}

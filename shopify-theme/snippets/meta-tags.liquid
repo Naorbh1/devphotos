@@ -1,0 +1,104 @@
+{% comment %}
+  Open Graph, Twitter card and JSON-LD structured data. Rich results in Google
+  (price, availability, stars) measurably lift click-through, so this is part
+  of the conversion surface, not an afterthought.
+{% endcomment %}
+
+{%- liquid
+  if template.name == 'product'
+    assign og_type = 'product'
+    assign og_title = product.title
+    assign og_description = product.description | strip_html | truncate: 200
+    assign og_image = product.featured_media.preview_image
+  elsif template.name == 'article'
+    assign og_type = 'article'
+    assign og_title = article.title
+    assign og_description = article.excerpt_or_content | strip_html | truncate: 200
+    assign og_image = article.image
+  else
+    assign og_type = 'website'
+    assign og_title = page_title
+    assign og_description = page_description
+    assign og_image = settings.share_image
+  endif
+-%}
+
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ og_title | default: shop.name | escape }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description | default: shop.description | escape }}">
+
+{%- if og_image -%}
+  <meta property="og:image" content="http:{{ og_image | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="{{ 1200 | divided_by: og_image.aspect_ratio | round }}">
+{%- endif -%}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title | default: shop.name | escape }}">
+<meta name="twitter:description" content="{{ og_description | default: shop.description | escape }}">
+
+{%- if template.name == 'product' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ shop.url | append: product.url | json }},
+      {% if product.featured_media -%}
+        "image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}],
+      {%- endif %}
+      "description": {{ product.description | strip_html | json }},
+      {% if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif %}
+      "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+      {%- assign rating = product.metafields.reviews.rating.value -%}
+      {%- assign rating_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+      {% if rating and rating_count > 0 -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": {{ rating.rating | json }},
+          "bestRating": {{ rating.scale_max | json }},
+          "ratingCount": {{ rating_count | json }}
+        },
+      {%- endif %}
+      "offers": {
+        "@type": "Offer",
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "availability": "https://schema.org/{% if product.selected_or_first_available_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "url": {{ shop.url | append: product.selected_or_first_available_variant.url | json }}
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- if template.name == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }}
+      {%- if settings.logo %},
+        "logo": {{ settings.logo | image_url: width: 500 | prepend: 'https:' | json }}
+      {%- endif %}
+    }
+  </script>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {{ shop.url | append: routes.search_url | append: '?q={search_term_string}' | json }},
+      "query-input": "required name=search_term_string"
+    }
+  }
+</script>

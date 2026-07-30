@@ -1,0 +1,24 @@
+<div class="section">
+  <div class="page-width page-width--narrow">
+    <h1>{{ 'customer.activate_account.title' | t }}</h1>
+
+    {% form 'activate_customer_password', class: 'stack' %}
+      {{ form.errors | default_errors }}
+
+      <div class="field">
+        <label class="field__label" for="ActivatePassword">{{ 'customer.login.password' | t }}</label>
+        <input class="input" type="password" id="ActivatePassword" name="customer[password]" autocomplete="new-password" required>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="ActivatePasswordConfirm">{{ 'customer.reset_password.confirm' | t }}</label>
+        <input class="input" type="password" id="ActivatePasswordConfirm" name="customer[password_confirmation]" autocomplete="new-password" required>
+      </div>
+
+      <div class="inline">
+        <button type="submit" class="button" name="commit">{{ 'customer.activate_account.submit' | t }}</button>
+        <button type="submit" class="button button--secondary" name="decline">{{ 'customer.activate_account.decline' | t }}</button>
+      </div>
+    {% endform %}
+  </div>
+</div>

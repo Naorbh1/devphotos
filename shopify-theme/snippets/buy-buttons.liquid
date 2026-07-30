@@ -1,0 +1,40 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+{% form 'product', product, data-product-form: '', class: 'product__form', novalidate: 'novalidate' %}
+  <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+  <div class="product__buy-row">
+    <div class="quantity">
+      <button type="button" class="quantity__button" data-quantity-change="down" aria-label="{{ 'products.product.decrease' | t }}">−</button>
+      <input
+        class="quantity__input"
+        type="number"
+        name="quantity"
+        min="1"
+        value="1"
+        aria-label="{{ 'products.product.quantity' | t }}"
+      >
+      <button type="button" class="quantity__button" data-quantity-change="up" aria-label="{{ 'products.product.increase' | t }}">+</button>
+    </div>
+
+    <button
+      type="submit"
+      name="add"
+      class="button button--large"
+      data-add-button
+      {% unless current_variant.available %}disabled{% endunless %}
+    >
+      {%- if current_variant.available -%}
+        {{ 'products.product.add_to_cart' | t }}
+      {%- else -%}
+        {{ 'products.product.sold_out' | t }}
+      {%- endif -%}
+    </button>
+  </div>
+
+  {%- if show_dynamic -%}
+    {{ form | payment_button }}
+  {%- endif -%}
+{% endform %}

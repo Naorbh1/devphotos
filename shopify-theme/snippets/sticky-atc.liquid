@@ -1,0 +1,44 @@
+{% comment %}
+  Sticky add-to-cart bar. Appears once the real buy button scrolls out of view
+  so long product pages never strand a ready buyer.
+{% endcomment %}
+
+<div class="sticky-atc" data-sticky-atc>
+  <div class="sticky-atc__inner">
+    {%- if product.featured_media -%}
+      <div class="sticky-atc__media">
+        {{ product.featured_media | image_url: width: 100 | image_tag: loading: 'lazy', alt: '' }}
+      </div>
+    {%- endif -%}
+
+    <div class="sticky-atc__text">
+      <div class="sticky-atc__title">{{ product.title | escape }}</div>
+      <div class="text-muted" style="font-size: 0.82rem;">
+        {{ product.selected_or_first_available_variant.price | money }}
+      </div>
+    </div>
+
+    {% form 'product', product, id: 'StickyForm', data-product-form: '', novalidate: 'novalidate' %}
+      <input
+        type="hidden"
+        name="id"
+        value="{{ product.selected_or_first_available_variant.id }}"
+        data-sticky-variant-id
+      >
+      <input type="hidden" name="quantity" value="1">
+      <button
+        type="submit"
+        name="add"
+        class="button"
+        data-add-button
+        {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+      >
+        {%- if product.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    {% endform %}
+  </div>
+</div>

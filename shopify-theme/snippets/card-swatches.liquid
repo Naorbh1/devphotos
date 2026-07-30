@@ -1,0 +1,48 @@
+{% comment %}
+  Colour swatches on the product card.
+
+  Looks for an option literally named "Color" / "Colour" / "צבע" and paints a
+  dot per value. CSS named colours resolve on their own; anything else falls
+  back to the variant image so the dot still means something.
+{% endcomment %}
+
+{%- liquid
+  assign color_option = null
+  for option in product.options_with_values
+    assign downcased = option.name | downcase
+    if downcased == 'color' or downcased == 'colour' or downcased == 'צבע'
+      assign color_option = option
+      break
+    endif
+  endfor
+-%}
+
+{%- if color_option -%}
+  {%- assign total = color_option.values | size -%}
+
+  <div class="swatches">
+    {%- for value in color_option.values limit: 5 -%}
+      {%- liquid
+        assign swatch_image = ''
+        for variant in product.variants
+          if variant.options contains value and variant.image
+            assign swatch_image = variant.image | image_url: width: 60
+            break
+          endif
+        endfor
+      -%}
+      <span
+        class="swatch"
+        title="{{ value | escape }}"
+        style="
+          background-color: {{ value | handle }};
+          {% if swatch_image != blank %}background-image: url({{ swatch_image }});{% endif %}
+        "
+      ></span>
+    {%- endfor -%}
+
+    {%- if total > 5 -%}
+      <span class="swatch--more">+{{ total | minus: 5 }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

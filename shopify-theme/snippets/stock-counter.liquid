@@ -1,0 +1,51 @@
+{% comment %}
+  Stock signalling.
+
+  Two honest states only: in stock, or "only N left" when inventory is actually
+  tracked and actually low. No invented scarcity — a fake counter is the
+  fastest way to lose a repeat customer.
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign tracked = false
+  if variant.inventory_management != blank
+    assign tracked = true
+  endif
+  assign threshold = settings.stock_counter_threshold
+  assign is_low = false
+  if tracked and variant.inventory_quantity > 0 and variant.inventory_quantity <= threshold
+    assign is_low = true
+  endif
+-%}
+
+{%- if variant.available -%}
+  <div class="stock-status{% if is_low %} stock-status--low{% endif %}">
+    {%- if is_low -%}
+      {{ 'products.product.only_left' | t: count: variant.inventory_quantity }}
+    {%- else -%}
+      {{ 'products.product.in_stock' | t }}
+    {%- endif -%}
+  </div>
+{%- else -%}
+  <div class="stock-status stock-status--out">{{ 'products.product.sold_out' | t }}</div>
+{%- endif -%}
+
+{%- if settings.enable_stock_counter -%}
+  <div
+    class="stock-counter"
+    data-stock-counter
+    data-threshold="{{ threshold }}"
+    data-tracked="{{ tracked }}"
+    {% unless is_low %}hidden{% endunless %}
+    style="margin-top: 8px;"
+  >
+    <span data-stock-label data-template="{{ 'products.product.only_left' | t: count: '[count]' | escape }}">
+      {{- 'products.product.only_left' | t: count: variant.inventory_quantity -}}
+    </span>
+    <div class="stock-counter__track">
+      {%- assign fill = variant.inventory_quantity | times: 100.0 | divided_by: threshold -%}
+      <div class="stock-counter__fill" data-stock-fill style="width: {{ fill }}%;"></div>
+    </div>
+  </div>
+{%- endif -%}

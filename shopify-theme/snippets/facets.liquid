@@ -1,0 +1,98 @@
+{% comment %}
+  Storefront filters. Reads whatever filters the merchant enabled under
+  Online Store → Navigation → Filters, so no per-store code changes.
+{% endcomment %}
+
+{%- if results.filters.size > 0 -%}
+  <div class="facets">
+    {%- for filter in results.filters -%}
+      {%- case filter.type -%}
+        {%- when 'list', 'boolean' -%}
+          <details class="facet" {% if filter.active_values.size > 0 %}open{% endif %}>
+            <summary>
+              {{ filter.label }}
+              {%- if filter.active_values.size > 0 -%}
+                <span class="badge">{{ filter.active_values.size }}</span>
+              {%- else -%}
+                {% render 'icon', name: 'chevron-down', size: 15 %}
+              {%- endif -%}
+            </summary>
+
+            <div class="facet__list">
+              {%- for value in filter.values -%}
+                <label class="facet__item">
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                  <span>{{ value.label }}</span>
+                  <span class="facet__count">{{ value.count }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </details>
+
+        {%- when 'price_range' -%}
+          <details class="facet" {% if filter.min_value.value or filter.max_value.value %}open{% endif %}>
+            <summary>
+              {{ filter.label }}
+              {% render 'icon', name: 'chevron-down', size: 15 %}
+            </summary>
+
+            <div class="facet__list">
+              <div class="inline" style="gap: 8px; flex-wrap: nowrap;">
+                <input
+                  class="input"
+                  type="number"
+                  inputmode="decimal"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ 'sections.collection.min' | t }}"
+                  min="0"
+                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  style="min-height: 38px;"
+                >
+                <span class="text-muted">–</span>
+                <input
+                  class="input"
+                  type="number"
+                  inputmode="decimal"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ 'sections.collection.max' | t }}"
+                  min="0"
+                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  style="min-height: 38px;"
+                >
+              </div>
+            </div>
+          </details>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- assign has_active = false -%}
+  {%- for filter in results.filters -%}
+    {%- if filter.active_values.size > 0 -%}{%- assign has_active = true -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_active -%}
+    <div class="active-facets">
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <a href="{{ value.url_to_remove }}" class="active-facet">
+            {{ value.label }}
+            {% render 'icon', name: 'close', size: 14 %}
+          </a>
+        {%- endfor -%}
+      {%- endfor -%}
+
+      <a href="{{ clear_url | default: collection.url }}" class="active-facet" style="background: transparent; text-decoration: underline;">
+        {{ 'sections.collection.clear_filters' | t }}
+      </a>
+    </div>
+  {%- endif -%}
+{%- endif -%}

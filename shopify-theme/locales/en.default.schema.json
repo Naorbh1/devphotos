@@ -1,0 +1,301 @@
+{
+  "settings": {
+    "style": {
+      "name": "Style",
+      "intro": "Presets restyle the whole store at once. Everything below can still be adjusted individually.",
+      "preset": "Style preset",
+      "preset_info": "Changes heading weight, letter spacing and label treatment across every section.",
+      "preset_modern": "Modern",
+      "preset_minimal": "Minimal",
+      "preset_bold": "Bold",
+      "preset_editorial": "Editorial",
+      "preset_playful": "Playful",
+      "density": "Spacing density",
+      "density_compact": "Compact",
+      "density_comfortable": "Comfortable",
+      "density_spacious": "Spacious",
+      "corner_radius": "Corner radius",
+      "card_style": "Card style",
+      "card_flat": "Flat",
+      "card_bordered": "Bordered",
+      "card_shadow": "Soft shadow",
+      "card_elevated": "Elevated",
+      "button_style": "Button shape",
+      "button_square": "Square",
+      "button_rounded": "Rounded",
+      "button_pill": "Pill",
+      "page_width": "Page width",
+      "grid_gap": "Grid gap",
+      "section_spacing": "Space between sections",
+      "image_ratio": "Image ratio",
+      "ratio_square": "Square (1:1)",
+      "ratio_portrait": "Portrait (3:4)",
+      "ratio_tall": "Tall (4:5)",
+      "ratio_landscape": "Landscape (4:3)",
+      "ratio_wide": "Wide (16:9)",
+      "image_fit": "Image fit",
+      "fit_cover": "Crop to fill",
+      "fit_contain": "Fit whole image"
+    },
+    "colors": {
+      "name": "Colors",
+      "base": "Base",
+      "background": "Background",
+      "background_alt": "Alternate background",
+      "card_background": "Card background",
+      "text": "Body text",
+      "heading": "Headings",
+      "brand": "Brand",
+      "accent": "Accent / buttons",
+      "accent_contrast": "Text on accent",
+      "status": "Status",
+      "sale": "Sale price",
+      "success": "Success"
+    },
+    "typography": {
+      "name": "Typography",
+      "heading_font": "Heading font",
+      "heading_scale": "Heading size",
+      "heading_transform": "Heading case",
+      "transform_none": "As typed",
+      "transform_upper": "UPPERCASE",
+      "heading_spacing": "Heading letter spacing",
+      "body_font": "Body font",
+      "body_scale": "Body size",
+      "heading_spacing_info": "In hundredths of an em. Negative values tighten headings."
+    },
+    "product_card": {
+      "name": "Product cards",
+      "text_align": "Text alignment",
+      "align_start": "Start",
+      "align_center": "Center",
+      "show_vendor": "Show vendor",
+      "show_rating": "Show rating",
+      "hover_image": "Show second image on hover",
+      "hover_image_info": "Uses the product's second image.",
+      "show_swatches": "Show colour swatches",
+      "badges": "Badges",
+      "badge_sale": "Sale badge",
+      "badge_sale_percent": "Show discount percentage",
+      "badge_sold_out": "Sold out badge",
+      "badge_new": "New badge",
+      "badge_new_info": "Shown for recently published products.",
+      "badge_new_days": "Counts as new for"
+    },
+    "conversion": {
+      "name": "Conversion",
+      "cart": "Cart",
+      "cart_type": "Cart behaviour",
+      "cart_drawer": "Slide-out drawer",
+      "cart_page": "Go to cart page",
+      "quick_add": "Quick add on product cards",
+      "quick_add_info": "One-click for single-variant products; opens a picker when there are options.",
+      "sticky_atc": "Sticky add to cart on product pages",
+      "shipping": "Free shipping bar",
+      "free_shipping_bar": "Show progress toward free shipping",
+      "free_shipping_threshold": "Free shipping threshold",
+      "free_shipping_threshold_info": "In store currency. Set your actual shipping rate to match.",
+      "urgency": "Stock",
+      "stock_counter": "Show low stock counter",
+      "stock_counter_threshold": "Show when stock is at or below",
+      "trust": "Trust",
+      "payment_icons": "Show payment icons",
+      "recently_viewed": "Show recently viewed products",
+      "recently_viewed_limit": "Products to show",
+      "popup": "Email popup",
+      "newsletter_popup": "Enable email popup",
+      "newsletter_popup_delay": "Show after",
+      "newsletter_popup_exit": "Also show on exit intent",
+      "newsletter_popup_exit_info": "Desktop only — fires when the pointer leaves the window.",
+      "popup_heading": "Popup heading",
+      "popup_text": "Popup text",
+      "popup_image": "Popup image"
+    },
+    "social": {
+      "name": "Social",
+      "whatsapp_info": "https://wa.me/15551234567",
+      "sharing": "Sharing",
+      "share_buttons": "Show share buttons on products",
+      "share_image": "Default social share image"
+    },
+    "brand": {
+      "name": "Logo",
+      "logo": "Logo",
+      "logo_width": "Logo width",
+      "favicon": "Favicon"
+    }
+  },
+  "general": {
+    "heading": "Heading",
+    "text": "Text",
+    "image": "Image",
+    "link": "Link",
+    "buttons": "Buttons",
+    "layout": "Layout",
+    "alignment": "Alignment",
+    "align_start": "Start",
+    "align_center": "Center",
+    "align_end": "End",
+    "full_width": "Full width",
+    "background": "Background",
+    "background_default": "Default",
+    "background_alt": "Alternate",
+    "text_color": "Text color",
+    "columns_desktop": "Columns on desktop",
+    "columns_mobile": "Columns on mobile",
+    "layout_grid": "Grid",
+    "layout_carousel": "Carousel",
+    "layout_list": "List",
+    "layout_masonry": "Masonry"
+  },
+  "sections": {
+    "header": {
+      "name": "Header",
+      "menu": "Menu",
+      "sticky": "Stick to top on scroll",
+      "search_suggestions": "Popular searches",
+      "search_suggestions_info": "Comma separated. Shown in the search drawer.",
+      "mobile_promo": "Mobile menu promo",
+      "show_menu_promo": "Show promo in mobile menu",
+      "menu_promo_text": "Promo text"
+    },
+    "announcement": {
+      "name": "Announcement bar",
+      "message": "Message",
+      "rotate_speed": "Rotate every",
+      "dismissible": "Let shoppers dismiss it",
+      "countdown_to": "Countdown to",
+      "countdown_to_info": "Format: 2026-12-31T23:59:59. Leave blank for no countdown."
+    },
+    "footer": {
+      "name": "Footer",
+      "menu_block": "Menu column",
+      "menu": "Menu",
+      "text_block": "Text column",
+      "newsletter_block": "Newsletter",
+      "contact_block": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Opening hours"
+    },
+    "hero": {
+      "name": "Hero banner",
+      "eyebrow": "Eyebrow",
+      "countdown_to": "Countdown to",
+      "button_label": "Button label",
+      "button_link": "Button link",
+      "button_2_label": "Second button label",
+      "button_2_link": "Second button link",
+      "height": "Height",
+      "overlay": "Image overlay",
+      "text_light": "Light text (for dark images)"
+    },
+    "featured_collection": {
+      "name": "Featured collection",
+      "collection": "Collection",
+      "heading_align": "Heading alignment",
+      "layout": "Layout",
+      "layout_info": "Carousel scrolls horizontally; masonry staggers image heights.",
+      "products_to_show": "Products to show",
+      "card_align": "Card text alignment"
+    },
+    "collection": {
+      "view_all": "Show \"view all\" link"
+    },
+    "collection_list": {
+      "name": "Collection list",
+      "block": "Collection",
+      "min_card_width": "Minimum card width",
+      "show_count": "Show product count",
+      "custom_title": "Custom title",
+      "custom_image": "Custom image"
+    },
+    "value_props": {
+      "name": "Value props",
+      "block": "Item",
+      "icon": "Icon",
+      "custom_icon": "Custom icon image"
+    },
+    "testimonials": {
+      "name": "Testimonials",
+      "block": "Testimonial",
+      "rating": "Stars",
+      "quote": "Quote",
+      "author": "Author",
+      "meta": "Detail",
+      "meta_info": "e.g. \"Verified buyer\" or the product they bought.",
+      "avatar": "Avatar"
+    },
+    "faq": {
+      "name": "FAQ",
+      "block": "Question",
+      "question": "Question",
+      "answer": "Answer"
+    },
+    "image_with_text": {
+      "name": "Image with text",
+      "image_position": "Image position",
+      "bullet": "Bullet"
+    },
+    "rich_text": {
+      "name": "Rich text"
+    },
+    "recommendations": {
+      "name": "Product recommendations"
+    },
+    "recently_viewed": {
+      "name": "Recently viewed"
+    },
+    "contact": {
+      "name": "Contact form"
+    },
+    "main_product": {
+      "name": "Product",
+      "breadcrumbs": "Show breadcrumbs",
+      "vendor": "Vendor",
+      "rating": "Rating",
+      "price": "Price",
+      "installments": "Show installment options",
+      "description": "Description",
+      "truncate": "Show a short excerpt only",
+      "stock": "Stock status",
+      "variant_picker": "Variant picker",
+      "buy_buttons": "Buy buttons",
+      "dynamic_checkout": "Show dynamic checkout buttons",
+      "trust": "Trust badges",
+      "collapsible": "Collapsible row",
+      "page_content": "Or pull content from a page",
+      "share": "Share"
+    },
+    "main_collection": {
+      "name": "Collection",
+      "show_banner": "Show collection title",
+      "show_description": "Show description",
+      "filtering": "Filtering and sorting",
+      "enable_filtering": "Enable filters",
+      "enable_sorting": "Enable sorting",
+      "enable_view_switcher": "Enable view switcher",
+      "enable_view_switcher_info": "Lets shoppers switch between grid, large grid and list. Their choice is remembered.",
+      "products_per_page": "Products per page"
+    },
+    "main_cart": {
+      "name": "Cart",
+      "order_note": "Show order note field"
+    },
+    "main_search": {
+      "name": "Search"
+    },
+    "main_page": {
+      "name": "Page"
+    },
+    "main_blog": {
+      "name": "Blog"
+    },
+    "main_article": {
+      "name": "Article"
+    },
+    "list_collections": {
+      "name": "Collections list"
+    }
+  }
+}

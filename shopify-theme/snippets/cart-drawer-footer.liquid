@@ -1,0 +1,39 @@
+{%- if cart.item_count > 0 -%}
+  <form action="{{ routes.cart_url }}" method="post" novalidate>
+    <div class="cart-summary">
+      {%- if cart.cart_level_discount_applications.size > 0 -%}
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <div class="cart-summary__row" style="color: var(--color-success);">
+            <span>{{ discount.title }}</span>
+            <span>−{{ discount.total_allocated_amount | money }}</span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+      <div class="cart-summary__row cart-summary__row--total">
+        <span>{{ 'sections.cart.subtotal' | t }}</span>
+        <span>{{ cart.total_price | money_with_currency }}</span>
+      </div>
+
+      <p class="text-muted" style="font-size: 0.8rem; margin: 0;">
+        {{ 'sections.cart.tax_and_shipping' | t }}
+      </p>
+
+      <button type="submit" name="checkout" class="button button--large button--full">
+        {{ 'sections.cart.checkout' | t }}
+      </button>
+
+      <a href="{{ routes.cart_url }}" class="link-underline text-center" style="font-size: 0.86rem;">
+        {{ 'sections.cart.view_cart' | t }}
+      </a>
+
+      {%- if settings.enable_payment_icons -%}
+        <div class="payment-icons" style="justify-content: center; margin-top: 6px;">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </form>
+{%- endif -%}

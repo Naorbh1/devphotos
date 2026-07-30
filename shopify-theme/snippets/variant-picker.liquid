@@ -1,0 +1,72 @@
+{% comment %}
+  Variant picker.
+
+  Emits the full variant list as JSON so theme.js can disable unavailable
+  combinations, swap price/media, and keep the ?variant= URL in sync.
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <div class="stack" data-variant-picker data-product-handle="{{ product.handle }}">
+    <script type="application/json" data-variant-json>
+      [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "available": {{ variant.available | json }},
+            "options": {{ variant.options | json }},
+            "price": {{ variant.price }},
+            "compare_at_price": {{ variant.compare_at_price | default: 0 }},
+            "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
+            "featured_media": {% if variant.featured_media %}{ "id": {{ variant.featured_media.id }} }{% else %}null{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    </script>
+
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign downcased = option.name | downcase
+        assign is_color = false
+        if downcased == 'color' or downcased == 'colour' or downcased == 'צבע'
+          assign is_color = true
+        endif
+      -%}
+
+      <div class="variant-option">
+        <span class="variant-option__label">
+          {{ option.name }}: <span>{{ option.selected_value }}</span>
+        </span>
+
+        <div class="variant-values{% if is_color %} variant-values--swatch{% endif %}">
+          {%- for value in option.values -%}
+            {%- assign input_id = 'option-' | append: option.position | append: '-' | append: forloop.index -%}
+            <div class="variant-value">
+              <input
+                type="radio"
+                id="{{ input_id }}"
+                name="option{{ option.position }}"
+                value="{{ value | escape }}"
+                {% if option.selected_value == value %}checked{% endif %}
+              >
+              <label
+                for="{{ input_id }}"
+                {% if is_color %}
+                  style="background-color: {{ value | handle }}; --swatch-color: {{ value | handle }};"
+                  title="{{ value | escape }}"
+                {% endif %}
+              >
+                {{ value }}
+              </label>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- if size_guide_page != blank -%}
+      <button type="button" class="link-underline" style="align-self: start; font-size: 0.85rem;" data-dialog-open="size-guide">
+        {% render 'icon', name: 'ruler', size: 16 %} {{ 'products.product.size_guide' | t }}
+      </button>
+    {%- endif -%}
+  </div>
+{%- endunless -%}

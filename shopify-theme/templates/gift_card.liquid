@@ -1,0 +1,14 @@
+{%- assign gift_card_value = gift_card.initial_value | money -%}
+
+<div class="section">
+  <div class="page-width page-width--narrow text-center">
+    <h1>{{ 'gift_cards.issued.title' | t: value: gift_card_value, shop: shop.name }}</h1>
+    <p class="h2">{{ gift_card.balance | money }}</p>
+
+    {{ gift_card.qr_identifier }}
+
+    <p class="text-muted">{{ gift_card.code | format_code }}</p>
+
+    <a href="{{ shop.url }}" class="button">{{ 'gift_cards.issued.shop_link' | t }}</a>
+  </div>
+</div>

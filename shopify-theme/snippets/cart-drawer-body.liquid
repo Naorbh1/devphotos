@@ -1,0 +1,74 @@
+{%- if cart.item_count == 0 -%}
+  <div class="cart-empty">
+    {% render 'icon', name: 'cart', size: 40 %}
+    <p class="h3">{{ 'sections.cart.empty' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="button">
+      {{ 'sections.cart.continue_shopping' | t }}
+    </a>
+  </div>
+{%- else -%}
+  {% render 'free-shipping-bar' %}
+
+  <ul class="cart-items" style="margin-top: 20px;">
+    {%- for item in cart.items -%}
+      <li class="cart-item">
+        <a href="{{ item.url }}" class="cart-item__image">
+          {%- if item.image -%}
+            {{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: item.title | escape }}
+          {%- endif -%}
+        </a>
+
+        <div>
+          <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title | escape }}</a>
+
+          {%- unless item.product.has_only_default_variant -%}
+            <div class="cart-item__variant">{{ item.variant.title }}</div>
+          {%- endunless -%}
+
+          {%- for property in item.properties -%}
+            {%- unless property.last == blank or property.first[0] == '_' -%}
+              <div class="cart-item__variant">{{ property.first }}: {{ property.last }}</div>
+            {%- endunless -%}
+          {%- endfor -%}
+
+          {%- if item.line_level_discount_allocations.size > 0 -%}
+            {%- for allocation in item.line_level_discount_allocations -%}
+              <div class="cart-item__variant" style="color: var(--color-success);">
+                {{ allocation.discount_application.title }} (−{{ allocation.amount | money }})
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          <div class="cart-item__actions">
+            <div class="quantity">
+              <button type="button" class="quantity__button" data-quantity-change="down" aria-label="{{ 'products.product.decrease' | t }}">−</button>
+              <input
+                class="quantity__input"
+                type="number"
+                min="0"
+                value="{{ item.quantity }}"
+                data-line-quantity
+                data-line="{{ forloop.index }}"
+                aria-label="{{ 'products.product.quantity' | t }}"
+              >
+              <button type="button" class="quantity__button" data-quantity-change="up" aria-label="{{ 'products.product.increase' | t }}">+</button>
+            </div>
+
+            <button type="button" class="cart-remove" data-line-remove data-line="{{ forloop.index }}">
+              {{ 'sections.cart.remove' | t }}
+            </button>
+          </div>
+        </div>
+
+        <div>
+          {%- if item.original_line_price > item.final_line_price -%}
+            <s class="price__compare">{{ item.original_line_price | money }}</s><br>
+          {%- endif -%}
+          <strong>{{ item.final_line_price | money }}</strong>
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  {% render 'cart-upsell' %}
+{%- endif -%}

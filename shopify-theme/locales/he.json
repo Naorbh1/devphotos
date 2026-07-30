@@ -1,0 +1,178 @@
+{
+  "accessibility": {
+    "skip_to_content": "דלג לתוכן",
+    "close": "סגירה",
+    "menu": "תפריט"
+  },
+  "general": {
+    "home": "דף הבית",
+    "meta": {
+      "tags": "מתויג ב\"{{ tags }}\"",
+      "page": "עמוד {{ page }}"
+    },
+    "search": {
+      "title": "חיפוש",
+      "placeholder": "מה אתם מחפשים?",
+      "submit": "חפש",
+      "popular": "חיפושים פופולריים",
+      "products": "מוצרים",
+      "collections": "קטגוריות",
+      "no_results": "לא נמצאו תוצאות",
+      "results_count": "{{ count }} תוצאות עבור \"{{ terms }}\""
+    },
+    "newsletter": {
+      "email": "כתובת אימייל",
+      "submit": "הרשמה",
+      "success": "תודה — בדקו את תיבת הדואר."
+    },
+    "footer": {
+      "rights": "כל הזכויות שמורות."
+    },
+    "pagination": {
+      "label": "ניווט בעמודים",
+      "previous": "העמוד הקודם",
+      "next": "העמוד הבא"
+    },
+    "404": {
+      "title": "העמוד לא נמצא",
+      "subtext": "העמוד שחיפשתם לא קיים.",
+      "link": "חזרה לדף הבית"
+    }
+  },
+  "onboarding": {
+    "product_title": "מוצר לדוגמה"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "הוספה לסל",
+      "add_to_cart_for": "הוספת {{ title }} לסל",
+      "sold_out": "אזל מהמלאי",
+      "unavailable": "לא זמין",
+      "added": "נוסף לסל",
+      "from": "החל מ־",
+      "on_sale": "מבצע",
+      "save_percent": "חיסכון {{ percent }}%",
+      "new": "חדש",
+      "choose_options": "בחירת אפשרויות",
+      "choose_options_for": "בחירת אפשרויות עבור {{ title }}",
+      "view_details": "לעמוד המוצר",
+      "quantity": "כמות",
+      "increase": "הגדלת כמות",
+      "decrease": "הקטנת כמות",
+      "view_image": "הצגת תמונה {{ index }}",
+      "share": "שיתוף",
+      "size_guide": "טבלת מידות",
+      "in_stock": "במלאי",
+      "only_left": "נותרו {{ count }} בלבד",
+      "rating_label": "דירוג {{ rating }} מתוך {{ max }} מתוך {{ count }} ביקורות"
+    }
+  },
+  "sections": {
+    "cart": {
+      "title": "סל הקניות",
+      "summary": "סיכום הזמנה",
+      "empty": "הסל שלכם ריק",
+      "continue_shopping": "המשך בקנייה",
+      "remove": "הסרה",
+      "add": "הוספה",
+      "subtotal": "סכום ביניים",
+      "total": "סה\"כ",
+      "checkout": "מעבר לתשלום",
+      "view_cart": "צפייה בסל",
+      "note": "הערה להזמנה",
+      "tax_and_shipping": "מיסים ומשלוח יחושבו בעמוד התשלום.",
+      "error": "משהו השתבש. נסו שוב.",
+      "shipping_remaining_html": "עוד {{ amount }} ומשלוח החינם עליכם",
+      "shipping_unlocked_html": "קיבלתם <strong>משלוח חינם</strong>",
+      "you_may_also_like": "להוסיף להזמנה",
+      "secure": "תשלום מאובטח ומוצפן",
+      "returns": "החזרות חינם תוך 30 יום"
+    },
+    "collection": {
+      "view_all": "לכל המוצרים",
+      "product_count": "{{ count }} מוצרים",
+      "sort_by": "מיון לפי",
+      "view": "תצוגה",
+      "view_grid": "תצוגת רשת",
+      "view_masonry": "תצוגת רשת גדולה",
+      "view_list": "תצוגת רשימה",
+      "empty": "אין מוצרים שתואמים לסינון",
+      "clear_filters": "ניקוי הסינון",
+      "min": "מ־",
+      "max": "עד",
+      "all_collections": "קטגוריות"
+    }
+  },
+  "blogs": {
+    "comments": {
+      "title": "תגובות ({{ count }})",
+      "name": "שם",
+      "email": "אימייל",
+      "message": "תגובה",
+      "submit": "פרסום תגובה",
+      "success": "תודה — התגובה פורסמה."
+    }
+  },
+  "contact": {
+    "name": "שם",
+    "email": "אימייל",
+    "phone": "טלפון",
+    "message": "הודעה",
+    "submit": "שליחה",
+    "success": "תודה — נחזור אליכם."
+  },
+  "customer": {
+    "login": {
+      "title": "התחברות",
+      "email": "אימייל",
+      "password": "סיסמה",
+      "submit": "התחברות",
+      "forgot": "שכחתם סיסמה?"
+    },
+    "register": {
+      "title": "פתיחת חשבון",
+      "first_name": "שם פרטי",
+      "last_name": "שם משפחה",
+      "submit": "פתיחת חשבון"
+    },
+    "recover": {
+      "title": "איפוס סיסמה",
+      "submit": "שליחת קישור לאיפוס",
+      "success": "שלחנו לכם אימייל עם קישור לאיפוס."
+    },
+    "account": {
+      "title": "החשבון שלי",
+      "logout": "התנתקות",
+      "address": "כתובות",
+      "manage_addresses": "ניהול כתובות",
+      "add_address": "הוספת כתובת חדשה"
+    },
+    "orders": {
+      "title": "היסטוריית הזמנות",
+      "order_number": "הזמנה {{ number }}",
+      "none": "עדיין לא ביצעתם הזמנות."
+    },
+    "address": {
+      "street": "כתובת",
+      "city": "עיר",
+      "zip": "מיקוד",
+      "country": "מדינה"
+    },
+    "reset_password": {
+      "title": "בחירת סיסמה חדשה",
+      "confirm": "אישור סיסמה",
+      "submit": "שמירת סיסמה"
+    },
+    "activate_account": {
+      "title": "הפעלת חשבון",
+      "submit": "הפעלה",
+      "decline": "דחיית ההזמנה"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "הנה שובר המתנה שלכם על סך {{ value }} ל{{ shop }}",
+      "shop_link": "התחילו לקנות"
+    }
+  }
+}

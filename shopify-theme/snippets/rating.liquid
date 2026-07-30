@@ -1,0 +1,24 @@
+{% comment %}
+  Star rating.
+
+  Reads the `reviews` metafield that Shopify's own Product Reviews app and most
+  third-party review apps write to. Renders nothing when a product has no
+  reviews yet, so new stores do not show empty stars.
+{% endcomment %}
+
+{%- liquid
+  assign rating = product.metafields.reviews.rating.value
+  assign count = product.metafields.reviews.rating_count.value | default: 0
+-%}
+
+{%- if rating and count > 0 -%}
+  {%- assign percent = rating.rating | divided_by: rating.scale_max | times: 100 -%}
+
+  <div class="rating" role="img" aria-label="{{ 'products.product.rating_label' | t: rating: rating.rating, max: rating.scale_max, count: count }}">
+    <span class="rating__stars" aria-hidden="true">
+      ★★★★★
+      <span class="rating__stars-fill" style="width: {{ percent }}%;">★★★★★</span>
+    </span>
+    <span>({{ count }})</span>
+  </div>
+{%- endif -%}

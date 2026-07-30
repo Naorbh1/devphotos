@@ -1,0 +1,105 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "eyebrow": "New in",
+        "heading": "Built for the way you actually shop",
+        "text": "<p>Fast pages, honest stock levels, and a checkout that gets out of the way.</p>",
+        "button_label": "Shop the collection",
+        "alignment": "start",
+        "height": 68,
+        "overlay_opacity": 30,
+        "text_light": true,
+        "full_width": true
+      }
+    },
+    "value-props": {
+      "type": "value-props",
+      "blocks": {
+        "a": { "type": "item", "settings": { "icon": "truck", "title": "Free shipping", "text": "On orders over $200" } },
+        "b": { "type": "item", "settings": { "icon": "refresh", "title": "Easy returns", "text": "30 days, no questions" } },
+        "c": { "type": "item", "settings": { "icon": "lock", "title": "Secure checkout", "text": "Encrypted payments" } },
+        "d": { "type": "item", "settings": { "icon": "support", "title": "Real support", "text": "We answer within a day" } }
+      },
+      "block_order": ["a", "b", "c", "d"],
+      "settings": { "background": "alt" }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Best sellers",
+        "layout": "grid",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "show_view_all": true
+      }
+    },
+    "collection-list": {
+      "type": "collection-list",
+      "blocks": {
+        "a": { "type": "collection", "settings": {} },
+        "b": { "type": "collection", "settings": {} },
+        "c": { "type": "collection", "settings": {} }
+      },
+      "block_order": ["a", "b", "c"],
+      "settings": { "heading": "Shop by category", "image_ratio": "3/4" }
+    },
+    "image-with-text": {
+      "type": "image-with-text",
+      "blocks": {
+        "a": { "type": "bullet", "settings": { "text": "Materials chosen to last, not to hit a price" } },
+        "b": { "type": "bullet", "settings": { "text": "Photographed exactly as it ships" } }
+      },
+      "block_order": ["a", "b"],
+      "settings": {
+        "heading": "Made to last",
+        "text": "<p>Two or three sentences on what makes this different. Specific beats superlative.</p>",
+        "button_label": "Our story",
+        "image_position": "start"
+      }
+    },
+    "new-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "New arrivals",
+        "layout": "carousel",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "image_ratio": "3/4",
+        "background": "default"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "a": { "type": "testimonial", "settings": { "name": "Customer name" } },
+        "b": { "type": "testimonial", "settings": { "name": "Customer name" } },
+        "c": { "type": "testimonial", "settings": { "name": "Customer name" } }
+      },
+      "block_order": ["a", "b", "c"],
+      "settings": { "background": "alt" }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "a": { "type": "question", "settings": { "question": "How long does delivery take?", "answer": "<p>Orders ship within 1–2 business days and usually arrive within a week.</p>" } },
+        "b": { "type": "question", "settings": { "question": "What is your return policy?", "answer": "<p>Return anything unused within 30 days for a full refund.</p>" } },
+        "c": { "type": "question", "settings": { "question": "Do you ship internationally?", "answer": "<p>Yes. Rates are calculated at checkout.</p>" } }
+      },
+      "block_order": ["a", "b", "c"],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "value-props",
+    "featured",
+    "collection-list",
+    "image-with-text",
+    "new-arrivals",
+    "testimonials",
+    "faq"
+  ]
+}

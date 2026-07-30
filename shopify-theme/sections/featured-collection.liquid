@@ -1,0 +1,152 @@
+<div class="section{% if section.settings.background == 'alt' %} section--alt{% endif %} {{ section.settings.card_align_class }}">
+  <div class="page-width">
+    <div class="section-header{% if section.settings.heading_align == 'center' %} section-header--center{% endif %}">
+      <div class="section-header__text">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="label">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="rte text-muted">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+        <a href="{{ section.settings.collection.url }}" class="link-underline">
+          {{ 'sections.collection.view_all' | t }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- liquid
+      assign products = section.settings.collection.products
+      assign layout_class = ''
+      case section.settings.layout
+        when 'carousel'
+          assign layout_class = 'product-grid--carousel'
+        when 'list'
+          assign layout_class = 'product-grid--list'
+        when 'masonry'
+          assign layout_class = 'product-grid--masonry'
+      endcase
+    -%}
+
+    {%- if products.size > 0 -%}
+      <div
+        class="product-grid {{ layout_class }}"
+        style="--cols-desktop: {{ section.settings.columns_desktop }}; --cols-mobile: {{ section.settings.columns_mobile }};"
+      >
+        {%- for product in products limit: section.settings.products_to_show -%}
+          {% render 'card-product', product: product, image_ratio: section.settings.image_ratio %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div
+        class="product-grid"
+        style="--cols-desktop: {{ section.settings.columns_desktop }}; --cols-mobile: {{ section.settings.columns_mobile }};"
+      >
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="card-product">
+            <div class="media">{{ 'product-' | append: forloop.index | placeholder_svg_tag: 'media__primary' }}</div>
+            <div class="card-product__info">
+              <h3 class="card-product__title">{{ 'onboarding.product_title' | t }}</h3>
+              <div class="price"><span class="price__current">{{ 1990 | money }}</span></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured_collection.name",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "t:sections.featured_collection.collection" },
+    { "type": "text", "id": "eyebrow", "label": "t:sections.hero.eyebrow" },
+    { "type": "text", "id": "heading", "label": "t:general.heading", "default": "Best sellers" },
+    { "type": "richtext", "id": "text", "label": "t:general.text" },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "t:sections.featured_collection.heading_align",
+      "default": "start",
+      "options": [
+        { "value": "start", "label": "t:general.align_start" },
+        { "value": "center", "label": "t:general.align_center" }
+      ]
+    },
+    { "type": "header", "content": "t:general.layout" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:sections.featured_collection.layout",
+      "info": "t:sections.featured_collection.layout_info",
+      "default": "grid",
+      "options": [
+        { "value": "grid", "label": "t:general.layout_grid" },
+        { "value": "carousel", "label": "t:general.layout_carousel" },
+        { "value": "list", "label": "t:general.layout_list" },
+        { "value": "masonry", "label": "t:general.layout_masonry" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:sections.featured_collection.products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 8
+    },
+    { "type": "range", "id": "columns_desktop", "label": "t:general.columns_desktop", "min": 2, "max": 6, "step": 1, "default": 4 },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "t:general.columns_mobile",
+      "default": "2",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:settings.style.image_ratio",
+      "default": "1/1",
+      "options": [
+        { "value": "1/1", "label": "t:settings.style.ratio_square" },
+        { "value": "3/4", "label": "t:settings.style.ratio_portrait" },
+        { "value": "4/5", "label": "t:settings.style.ratio_tall" },
+        { "value": "4/3", "label": "t:settings.style.ratio_landscape" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_align_class",
+      "label": "t:sections.featured_collection.card_align",
+      "default": "",
+      "options": [
+        { "value": "", "label": "t:general.align_start" },
+        { "value": "card-align-center", "label": "t:general.align_center" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "t:sections.collection.view_all", "default": true },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "t:general.background",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "t:general.background_default" },
+        { "value": "alt", "label": "t:general.background_alt" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:sections.featured_collection.name" }]
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+{% comment %}
+  Card-only fragment used by fetch requests.
+
+  theme.js asks for /search?q=…&section_id=search-results-fragment and lifts
+  the inner grid out of the response. Rendering cards through the same snippet
+  the rest of the theme uses keeps quick-add, badges and pricing consistent.
+{% endcomment %}
+
+<div data-search-fragment-grid>
+  {%- for item in search.results -%}
+    {%- if item.object_type == 'product' -%}
+      {% render 'card-product', product: item %}
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search results fragment",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,213 @@
+<header
+  class="header{% if section.settings.sticky %} header--sticky{% endif %}"
+  data-sticky-header
+  style="--logo-width: {{ settings.logo_width }}px;"
+>
+  <div class="page-width">
+    <div class="header__inner">
+      <div class="inline" style="gap: 2px;">
+        <button
+          type="button"
+          class="header__icon menu-toggle"
+          data-dialog-open="menu"
+          aria-label="{{ 'accessibility.menu' | t }}"
+        >
+          {% render 'icon', name: 'menu' %}
+        </button>
+
+        <a href="{{ routes.root_url }}" class="header__logo">
+          {%- if settings.logo -%}
+            {%- assign logo_alt = shop.name | escape -%}
+            {{
+              settings.logo
+              | image_url: width: 600
+              | image_tag: loading: 'eager', alt: logo_alt, widths: '130,260,390,520'
+            }}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      <nav class="header__nav" role="navigation">
+        {%- for link in section.settings.menu.links -%}
+          <div class="nav__item">
+            <a href="{{ link.url }}" class="nav__link"{% if link.current %} aria-current="page"{% endif %}>
+              {{ link.title }}
+              {%- if link.links.size > 0 -%}
+                {% render 'icon', name: 'chevron-down', size: 15 %}
+              {%- endif -%}
+            </a>
+
+            {%- if link.links.size > 0 -%}
+              <div class="nav__panel">
+                {%- for child in link.links -%}
+                  <a href="{{ child.url }}">{{ child.title }}</a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </nav>
+
+      <div class="header__actions">
+        <button
+          type="button"
+          class="header__icon"
+          data-dialog-open="search"
+          aria-label="{{ 'general.search.title' | t }}"
+        >
+          {% render 'icon', name: 'search' %}
+        </button>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header__icon" aria-label="{{ 'customer.account.title' | t }}">
+            {% render 'icon', name: 'user' %}
+          </a>
+        {%- endif -%}
+
+        <a
+          href="{{ routes.cart_url }}"
+          class="header__icon"
+          {% if settings.cart_type == 'drawer' %}data-dialog-open="cart"{% endif %}
+          aria-label="{{ 'sections.cart.title' | t }}"
+        >
+          {% render 'icon', name: 'cart' %}
+          <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {{- cart.item_count -}}
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% comment %} Mobile menu {% endcomment %}
+<div class="overlay" id="MenuOverlay"></div>
+
+<aside
+  class="drawer drawer--start"
+  data-dialog="menu"
+  data-overlay="MenuOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'accessibility.menu' | t }}"
+  aria-hidden="true"
+>
+  <header class="drawer__header">
+    <span class="h4" style="margin: 0;">{{ 'accessibility.menu' | t }}</span>
+    <button type="button" class="header__icon" data-close aria-label="{{ 'accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+  </header>
+
+  <div class="drawer__body">
+    <ul class="stack">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <button
+              type="button"
+              class="nav__link"
+              style="width: 100%; justify-content: space-between; font-size: 1.05rem;"
+              data-submenu-toggle
+              aria-expanded="false"
+            >
+              {{ link.title }}
+              {% render 'icon', name: 'chevron-down', size: 16 %}
+            </button>
+
+            <ul class="stack" hidden style="padding-inline-start: 14px; gap: 4px;">
+              {%- for child in link.links -%}
+                <li><a href="{{ child.url }}" style="display: block; padding-block: 8px;">{{ child.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <a href="{{ link.url }}" class="nav__link" style="font-size: 1.05rem;">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%- if section.settings.show_menu_promo and section.settings.menu_promo_text != blank -%}
+    <div class="drawer__footer">
+      <div class="rte text-muted" style="font-size: 0.88rem;">{{ section.settings.menu_promo_text }}</div>
+    </div>
+  {%- endif -%}
+</aside>
+
+{% comment %} Search drawer {% endcomment %}
+<div class="overlay" id="SearchOverlay"></div>
+
+<aside
+  class="drawer"
+  data-dialog="search"
+  data-overlay="SearchOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'general.search.title' | t }}"
+  aria-hidden="true"
+>
+  <header class="drawer__header">
+    <span class="h4" style="margin: 0;">{{ 'general.search.title' | t }}</span>
+    <button type="button" class="header__icon" data-close aria-label="{{ 'accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+  </header>
+
+  <div class="drawer__body">
+    <div data-predictive-search>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+        <input
+          class="input"
+          type="search"
+          name="q"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          aria-label="{{ 'general.search.title' | t }}"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="submit" class="button" aria-label="{{ 'general.search.submit' | t }}">
+          {% render 'icon', name: 'search', size: 20 %}
+        </button>
+      </form>
+
+      <div class="predictive-results" data-predictive-results></div>
+    </div>
+
+    {%- if section.settings.search_suggestions != blank -%}
+      <div style="margin-top: 22px;">
+        <p class="label">{{ 'general.search.popular' | t }}</p>
+        <div class="inline" style="gap: 8px; margin-top: 10px;">
+          {%- assign suggestions = section.settings.search_suggestions | split: ',' -%}
+          {%- for suggestion in suggestions -%}
+            {%- assign term = suggestion | strip -%}
+            <a href="{{ routes.search_url }}?q={{ term | url_encode }}" class="active-facet">{{ term }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "header-section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "t:sections.header.menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "sticky", "label": "t:sections.header.sticky", "default": true },
+    {
+      "type": "text",
+      "id": "search_suggestions",
+      "label": "t:sections.header.search_suggestions",
+      "info": "t:sections.header.search_suggestions_info"
+    },
+    { "type": "header", "content": "t:sections.header.mobile_promo" },
+    { "type": "checkbox", "id": "show_menu_promo", "label": "t:sections.header.show_menu_promo", "default": false },
+    { "type": "richtext", "id": "menu_promo_text", "label": "t:sections.header.menu_promo_text" }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

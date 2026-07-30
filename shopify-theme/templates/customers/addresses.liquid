@@ -1,0 +1,51 @@
+<div class="section">
+  <div class="page-width page-width--narrow">
+    <h1>{{ 'customer.account.address' | t }}</h1>
+
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div style="padding: 18px 0; border-bottom: 1px solid var(--color-border);">
+          <div class="rte">{{ address | format_address }}</div>
+        </div>
+      {%- endfor -%}
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+
+    <h2 class="h3" style="margin-top: 32px;">{{ 'customer.account.add_address' | t }}</h2>
+
+    {% form 'customer_address', customer.new_address, class: 'stack' %}
+      <div class="field">
+        <label class="field__label" for="AddressFirstName">{{ 'customer.register.first_name' | t }}</label>
+        <input class="input" type="text" id="AddressFirstName" name="address[first_name]" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressLastName">{{ 'customer.register.last_name' | t }}</label>
+        <input class="input" type="text" id="AddressLastName" name="address[last_name]" autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressStreet">{{ 'customer.address.street' | t }}</label>
+        <input class="input" type="text" id="AddressStreet" name="address[address1]" autocomplete="address-line1">
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressCity">{{ 'customer.address.city' | t }}</label>
+        <input class="input" type="text" id="AddressCity" name="address[city]" autocomplete="address-level2">
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressZip">{{ 'customer.address.zip' | t }}</label>
+        <input class="input" type="text" id="AddressZip" name="address[zip]" autocomplete="postal-code">
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressCountry">{{ 'customer.address.country' | t }}</label>
+        <select class="select" id="AddressCountry" name="address[country]" data-default="{{ form.country }}">
+          {{ country_option_tags }}
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="AddressPhone">{{ 'contact.phone' | t }}</label>
+        <input class="input" type="tel" id="AddressPhone" name="address[phone]" autocomplete="tel">
+      </div>
+
+      <button type="submit" class="button" style="align-self: start;">{{ 'customer.account.add_address' | t }}</button>
+    {% endform %}
+  </div>
+</div>

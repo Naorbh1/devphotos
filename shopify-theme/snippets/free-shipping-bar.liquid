@@ -1,0 +1,36 @@
+{% comment %}
+  Free shipping progress bar.
+
+  Threshold comes from settings.free_shipping_threshold and is expressed in the
+  store currency (not cents) so merchants type "200", not "20000".
+{% endcomment %}
+
+{%- if settings.enable_free_shipping_bar and settings.free_shipping_threshold > 0 -%}
+  {%- liquid
+    assign threshold = settings.free_shipping_threshold | times: 100
+    assign remaining = threshold | minus: cart.total_price
+    assign percent = cart.total_price | times: 100.0 | divided_by: threshold
+    if percent > 100
+      assign percent = 100
+    endif
+    assign remaining_money = remaining | money
+  -%}
+
+  <div class="shipping-bar" data-shipping-bar>
+    <p
+      data-shipping-message
+      data-remaining="{{ 'sections.cart.shipping_remaining_html' | t: amount: '[amount]' | escape }}"
+      data-unlocked="{{ 'sections.cart.shipping_unlocked_html' | t | escape }}"
+    >
+      {%- if remaining <= 0 -%}
+        {{ 'sections.cart.shipping_unlocked_html' | t }}
+      {%- else -%}
+        {{ 'sections.cart.shipping_remaining_html' | t: amount: remaining_money }}
+      {%- endif -%}
+    </p>
+
+    <div class="shipping-bar__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ percent | round }}">
+      <div class="shipping-bar__fill" data-shipping-fill style="width: {{ percent }}%;"></div>
+    </div>
+  </div>
+{%- endif -%}

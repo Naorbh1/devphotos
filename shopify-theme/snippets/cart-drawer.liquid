@@ -1,0 +1,33 @@
+{% comment %}
+  Slide-out cart. Rendered once in theme.liquid; its contents are re-fetched
+  from sections/cart-drawer.liquid whenever the cart changes, so Shopify stays
+  the single source of truth for prices and discounts.
+{% endcomment %}
+
+<div class="overlay" id="CartOverlay"></div>
+
+<aside
+  class="drawer"
+  id="CartDrawer"
+  data-dialog="cart"
+  data-overlay="CartOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'sections.cart.title' | t }}"
+  aria-hidden="true"
+>
+  <header class="drawer__header">
+    <h2 class="h3" style="margin: 0;">{{ 'sections.cart.title' | t }}</h2>
+    <button type="button" class="header__icon" data-close aria-label="{{ 'accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+  </header>
+
+  <div class="drawer__body" data-cart-drawer-body>
+    {% render 'cart-drawer-body' %}
+  </div>
+
+  <div class="drawer__footer" data-cart-drawer-footer>
+    {% render 'cart-drawer-footer' %}
+  </div>
+</aside>

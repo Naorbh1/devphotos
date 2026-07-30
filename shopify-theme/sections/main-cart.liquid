@@ -1,0 +1,158 @@
+<div class="section" data-cart-root>
+  <div class="page-width">
+    <h1>{{ 'sections.cart.title' | t }}</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty">
+        {% render 'icon', name: 'cart', size: 44 %}
+        <p class="h3">{{ 'sections.cart.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="button">
+          {{ 'sections.cart.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); align-items: start; gap: clamp(24px, 5vw, 56px);"
+        >
+          <div>
+            {% render 'free-shipping-bar' %}
+
+            <ul class="cart-items" style="margin-top: 22px;">
+              {%- for item in cart.items -%}
+                <li class="cart-item">
+                  <a href="{{ item.url }}" class="cart-item__image">
+                    {%- if item.image -%}
+                      {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title | escape }}
+                    {%- endif -%}
+                  </a>
+
+                  <div>
+                    <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title | escape }}</a>
+
+                    {%- unless item.product.has_only_default_variant -%}
+                      <div class="cart-item__variant">{{ item.variant.title }}</div>
+                    {%- endunless -%}
+
+                    {%- for property in item.properties -%}
+                      {%- unless property.last == blank or property.first[0] == '_' -%}
+                        <div class="cart-item__variant">{{ property.first }}: {{ property.last }}</div>
+                      {%- endunless -%}
+                    {%- endfor -%}
+
+                    {%- for allocation in item.line_level_discount_allocations -%}
+                      <div class="cart-item__variant" style="color: var(--color-success);">
+                        {{ allocation.discount_application.title }} (−{{ allocation.amount | money }})
+                      </div>
+                    {%- endfor -%}
+
+                    <div class="cart-item__actions">
+                      <div class="quantity">
+                        <button type="button" class="quantity__button" data-quantity-change="down" aria-label="{{ 'products.product.decrease' | t }}">−</button>
+                        <input
+                          class="quantity__input"
+                          type="number"
+                          min="0"
+                          value="{{ item.quantity }}"
+                          data-line-quantity
+                          data-line="{{ forloop.index }}"
+                          aria-label="{{ 'products.product.quantity' | t }}"
+                        >
+                        <button type="button" class="quantity__button" data-quantity-change="up" aria-label="{{ 'products.product.increase' | t }}">+</button>
+                      </div>
+
+                      <button type="button" class="cart-remove" data-line-remove data-line="{{ forloop.index }}">
+                        {{ 'sections.cart.remove' | t }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style="text-align: end;">
+                    {%- if item.original_line_price > item.final_line_price -%}
+                      <s class="price__compare">{{ item.original_line_price | money }}</s><br>
+                    {%- endif -%}
+                    <strong>{{ item.final_line_price | money }}</strong>
+                  </div>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            {%- if section.settings.show_order_note -%}
+              <div class="field" style="margin-top: 26px;">
+                <label class="field__label" for="CartNote">{{ 'sections.cart.note' | t }}</label>
+                <textarea class="textarea" id="CartNote" name="note" style="min-height: 90px;">{{ cart.note }}</textarea>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <aside
+            class="stack"
+            style="
+              padding: clamp(20px, 4vw, 28px);
+              border: 1px solid var(--color-border);
+              border-radius: var(--radius);
+              position: sticky;
+              top: 90px;
+            "
+          >
+            <h2 class="h3" style="margin: 0;">{{ 'sections.cart.summary' | t }}</h2>
+
+            <div class="cart-summary">
+              <div class="cart-summary__row">
+                <span>{{ 'sections.cart.subtotal' | t }}</span>
+                <span>{{ cart.original_total_price | money }}</span>
+              </div>
+
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <div class="cart-summary__row" style="color: var(--color-success);">
+                  <span>{{ discount.title }}</span>
+                  <span>−{{ discount.total_allocated_amount | money }}</span>
+                </div>
+              {%- endfor -%}
+
+              <div class="cart-summary__row cart-summary__row--total">
+                <span>{{ 'sections.cart.total' | t }}</span>
+                <span>{{ cart.total_price | money_with_currency }}</span>
+              </div>
+            </div>
+
+            <p class="text-muted" style="font-size: 0.82rem; margin: 0;">
+              {{ 'sections.cart.tax_and_shipping' | t }}
+            </p>
+
+            <button type="submit" name="checkout" class="button button--large button--full">
+              {{ 'sections.cart.checkout' | t }}
+            </button>
+
+            {%- if additional_checkout_buttons -%}
+              <div>{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+
+            {%- if settings.enable_payment_icons -%}
+              <div class="payment-icons" style="justify-content: center;">
+                {%- for type in shop.enabled_payment_types -%}
+                  {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <div class="trust-list" style="border: 0; padding: 0;">
+              <div class="trust-list__item">{% render 'icon', name: 'lock', size: 18 %}<span>{{ 'sections.cart.secure' | t }}</span></div>
+              <div class="trust-list__item">{% render 'icon', name: 'refresh', size: 18 %}<span>{{ 'sections.cart.returns' | t }}</span></div>
+            </div>
+          </aside>
+        </div>
+      </form>
+
+      {% render 'cart-upsell' %}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main_cart.name",
+  "settings": [{ "type": "checkbox", "id": "show_order_note", "label": "t:sections.main_cart.order_note", "default": true }]
+}
+{% endschema %}

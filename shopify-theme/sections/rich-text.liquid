@@ -1,0 +1,52 @@
+<div class="section{% if section.settings.background == 'alt' %} section--alt{% endif %}">
+  <div class="page-width page-width--narrow text-center">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'eyebrow' -%}
+          <span class="label" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+        {%- when 'heading' -%}
+          <h2 {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+        {%- when 'text' -%}
+          <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'button' -%}
+          <div {{ block.shopify_attributes }} style="margin-top: 20px;">
+            <a href="{{ block.settings.link }}" class="button">{{ block.settings.label }}</a>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rich_text.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "t:general.background",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "t:general.background_default" },
+        { "value": "alt", "label": "t:general.background_alt" }
+      ]
+    }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "t:sections.hero.eyebrow", "settings": [{ "type": "text", "id": "text", "label": "t:general.text" }] },
+    { "type": "heading", "name": "t:general.heading", "settings": [{ "type": "text", "id": "text", "label": "t:general.text", "default": "Talk about your brand" }] },
+    { "type": "text", "name": "t:general.text", "settings": [{ "type": "richtext", "id": "text", "label": "t:general.text" }] },
+    {
+      "type": "button",
+      "name": "t:general.buttons",
+      "settings": [
+        { "type": "text", "id": "label", "label": "t:sections.hero.button_label", "default": "Learn more" },
+        { "type": "url", "id": "link", "label": "t:sections.hero.button_link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "t:sections.rich_text.name", "blocks": [{ "type": "heading" }, { "type": "text" }] }
+  ]
+}
+{% endschema %}

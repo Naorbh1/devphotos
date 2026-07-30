@@ -1,0 +1,37 @@
+{% comment %}
+  Price.
+
+  Accepts either `product` (uses the selected/first available variant) or an
+  explicit `variant`. Pass `show_unit: true` on product pages for unit pricing.
+{% endcomment %}
+
+{%- liquid
+  if variant
+    assign target = variant
+  else
+    assign target = product.selected_or_first_available_variant
+  endif
+
+  assign on_sale = false
+  if target.compare_at_price > target.price
+    assign on_sale = true
+  endif
+-%}
+
+<div class="price{% if on_sale %} price--on-sale{% endif %}" data-price-target>
+  {%- if product.price_varies and variant == null -%}
+    <span class="text-muted">{{ 'products.product.from' | t }}</span>
+  {%- endif -%}
+
+  <span class="price__current" data-price-current>{{ target.price | money }}</span>
+
+  <s class="price__compare" data-price-compare {% unless on_sale %}hidden{% endunless %}>
+    {{- target.compare_at_price | money -}}
+  </s>
+
+  {%- if show_unit and target.unit_price_measurement -%}
+    <span class="price__unit">
+      {{ target.unit_price | money }} / {{ target.unit_price_measurement.reference_value }}{{ target.unit_price_measurement.reference_unit }}
+    </span>
+  {%- endif -%}
+</div>

@@ -1,0 +1,20 @@
+{% comment %}
+  Fetch-only section. theme.js requests /cart?section_id=cart-drawer and pulls
+  these two fragments into the live drawer, so the drawer always reflects
+  Shopify's own totals rather than numbers guessed in JavaScript.
+{% endcomment %}
+
+<div data-cart-drawer-body>
+  {% render 'cart-drawer-body' %}
+</div>
+
+<div data-cart-drawer-footer>
+  {% render 'cart-drawer-footer' %}
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

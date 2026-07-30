@@ -1,0 +1,301 @@
+{
+  "settings": {
+    "style": {
+      "name": "סגנון",
+      "intro": "בחירת סגנון משנה את מראה כל החנות בבת אחת. אפשר עדיין לכוונן כל פרט בנפרד למטה.",
+      "preset": "סגנון תצוגה",
+      "preset_info": "משנה עובי כותרות, ריווח אותיות וטיפול בתוויות בכל הסקשנים.",
+      "preset_modern": "מודרני",
+      "preset_minimal": "מינימלי",
+      "preset_bold": "נועז",
+      "preset_editorial": "מגזיני",
+      "preset_playful": "שובב",
+      "density": "צפיפות",
+      "density_compact": "צפוף",
+      "density_comfortable": "נוח",
+      "density_spacious": "מרווח",
+      "corner_radius": "עיגול פינות",
+      "card_style": "סגנון כרטיס",
+      "card_flat": "שטוח",
+      "card_bordered": "עם מסגרת",
+      "card_shadow": "צל רך",
+      "card_elevated": "מוגבה",
+      "button_style": "צורת כפתורים",
+      "button_square": "מרובע",
+      "button_rounded": "מעוגל",
+      "button_pill": "עגול מלא",
+      "page_width": "רוחב העמוד",
+      "grid_gap": "מרווח ברשת",
+      "section_spacing": "מרווח בין סקשנים",
+      "image_ratio": "יחס תמונה",
+      "ratio_square": "ריבוע (1:1)",
+      "ratio_portrait": "לאורך (3:4)",
+      "ratio_tall": "גבוה (4:5)",
+      "ratio_landscape": "לרוחב (4:3)",
+      "ratio_wide": "רחב (16:9)",
+      "image_fit": "התאמת תמונה",
+      "fit_cover": "חיתוך למילוי",
+      "fit_contain": "הצגת התמונה כולה"
+    },
+    "colors": {
+      "name": "צבעים",
+      "base": "בסיס",
+      "background": "רקע",
+      "background_alt": "רקע חלופי",
+      "card_background": "רקע כרטיס",
+      "text": "טקסט",
+      "heading": "כותרות",
+      "brand": "מותג",
+      "accent": "צבע ראשי / כפתורים",
+      "accent_contrast": "טקסט על הצבע הראשי",
+      "status": "סטטוס",
+      "sale": "מחיר מבצע",
+      "success": "הצלחה"
+    },
+    "typography": {
+      "name": "טיפוגרפיה",
+      "heading_font": "גופן כותרות",
+      "heading_scale": "גודל כותרות",
+      "heading_transform": "אותיות בכותרות",
+      "transform_none": "כפי שנכתב",
+      "transform_upper": "אותיות גדולות",
+      "heading_spacing": "ריווח אותיות בכותרות",
+      "body_font": "גופן טקסט",
+      "body_scale": "גודל טקסט",
+      "heading_spacing_info": "במאיות של em. ערך שלילי מצמצם את הריווח בכותרות."
+    },
+    "product_card": {
+      "name": "כרטיסי מוצר",
+      "text_align": "יישור טקסט",
+      "align_start": "לתחילת השורה",
+      "align_center": "מרכז",
+      "show_vendor": "הצגת יצרן",
+      "show_rating": "הצגת דירוג",
+      "hover_image": "החלפת תמונה במעבר עכבר",
+      "hover_image_info": "משתמש בתמונה השנייה של המוצר.",
+      "show_swatches": "הצגת עיגולי צבע",
+      "badges": "תגיות",
+      "badge_sale": "תגית מבצע",
+      "badge_sale_percent": "הצגת אחוז ההנחה",
+      "badge_sold_out": "תגית אזל מהמלאי",
+      "badge_new": "תגית חדש",
+      "badge_new_info": "מוצגת למוצרים שפורסמו לאחרונה.",
+      "badge_new_days": "נחשב חדש למשך"
+    },
+    "conversion": {
+      "name": "המרות",
+      "cart": "סל",
+      "cart_type": "התנהגות הסל",
+      "cart_drawer": "מגירה נשלפת",
+      "cart_page": "מעבר לעמוד הסל",
+      "quick_add": "הוספה מהירה מכרטיס המוצר",
+      "quick_add_info": "לחיצה אחת למוצר בלי וריאנטים; נפתח בורר כשיש אפשרויות בחירה.",
+      "sticky_atc": "כפתור הוספה דביק בעמוד המוצר",
+      "shipping": "משלוח חינם",
+      "free_shipping_bar": "הצגת התקדמות למשלוח חינם",
+      "free_shipping_threshold": "סכום למשלוח חינם",
+      "free_shipping_threshold_info": "במטבע החנות. ודאו שתעריף המשלוח בהגדרות תואם.",
+      "urgency": "מלאי",
+      "stock_counter": "הצגת מונה מלאי נמוך",
+      "stock_counter_threshold": "הצגה כשהמלאי קטן או שווה ל־",
+      "trust": "אמון",
+      "payment_icons": "הצגת אייקוני תשלום",
+      "recently_viewed": "הצגת מוצרים שנצפו לאחרונה",
+      "recently_viewed_limit": "כמות מוצרים",
+      "popup": "פופאפ אימייל",
+      "newsletter_popup": "הפעלת פופאפ אימייל",
+      "newsletter_popup_delay": "הצגה אחרי",
+      "newsletter_popup_exit": "הצגה גם ביציאה מהעמוד",
+      "newsletter_popup_exit_info": "בדסקטופ בלבד — מופעל כשהעכבר יוצא מהחלון.",
+      "popup_heading": "כותרת הפופאפ",
+      "popup_text": "טקסט הפופאפ",
+      "popup_image": "תמונת הפופאפ"
+    },
+    "social": {
+      "name": "רשתות חברתיות",
+      "whatsapp_info": "https://wa.me/972501234567",
+      "sharing": "שיתוף",
+      "share_buttons": "הצגת כפתורי שיתוף במוצרים",
+      "share_image": "תמונת שיתוף ברירת מחדל"
+    },
+    "brand": {
+      "name": "לוגו",
+      "logo": "לוגו",
+      "logo_width": "רוחב הלוגו",
+      "favicon": "אייקון דפדפן"
+    }
+  },
+  "general": {
+    "heading": "כותרת",
+    "text": "טקסט",
+    "image": "תמונה",
+    "link": "קישור",
+    "buttons": "כפתורים",
+    "layout": "פריסה",
+    "alignment": "יישור",
+    "align_start": "לתחילת השורה",
+    "align_center": "מרכז",
+    "align_end": "לסוף השורה",
+    "full_width": "רוחב מלא",
+    "background": "רקע",
+    "background_default": "ברירת מחדל",
+    "background_alt": "חלופי",
+    "text_color": "צבע טקסט",
+    "columns_desktop": "עמודות בדסקטופ",
+    "columns_mobile": "עמודות במובייל",
+    "layout_grid": "רשת",
+    "layout_carousel": "קרוסלה",
+    "layout_list": "רשימה",
+    "layout_masonry": "רשת משורגת"
+  },
+  "sections": {
+    "header": {
+      "name": "כותרת עליונה",
+      "menu": "תפריט",
+      "sticky": "הצמדה לראש העמוד בגלילה",
+      "search_suggestions": "חיפושים פופולריים",
+      "search_suggestions_info": "מופרדים בפסיקים. מוצגים במגירת החיפוש.",
+      "mobile_promo": "מסר בתפריט המובייל",
+      "show_menu_promo": "הצגת מסר בתפריט המובייל",
+      "menu_promo_text": "טקסט המסר"
+    },
+    "announcement": {
+      "name": "סרגל הודעות",
+      "message": "הודעה",
+      "rotate_speed": "החלפה כל",
+      "dismissible": "אפשר לסגור",
+      "countdown_to": "ספירה לאחור עד",
+      "countdown_to_info": "פורמט: 2026-12-31T23:59:59. השאירו ריק ללא ספירה."
+    },
+    "footer": {
+      "name": "כותרת תחתונה",
+      "menu_block": "עמודת תפריט",
+      "menu": "תפריט",
+      "text_block": "עמודת טקסט",
+      "newsletter_block": "ניוזלטר",
+      "contact_block": "יצירת קשר",
+      "phone": "טלפון",
+      "email": "אימייל",
+      "hours": "שעות פעילות"
+    },
+    "hero": {
+      "name": "באנר ראשי",
+      "eyebrow": "כותרת עליונה קטנה",
+      "countdown_to": "ספירה לאחור עד",
+      "button_label": "טקסט הכפתור",
+      "button_link": "קישור הכפתור",
+      "button_2_label": "טקסט כפתור שני",
+      "button_2_link": "קישור כפתור שני",
+      "height": "גובה",
+      "overlay": "שכבת כהות על התמונה",
+      "text_light": "טקסט בהיר (לתמונות כהות)"
+    },
+    "featured_collection": {
+      "name": "קטגוריה מומלצת",
+      "collection": "קטגוריה",
+      "heading_align": "יישור הכותרת",
+      "layout": "פריסה",
+      "layout_info": "קרוסלה נגללת לצדדים; רשת משורגת מגוונת את גובה התמונות.",
+      "products_to_show": "כמות מוצרים",
+      "card_align": "יישור טקסט בכרטיס"
+    },
+    "collection": {
+      "view_all": "הצגת קישור \"לכל המוצרים\""
+    },
+    "collection_list": {
+      "name": "רשימת קטגוריות",
+      "block": "קטגוריה",
+      "min_card_width": "רוחב כרטיס מינימלי",
+      "show_count": "הצגת כמות מוצרים",
+      "custom_title": "כותרת מותאמת",
+      "custom_image": "תמונה מותאמת"
+    },
+    "value_props": {
+      "name": "יתרונות",
+      "block": "פריט",
+      "icon": "אייקון",
+      "custom_icon": "אייקון מותאם"
+    },
+    "testimonials": {
+      "name": "המלצות",
+      "block": "המלצה",
+      "rating": "כוכבים",
+      "quote": "ציטוט",
+      "author": "שם",
+      "meta": "פרט נוסף",
+      "meta_info": "לדוגמה \"קונה מאומת\" או שם המוצר שנרכש.",
+      "avatar": "תמונת פרופיל"
+    },
+    "faq": {
+      "name": "שאלות נפוצות",
+      "block": "שאלה",
+      "question": "שאלה",
+      "answer": "תשובה"
+    },
+    "image_with_text": {
+      "name": "תמונה עם טקסט",
+      "image_position": "מיקום התמונה",
+      "bullet": "נקודה"
+    },
+    "rich_text": {
+      "name": "טקסט עשיר"
+    },
+    "recommendations": {
+      "name": "מוצרים מומלצים"
+    },
+    "recently_viewed": {
+      "name": "נצפו לאחרונה"
+    },
+    "contact": {
+      "name": "טופס יצירת קשר"
+    },
+    "main_product": {
+      "name": "מוצר",
+      "breadcrumbs": "הצגת פירורי לחם",
+      "vendor": "יצרן",
+      "rating": "דירוג",
+      "price": "מחיר",
+      "installments": "הצגת אפשרויות תשלומים",
+      "description": "תיאור",
+      "truncate": "הצגת תקציר בלבד",
+      "stock": "מצב מלאי",
+      "variant_picker": "בורר וריאנטים",
+      "buy_buttons": "כפתורי רכישה",
+      "dynamic_checkout": "הצגת כפתורי תשלום מהיר",
+      "trust": "תגיות אמון",
+      "collapsible": "שורה נפתחת",
+      "page_content": "או שליפת תוכן מעמוד",
+      "share": "שיתוף"
+    },
+    "main_collection": {
+      "name": "קטגוריה",
+      "show_banner": "הצגת שם הקטגוריה",
+      "show_description": "הצגת תיאור",
+      "filtering": "סינון ומיון",
+      "enable_filtering": "הפעלת מסננים",
+      "enable_sorting": "הפעלת מיון",
+      "enable_view_switcher": "הפעלת מחליף תצוגה",
+      "enable_view_switcher_info": "מאפשר ללקוח לעבור בין רשת, רשת גדולה ורשימה. הבחירה נשמרת.",
+      "products_per_page": "מוצרים בעמוד"
+    },
+    "main_cart": {
+      "name": "סל",
+      "order_note": "הצגת שדה הערה להזמנה"
+    },
+    "main_search": {
+      "name": "חיפוש"
+    },
+    "main_page": {
+      "name": "עמוד"
+    },
+    "main_blog": {
+      "name": "בלוג"
+    },
+    "main_article": {
+      "name": "כתבה"
+    },
+    "list_collections": {
+      "name": "רשימת קטגוריות"
+    }
+  }
+}

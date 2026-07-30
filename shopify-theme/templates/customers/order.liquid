@@ -1,0 +1,31 @@
+<div class="section">
+  <div class="page-width">
+    <h1>{{ 'customer.orders.order_number' | t: number: order.name }}</h1>
+    <p class="text-muted">{{ order.created_at | date: format: 'date' }}</p>
+
+    <ul class="cart-items" style="margin-top: 24px;">
+      {%- for line_item in order.line_items -%}
+        <li class="cart-item">
+          <div class="cart-item__image">
+            {%- if line_item.image -%}
+              {{ line_item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+            {%- endif -%}
+          </div>
+          <div>
+            <span class="cart-item__title">{{ line_item.title }}</span>
+            <div class="cart-item__variant">{{ 'products.product.quantity' | t }}: {{ line_item.quantity }}</div>
+          </div>
+          <strong>{{ line_item.final_line_price | money }}</strong>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <div class="cart-summary" style="max-width: 340px; margin-inline-start: auto; margin-top: 24px;">
+      <div class="cart-summary__row"><span>{{ 'sections.cart.subtotal' | t }}</span><span>{{ order.subtotal_price | money }}</span></div>
+      {%- for shipping_method in order.shipping_methods -%}
+        <div class="cart-summary__row"><span>{{ shipping_method.title }}</span><span>{{ shipping_method.price | money }}</span></div>
+      {%- endfor -%}
+      <div class="cart-summary__row cart-summary__row--total"><span>{{ 'sections.cart.total' | t }}</span><span>{{ order.total_price | money_with_currency }}</span></div>
+    </div>
+  </div>
+</div>

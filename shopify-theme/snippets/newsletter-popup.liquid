@@ -1,0 +1,71 @@
+{% comment %}
+  Discount-for-email popup. Fires on a delay and/or exit intent, once per
+  visitor (localStorage). Disabled by default — turn it on in theme settings.
+{% endcomment %}
+
+<div class="overlay" id="NewsletterOverlay"></div>
+
+<div
+  class="modal"
+  data-dialog="newsletter"
+  data-overlay="NewsletterOverlay"
+  data-newsletter-popup
+  data-delay="{{ settings.newsletter_popup_delay }}"
+  data-exit-intent="{{ settings.newsletter_popup_exit_intent }}"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ settings.newsletter_popup_heading | default: 'Newsletter' | escape }}"
+  aria-hidden="true"
+>
+  <div class="modal__dialog">
+    {%- if settings.newsletter_popup_image -%}
+      {{
+        settings.newsletter_popup_image
+        | image_url: width: 1120
+        | image_tag: loading: 'lazy', alt: '', style: 'width:100%;height:auto;'
+      }}
+    {%- endif -%}
+
+    <div style="padding: clamp(20px, 5vw, 34px); position: relative;">
+      <button
+        type="button"
+        class="header__icon"
+        data-close
+        aria-label="{{ 'accessibility.close' | t }}"
+        style="position: absolute; top: 10px; inset-inline-end: 10px;"
+      >
+        {% render 'icon', name: 'close', size: 20 %}
+      </button>
+
+      <h2>{{ settings.newsletter_popup_heading | default: 'Get 10% off' }}</h2>
+
+      {%- if settings.newsletter_popup_text != blank -%}
+        <div class="rte text-muted">{{ settings.newsletter_popup_text }}</div>
+      {%- endif -%}
+
+      {% form 'customer', class: 'newsletter-form', style: 'margin-top: 18px;' %}
+        <input type="hidden" name="contact[tags]" value="newsletter,popup">
+        <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+        <label class="visually-hidden" for="PopupEmail">{{ 'general.newsletter.email' | t }}</label>
+        <input
+          class="input"
+          type="email"
+          id="PopupEmail"
+          name="contact[email]"
+          placeholder="{{ 'general.newsletter.email' | t }}"
+          autocomplete="email"
+          required
+        >
+        <button type="submit" class="button">{{ 'general.newsletter.submit' | t }}</button>
+
+        {%- if form.errors -%}
+          <p class="form-status form-status--error">{{ form.errors.messages.form }}</p>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-status form-status--success">{{ 'general.newsletter.success' | t }}</p>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div
+  class="announcement"
+  data-announcement
+  data-interval="{{ section.settings.rotate_speed }}"
+  data-dismissible="{{ section.settings.dismissible }}"
+  style="
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+  "
+>
+  {%- for block in section.blocks -%}
+    <div class="announcement__slide{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}
+        <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+      {%- else -%}
+        {{ block.settings.text }}
+      {%- endif -%}
+
+      {%- if block.settings.countdown_to != blank -%}
+        <span class="countdown" data-countdown="{{ block.settings.countdown_to }}" data-hide-on-end="true" style="margin-inline-start: 8px;">
+          <span class="countdown__unit" data-countdown-days>00</span>:
+          <span class="countdown__unit" data-countdown-hours>00</span>:
+          <span class="countdown__unit" data-countdown-minutes>00</span>:
+          <span class="countdown__unit" data-countdown-seconds>00</span>
+        </span>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+
+  {%- if section.settings.dismissible -%}
+    <button
+      type="button"
+      class="announcement__close"
+      data-announcement-close
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'icon', name: 'close', size: 16 %}
+    </button>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.announcement.name",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "color", "id": "background", "label": "t:general.background", "default": "#1c1c1c" },
+    { "type": "color", "id": "text_color", "label": "t:general.text_color", "default": "#ffffff" },
+    {
+      "type": "range",
+      "id": "rotate_speed",
+      "label": "t:sections.announcement.rotate_speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    { "type": "checkbox", "id": "dismissible", "label": "t:sections.announcement.dismissible", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:sections.announcement.message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "t:general.text", "default": "Free shipping on orders over $200" },
+        { "type": "url", "id": "link", "label": "t:general.link" },
+        {
+          "type": "text",
+          "id": "countdown_to",
+          "label": "t:sections.announcement.countdown_to",
+          "info": "t:sections.announcement.countdown_to_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement.name",
+      "blocks": [{ "type": "message" }]
+    }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

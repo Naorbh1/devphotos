@@ -1,0 +1,38 @@
+<div class="section">
+  <div class="page-width">
+    <div class="inline" style="justify-content: space-between; margin-bottom: 24px;">
+      <h1 style="margin: 0;">{{ 'customer.account.title' | t }}</h1>
+      <a href="{{ routes.account_logout_url }}" class="link-underline">{{ 'customer.account.logout' | t }}</a>
+    </div>
+
+    <h2 class="h3">{{ 'customer.orders.title' | t }}</h2>
+
+    {%- paginate customer.orders by 20 -%}
+      {%- if customer.orders.size > 0 -%}
+        <ul class="cart-items">
+          {%- for order in customer.orders -%}
+            <li class="cart-item" style="grid-template-columns: 1fr auto;">
+              <div>
+                <a href="{{ order.customer_url }}" class="cart-item__title">{{ 'customer.orders.order_number' | t: number: order.name }}</a>
+                <div class="cart-item__variant">
+                  {{ order.created_at | date: format: 'date' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}
+                </div>
+              </div>
+              <strong>{{ order.total_price | money }}</strong>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <p class="text-muted">{{ 'customer.orders.none' | t }}</p>
+      {%- endif -%}
+    {%- endpaginate -%}
+
+    {%- if customer.default_address -%}
+      <h2 class="h3" style="margin-top: 36px;">{{ 'customer.account.address' | t }}</h2>
+      <div class="rte text-muted">{{ customer.default_address | format_address }}</div>
+      <a href="{{ routes.account_addresses_url }}" class="link-underline">{{ 'customer.account.manage_addresses' | t }}</a>
+    {%- endif -%}
+  </div>
+</div>

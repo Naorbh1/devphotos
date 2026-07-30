@@ -1,0 +1,38 @@
+{% comment %}
+  Recently viewed products.
+
+  Handles are stored client-side in localStorage (no customer data leaves the
+  browser) and the grid is filled from a search request, so nothing renders
+  server-side for a first-time visitor.
+{% endcomment %}
+
+{%- if settings.enable_recently_viewed -%}
+  <div class="section" data-recently-viewed-section>
+    <div class="page-width">
+      <div class="section-header">
+        <div class="section-header__text">
+          <h2>{{ section.settings.heading }}</h2>
+        </div>
+      </div>
+
+      <div
+        class="product-grid product-grid--carousel"
+        data-recently-viewed
+        data-section-id="{{ section.id }}"
+        data-exclude-handle="{{ product.handle }}"
+        style="--cols-desktop: {{ section.settings.columns_desktop }};"
+      ></div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.recently_viewed.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:general.heading", "default": "Recently viewed" },
+    { "type": "range", "id": "columns_desktop", "label": "t:general.columns_desktop", "min": 3, "max": 6, "step": 1, "default": 5 }
+  ],
+  "presets": [{ "name": "t:sections.recently_viewed.name" }]
+}
+{% endschema %}

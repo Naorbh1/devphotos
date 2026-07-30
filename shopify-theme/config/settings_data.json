@@ -1,0 +1,105 @@
+{
+  "current": {
+    "style_preset": "modern",
+    "density": "comfortable",
+    "corner_radius": 10,
+    "card_style": "flat",
+    "button_style": "rounded",
+    "page_width": 1320,
+    "grid_gap": 24,
+    "section_spacing": 72,
+    "product_image_ratio": "1/1",
+    "product_image_fit": "cover",
+
+    "color_background": "#ffffff",
+    "color_background_alt": "#f6f6f4",
+    "color_card_background": "#ffffff",
+    "color_text": "#1c1c1c",
+    "color_heading": "#101010",
+    "color_accent": "#1c1c1c",
+    "color_accent_contrast": "#ffffff",
+    "color_sale": "#c0392b",
+    "color_success": "#177245",
+
+    "type_heading_font": "assistant_n4",
+    "heading_scale": 100,
+    "heading_transform": "none",
+    "heading_letter_spacing": -0.01,
+    "type_body_font": "assistant_n4",
+    "body_scale": 100,
+
+    "card_text_align": "start",
+    "card_show_vendor": false,
+    "card_show_rating": true,
+    "card_hover_image": true,
+    "card_show_swatches": true,
+    "badge_sale": true,
+    "badge_sale_percent": true,
+    "badge_sold_out": true,
+    "badge_new": true,
+    "badge_new_days": 30,
+
+    "cart_type": "drawer",
+    "enable_quick_add": true,
+    "enable_sticky_atc": true,
+    "enable_free_shipping_bar": true,
+    "free_shipping_threshold": 200,
+    "enable_stock_counter": true,
+    "stock_counter_threshold": 10,
+    "enable_payment_icons": true,
+    "enable_recently_viewed": true,
+    "recently_viewed_limit": 6,
+    "enable_newsletter_popup": false,
+    "newsletter_popup_delay": 8,
+    "newsletter_popup_exit_intent": true,
+
+    "enable_share_buttons": true,
+    "logo_width": 130
+  },
+  "presets": {
+    "Modern": {
+      "style_preset": "modern",
+      "card_style": "flat",
+      "button_style": "rounded",
+      "corner_radius": 10,
+      "color_accent": "#1c1c1c"
+    },
+    "Minimal": {
+      "style_preset": "minimal",
+      "card_style": "flat",
+      "button_style": "square",
+      "corner_radius": 0,
+      "density": "spacious",
+      "color_accent": "#000000",
+      "color_background_alt": "#fafafa"
+    },
+    "Bold": {
+      "style_preset": "bold",
+      "card_style": "shadow",
+      "button_style": "pill",
+      "corner_radius": 14,
+      "heading_scale": 115,
+      "color_accent": "#0f4c81",
+      "color_accent_contrast": "#ffffff"
+    },
+    "Editorial": {
+      "style_preset": "editorial",
+      "card_style": "flat",
+      "button_style": "square",
+      "corner_radius": 2,
+      "density": "spacious",
+      "product_image_ratio": "3/4",
+      "color_background_alt": "#f2efe9",
+      "color_accent": "#2b2118"
+    },
+    "Playful": {
+      "style_preset": "playful",
+      "card_style": "elevated",
+      "button_style": "pill",
+      "corner_radius": 20,
+      "color_accent": "#e8543f",
+      "color_accent_contrast": "#ffffff",
+      "color_background_alt": "#fff6ef"
+    }
+  }
+}

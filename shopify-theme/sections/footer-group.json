@@ -1,0 +1,30 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu": { "type": "menu", "settings": { "heading": "Shop" } },
+        "text": {
+          "type": "text",
+          "settings": {
+            "heading": "About us",
+            "text": "<p>Tell your story here — who you are and why the products are worth buying.</p>"
+          }
+        },
+        "contact": { "type": "contact", "settings": { "heading": "Contact" } },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Stay in the loop",
+            "text": "<p>New arrivals and subscriber-only offers.</p>"
+          }
+        }
+      },
+      "block_order": ["menu", "text", "contact", "newsletter"],
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

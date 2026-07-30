@@ -1,0 +1,90 @@
+{% comment %}
+  Quick add.
+
+  Single-variant products add straight to the cart in one click. Products with
+  real choices open an inline variant picker first, so nobody ends up with a
+  size they did not pick.
+{% endcomment %}
+
+{%- liquid
+  assign variant_count = product.variants | size
+  assign has_choices = false
+  if variant_count > 1
+    assign has_choices = true
+  endif
+-%}
+
+<div class="quick-add" data-quick-add-root>
+  {%- if has_choices -%}
+    <script type="application/json" data-quick-add-variants>
+      [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "available": {{ variant.available | json }},
+            "options": {{ variant.options | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    </script>
+
+    <div class="quick-add__options" data-quick-add-options>
+      {%- for option in product.options_with_values -%}
+        <div class="variant-option">
+          <span class="variant-option__label">{{ option.name }}</span>
+          <div class="variant-values">
+            {%- for value in option.values -%}
+              {%- assign input_id = 'qa-' | append: product.id | append: '-' | append: forloop.parentloop.index | append: '-' | append: forloop.index -%}
+              <div class="variant-value">
+                <input
+                  type="radio"
+                  id="{{ input_id }}"
+                  name="qa-option{{ forloop.parentloop.index }}-{{ product.id }}"
+                  value="{{ value | escape }}"
+                  data-quick-add-option="{{ forloop.parentloop.index0 }}"
+                  {% if option.selected_value == value %}checked{% endif %}
+                >
+                <label for="{{ input_id }}">{{ value }}</label>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+
+      <button
+        type="button"
+        class="button button--small button--full"
+        data-quick-add
+        data-quick-add-mode="submit"
+      >
+        {{ 'products.product.add_to_cart' | t }}
+      </button>
+
+      <a href="{{ product.url }}" class="link-underline text-center">
+        {{ 'products.product.view_details' | t }}
+      </a>
+    </div>
+
+    <button
+      type="button"
+      class="button quick-add__button"
+      data-quick-add
+      data-quick-add-mode="options"
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-label="{{ 'products.product.choose_options_for' | t: title: product.title }}"
+    >
+      {{ 'products.product.choose_options' | t }}
+    </button>
+  {%- else -%}
+    <button
+      type="button"
+      class="button quick-add__button"
+      data-quick-add
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      aria-label="{{ 'products.product.add_to_cart_for' | t: title: product.title }}"
+    >
+      {{ 'products.product.add_to_cart' | t }}
+    </button>
+  {%- endif -%}
+</div>

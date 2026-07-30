@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_banner": true,
+        "show_description": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "enable_view_switcher": true,
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "columns_mobile": "2"
+      }
+    }
+  },
+  "order": ["main"]
+}

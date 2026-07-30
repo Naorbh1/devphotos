@@ -1,0 +1,43 @@
+<div class="section">
+  <div class="page-width page-width--narrow">
+    <h1>{{ 'customer.login.title' | t }}</h1>
+
+    {% form 'customer_login', class: 'stack' %}
+      {{ form.errors | default_errors }}
+
+      <div class="field">
+        <label class="field__label" for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+        <input class="input" type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+        <input class="input" type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="button">{{ 'customer.login.submit' | t }}</button>
+
+      <div class="inline" style="justify-content: space-between;">
+        <a href="#recover" class="link-underline">{{ 'customer.login.forgot' | t }}</a>
+        <a href="{{ routes.account_register_url }}" class="link-underline">{{ 'customer.register.title' | t }}</a>
+      </div>
+    {% endform %}
+
+    <div id="recover" style="margin-top: 40px;">
+      <h2 class="h3">{{ 'customer.recover.title' | t }}</h2>
+      {% form 'recover_customer_password', class: 'stack' %}
+        {{ form.errors | default_errors }}
+        {%- if form.posted_successfully? -%}
+          <p class="form-status form-status--success">{{ 'customer.recover.success' | t }}</p>
+        {%- endif -%}
+
+        <div class="field">
+          <label class="field__label" for="RecoverEmail">{{ 'customer.login.email' | t }}</label>
+          <input class="input" type="email" id="RecoverEmail" name="email" autocomplete="email" required>
+        </div>
+
+        <button type="submit" class="button button--secondary">{{ 'customer.recover.submit' | t }}</button>
+      {% endform %}
+    </div>
+  </div>
+</div>

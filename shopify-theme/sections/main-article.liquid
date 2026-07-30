@@ -1,0 +1,60 @@
+<article class="section">
+  <div class="page-width page-width--narrow">
+    <span class="label">{{ article.published_at | date: format: 'date' }}</span>
+    <h1>{{ article.title }}</h1>
+
+    {%- if article.image -%}
+      {{
+        article.image
+        | image_url: width: 1600
+        | image_tag: loading: 'eager', widths: '600,900,1200,1600', style: 'border-radius: var(--radius); margin-bottom: 26px;', alt: article.title | escape
+      }}
+    {%- endif -%}
+
+    <div class="rte">{{ article.content }}</div>
+
+    {%- if blog.comments_enabled? -%}
+      <div style="margin-top: 40px;">
+        <h2 class="h3">{{ 'blogs.comments.title' | t: count: article.comments_count }}</h2>
+
+        {%- for comment in article.comments -%}
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--color-border);">
+            <strong>{{ comment.author }}</strong>
+            <div class="rte text-muted">{{ comment.content }}</div>
+          </div>
+        {%- endfor -%}
+
+        {% form 'new_comment', article, class: 'stack', style: 'margin-top: 24px;' %}
+          {%- if form.errors -%}
+            <p class="form-status form-status--error">{{ form.errors.messages.form }}</p>
+          {%- endif -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-status form-status--success">{{ 'blogs.comments.success' | t }}</p>
+          {%- endif -%}
+
+          <div class="field">
+            <label class="field__label" for="CommentAuthor">{{ 'blogs.comments.name' | t }}</label>
+            <input class="input" type="text" id="CommentAuthor" name="comment[author]" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="CommentEmail">{{ 'blogs.comments.email' | t }}</label>
+            <input class="input" type="email" id="CommentEmail" name="comment[email]" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="CommentBody">{{ 'blogs.comments.message' | t }}</label>
+            <textarea class="textarea" id="CommentBody" name="comment[body]" required></textarea>
+          </div>
+
+          <button type="submit" class="button" style="align-self: start;">{{ 'blogs.comments.submit' | t }}</button>
+        {% endform %}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "t:sections.main_article.name",
+  "settings": []
+}
+{% endschema %}

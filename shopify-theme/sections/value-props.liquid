@@ -1,0 +1,79 @@
+<div class="section section--tight{% if section.settings.background == 'alt' %} section--alt{% endif %}">
+  <div class="page-width">
+    <div class="value-props">
+      {%- for block in section.blocks -%}
+        <div class="value-prop" {{ block.shopify_attributes }}>
+          {%- if block.settings.custom_icon -%}
+            {{ block.settings.custom_icon | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}
+          {%- else -%}
+            {% render 'icon', name: block.settings.icon, size: 34 %}
+          {%- endif -%}
+
+          <span class="value-prop__title">{{ block.settings.title }}</span>
+
+          {%- if block.settings.text != blank -%}
+            <span class="value-prop__text">{{ block.settings.text }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.value_props.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "t:general.background",
+      "default": "alt",
+      "options": [
+        { "value": "default", "label": "t:general.background_default" },
+        { "value": "alt", "label": "t:general.background_alt" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:sections.value_props.block",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:sections.value_props.icon",
+          "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "refresh", "label": "Returns" },
+            { "value": "shield", "label": "Warranty" },
+            { "value": "lock", "label": "Secure checkout" },
+            { "value": "support", "label": "Support" },
+            { "value": "star", "label": "Reviews" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "heart", "label": "Loved" },
+            { "value": "clock", "label": "Fast" },
+            { "value": "flame", "label": "Popular" }
+          ]
+        },
+        { "type": "image_picker", "id": "custom_icon", "label": "t:sections.value_props.custom_icon" },
+        { "type": "text", "id": "title", "label": "t:general.heading", "default": "Free shipping" },
+        { "type": "text", "id": "text", "label": "t:general.text", "default": "On all orders over $200" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.value_props.name",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck" } },
+        { "type": "item", "settings": { "icon": "refresh" } },
+        { "type": "item", "settings": { "icon": "lock" } },
+        { "type": "item", "settings": { "icon": "support" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

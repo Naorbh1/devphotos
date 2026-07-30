@@ -1,0 +1,152 @@
+<footer class="footer">
+  <div class="page-width">
+    <div class="footer__grid">
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              <p class="footer__title">{{ block.settings.heading }}</p>
+              <nav class="footer__links">
+                {%- for link in block.settings.menu.links -%}
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                {%- endfor -%}
+              </nav>
+
+            {%- when 'text' -%}
+              <p class="footer__title">{{ block.settings.heading }}</p>
+              <div class="rte text-muted" style="font-size: 0.9rem;">{{ block.settings.text }}</div>
+
+            {%- when 'newsletter' -%}
+              <p class="footer__title">{{ block.settings.heading }}</p>
+              {%- if block.settings.text != blank -%}
+                <div class="rte text-muted" style="font-size: 0.9rem; margin-bottom: 12px;">{{ block.settings.text }}</div>
+              {%- endif -%}
+
+              {% form 'customer', class: 'newsletter-form' %}
+                <input type="hidden" name="contact[tags]" value="newsletter,footer">
+                <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+                <label class="visually-hidden" for="FooterEmail">{{ 'general.newsletter.email' | t }}</label>
+                <input
+                  class="input"
+                  type="email"
+                  id="FooterEmail"
+                  name="contact[email]"
+                  placeholder="{{ 'general.newsletter.email' | t }}"
+                  autocomplete="email"
+                  required
+                >
+                <button type="submit" class="button">{{ 'general.newsletter.submit' | t }}</button>
+
+                {%- if form.errors -%}
+                  <p class="form-status form-status--error">{{ form.errors.messages.form }}</p>
+                {%- endif -%}
+                {%- if form.posted_successfully? -%}
+                  <p class="form-status form-status--success">{{ 'general.newsletter.success' | t }}</p>
+                {%- endif -%}
+              {% endform %}
+
+            {%- when 'contact' -%}
+              <p class="footer__title">{{ block.settings.heading }}</p>
+              <div class="footer__links">
+                {%- if block.settings.phone != blank -%}
+                  <a href="tel:{{ block.settings.phone | remove: ' ' | remove: '-' }}">{{ block.settings.phone }}</a>
+                {%- endif -%}
+                {%- if block.settings.email != blank -%}
+                  <a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
+                {%- endif -%}
+                {%- if block.settings.hours != blank -%}
+                  <span class="text-muted">{{ block.settings.hours }}</span>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.footer.rights' | t }}</span>
+
+      <div class="social-links">
+        {%- if settings.social_instagram_link != blank -%}
+          <a href="{{ settings.social_instagram_link }}" aria-label="Instagram" rel="noopener" target="_blank">
+            {% render 'icon', name: 'instagram', size: 19 %}
+          </a>
+        {%- endif -%}
+        {%- if settings.social_facebook_link != blank -%}
+          <a href="{{ settings.social_facebook_link }}" aria-label="Facebook" rel="noopener" target="_blank">
+            {% render 'icon', name: 'facebook', size: 19 %}
+          </a>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <a href="{{ settings.social_tiktok_link }}" aria-label="TikTok" rel="noopener" target="_blank">
+            {% render 'icon', name: 'tiktok', size: 19 %}
+          </a>
+        {%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}
+          <a href="{{ settings.social_youtube_link }}" aria-label="YouTube" rel="noopener" target="_blank">
+            {% render 'icon', name: 'youtube', size: 19 %}
+          </a>
+        {%- endif -%}
+        {%- if settings.social_whatsapp_link != blank -%}
+          <a href="{{ settings.social_whatsapp_link }}" aria-label="WhatsApp" rel="noopener" target="_blank">
+            {% render 'icon', name: 'whatsapp', size: 19 %}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if settings.enable_payment_icons -%}
+        <div class="payment-icons">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:sections.footer.menu_block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:general.heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "t:sections.footer.menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.footer.text_block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:general.heading", "default": "About us" },
+        { "type": "richtext", "id": "text", "label": "t:general.text" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "t:sections.footer.newsletter_block",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:general.heading", "default": "Stay in the loop" },
+        { "type": "richtext", "id": "text", "label": "t:general.text" }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "t:sections.footer.contact_block",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:general.heading", "default": "Contact" },
+        { "type": "text", "id": "phone", "label": "t:sections.footer.phone" },
+        { "type": "text", "id": "email", "label": "t:sections.footer.email" },
+        { "type": "text", "id": "hours", "label": "t:sections.footer.hours" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

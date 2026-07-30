@@ -1,0 +1,40 @@
+<div data-predictive-results>
+  {%- if predictive_search.performed -%}
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <p class="label" style="padding: 8px;">{{ 'general.search.products' | t }}</p>
+      {%- for product in predictive_search.resources.products -%}
+        <a href="{{ product.url }}" class="predictive-item">
+          <span class="media" style="--media-ratio: 1/1; border-radius: var(--radius-sm);">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+            {%- endif -%}
+          </span>
+          <span>
+            <span style="display: block; font-weight: 500;">{{ product.title }}</span>
+            <span class="text-muted" style="font-size: 0.84rem;">{{ product.price | money }}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      <p class="label" style="padding: 8px;">{{ 'general.search.collections' | t }}</p>
+      {%- for collection in predictive_search.resources.collections -%}
+        <a href="{{ collection.url }}" class="predictive-item" style="grid-template-columns: 1fr;">
+          {{ collection.title }}
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if predictive_search.resources.products.size == 0 and predictive_search.resources.collections.size == 0 -%}
+      <p class="text-muted" style="padding: 12px;">{{ 'general.search.no_results' | t }}</p>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Predictive search",
+  "settings": []
+}
+{% endschema %}

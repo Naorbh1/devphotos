@@ -1,0 +1,114 @@
+{% comment %}
+  Product card.
+
+  Accepts:
+  - product        {Object}  required
+  - show_quick_add {Boolean} defaults to the theme setting
+  - image_ratio    {String}  overrides settings.product_image_ratio
+  - lazy           {Boolean} defaults true; pass false for above-the-fold cards
+{% endcomment %}
+
+{%- liquid
+  assign show_quick_add = show_quick_add | default: settings.enable_quick_add, allow_false: true
+  assign ratio = image_ratio | default: settings.product_image_ratio
+  assign loading = 'lazy'
+  if lazy == false
+    assign loading = 'eager'
+  endif
+
+  assign on_sale = false
+  if product.compare_at_price > product.price and product.available
+    assign on_sale = true
+  endif
+
+  assign is_new = false
+  if settings.badge_new
+    assign new_cutoff = settings.badge_new_days | times: 86400
+    assign age = 'now' | date: '%s' | minus: product.published_at | date: '%s'
+    if age < new_cutoff
+      assign is_new = true
+    endif
+  endif
+-%}
+
+<div class="card-product" style="--media-ratio: {{ ratio }}; --media-fit: {{ settings.product_image_fit }};">
+  <div class="card-product__media">
+    <a
+      href="{{ product.url }}"
+      class="media"
+      aria-label="{{ product.title | escape }}"
+      tabindex="-1"
+    >
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 800
+          | image_tag:
+            loading: loading,
+            widths: '200,300,400,500,600,800',
+            sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+            class: 'media__primary',
+            alt: product.featured_media.alt
+        }}
+
+        {%- if settings.card_hover_image and product.media[1] -%}
+          {{
+            product.media[1]
+            | image_url: width: 800
+            | image_tag:
+              loading: 'lazy',
+              widths: '200,300,400,500,600,800',
+              sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw',
+              class: 'media__hover',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'media__primary' }}
+      {%- endif -%}
+    </a>
+
+    <div class="badges">
+      {%- if product.available == false and settings.badge_sold_out -%}
+        <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale and settings.badge_sale -%}
+        <span class="badge badge--sale">
+          {%- if settings.badge_sale_percent -%}
+            {%- assign saved = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+            {{ 'products.product.save_percent' | t: percent: saved }}
+          {%- else -%}
+            {{ 'products.product.on_sale' | t }}
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+
+      {%- if is_new and product.available -%}
+        <span class="badge badge--new">{{ 'products.product.new' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if show_quick_add and product.available -%}
+      {% render 'quick-add', product: product %}
+    {%- endif -%}
+  </div>
+
+  <div class="card-product__info">
+    {%- if settings.card_show_vendor and product.vendor != blank -%}
+      <span class="card-product__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="card-product__title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    {%- if settings.card_show_rating -%}
+      {% render 'rating', product: product %}
+    {%- endif -%}
+
+    {% render 'price', product: product %}
+
+    {%- if settings.card_show_swatches -%}
+      {% render 'card-swatches', product: product %}
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}" style="transform: rotate(180deg);">
+        {% render 'icon', name: 'chevron-right', size: 18 %}
+      </a>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}">{{ part.title }}</a>
+      {%- elsif part.title == hellip -%}
+        <span>{{ part.title }}</span>
+      {%- else -%}
+        <span aria-current="page">{{ part.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+        {% render 'icon', name: 'chevron-right', size: 18 %}
+      </a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

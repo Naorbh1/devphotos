@@ -1,0 +1,67 @@
+{% comment %}
+  Cart upsell.
+
+  Prefers the complementary products a merchant picked in Shopify's Search &
+  Discovery app, and falls back to the frontpage collection so the block still
+  earns its place on a brand-new store. Renders nothing if every candidate is
+  already in the cart.
+{% endcomment %}
+
+{%- liquid
+  assign first_item = cart.items.first
+  assign suggestions = first_item.product.metafields.shopify--discovery--product_recommendation.complementary_products.value
+
+  if suggestions == blank
+    assign suggestions = collections.frontpage.products
+  endif
+-%}
+
+{%- if first_item and suggestions != blank -%}
+  {%- assign rendered = 0 -%}
+
+  {%- capture upsell_items -%}
+    {%- for item in suggestions limit: 8 -%}
+      {%- liquid
+        assign in_cart = false
+        for line in cart.items
+          if line.product_id == item.id
+            assign in_cart = true
+            break
+          endif
+        endfor
+      -%}
+
+      {%- if in_cart == false and item.available and rendered < 2 -%}
+        {%- assign rendered = rendered | plus: 1 -%}
+        <li class="cart-upsell__item">
+          <a href="{{ item.url }}" class="media" style="--media-ratio: 1/1; border-radius: var(--radius-sm);">
+            {%- if item.featured_image -%}
+              {{ item.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: item.title | escape }}
+            {%- endif -%}
+          </a>
+
+          <div>
+            <a href="{{ item.url }}" style="font-weight: 600;">{{ item.title | escape }}</a>
+            <div class="text-muted">{{ item.price | money }}</div>
+          </div>
+
+          <button
+            type="button"
+            class="button button--small button--secondary"
+            data-quick-add
+            data-variant-id="{{ item.selected_or_first_available_variant.id }}"
+          >
+            {{ 'sections.cart.add' | t }}
+          </button>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if rendered > 0 -%}
+    <div class="cart-upsell">
+      <p class="label" style="margin-bottom: 12px;">{{ 'sections.cart.you_may_also_like' | t }}</p>
+      <ul class="stack">{{ upsell_items }}</ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

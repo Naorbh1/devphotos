@@ -1,0 +1,51 @@
+{% comment %}
+  Shopify's own recommendation engine.
+
+  The block loads itself from /recommendations/products through the Section
+  Rendering API, so the product page's first paint never waits on it.
+{% endcomment %}
+
+<div
+  class="section"
+  data-product-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
+>
+  <div class="page-width">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="section-header">
+        <div class="section-header__text">
+          <h2>{{ section.settings.heading }}</h2>
+        </div>
+      </div>
+
+      <div
+        class="product-grid product-grid--carousel"
+        style="--cols-desktop: {{ section.settings.columns_desktop }};"
+      >
+        {%- for item in recommendations.products -%}
+          {% render 'card-product', product: item %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.recommendations.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:general.heading", "default": "You may also like" },
+    { "type": "range", "id": "columns_desktop", "label": "t:general.columns_desktop", "min": 3, "max": 6, "step": 1, "default": 4 },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:sections.featured_collection.products_to_show",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 6
+    }
+  ],
+  "presets": [{ "name": "t:sections.recommendations.name" }]
+}
+{% endschema %}
