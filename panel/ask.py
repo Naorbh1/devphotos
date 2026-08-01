@@ -13,6 +13,9 @@
 
     # שמירת התוצאות הגולמיות לקובץ:
     python panel/ask.py "שאלה כלשהי" --output results.json
+
+    # שאלה פתוחה (מיפוי כאבים/צרכים) במקום שאלת עמדה:
+    python panel/ask.py "מה הכי מעצבן אותך ביומיום?" --open
 """
 import argparse
 import asyncio
@@ -29,6 +32,7 @@ except ImportError:
 
 DEFAULT_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-opus-5")
 STANCES = ["תומך", "מתנגד", "מעורב/תלוי", "לא בטוח"]
+PAY_LEVELS = ["הייתי משלם", "אולי", "לא הייתי משלם"]
 
 OUTPUT_SCHEMA = {
     "type": "object",
@@ -40,9 +44,27 @@ OUTPUT_SCHEMA = {
     "additionalProperties": False,
 }
 
+# מצב שאלה פתוחה: אין עמדה בעד/נגד להצביע עליה, אלא נושא חופשי שהדמות מעלה
+# ואינדיקציה אם היא הייתה משלמת על פתרון. מיועד למיפוי כאבים/צרכים.
+OPEN_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "topic": {"type": "string"},
+        "pay": {"type": "string", "enum": PAY_LEVELS},
+        "answer": {"type": "string"},
+    },
+    "required": ["topic", "pay", "answer"],
+    "additionalProperties": False,
+}
 
-def build_system_prompt(profile: dict) -> str:
-    return (
+OPEN_INSTRUCTIONS = (
+    "\n\nענה/י גם על שני שדות נוספים: `topic` - תווית קצרה של 2-4 מילים לתחום שאת/ה מדבר/ת עליו "
+    "(למשל \"תורים בקופת חולים\" או \"חניה בעיר\"), ו-`pay` - האם היית משלם/ת מכיסך על פתרון טוב לזה."
+)
+
+
+def build_system_prompt(profile: dict, open_mode: bool = False) -> str:
+    prompt = (
         f"את/ה {profile['name']}, בן/בת {profile['age']}, {profile['gender']} שגר/ה ב{profile['region']}.\n"
         f"רקע: {profile['sector']}. נטייה פוליטית: {profile['political_leaning']}. "
         f"עיסוק: {profile['profession']}. מצב משפחתי: {profile['family_status']}.\n"
@@ -52,17 +74,18 @@ def build_system_prompt(profile: dict) -> str:
         "בכנות ובקצרה (2-4 משפטים), בלי להתנצל על העמדה ובלי לנסות לרצות את כולם. "
         "זו לא בהכרח דעתך האמיתית כעוזר AI - את/ה משחק/ת דמות לצורך מחקר."
     )
+    return prompt + OPEN_INSTRUCTIONS if open_mode else prompt
 
 
-async def ask_one(client: "anthropic.AsyncAnthropic", profile: dict, question: str, model: str, sem: asyncio.Semaphore):
+async def ask_one(client: "anthropic.AsyncAnthropic", profile: dict, question: str, model: str, sem: asyncio.Semaphore, open_mode: bool = False):
     async with sem:
         try:
             response = await client.messages.create(
                 model=model,
                 max_tokens=500,
-                system=build_system_prompt(profile),
+                system=build_system_prompt(profile, open_mode),
                 messages=[{"role": "user", "content": question}],
-                output_config={"format": {"type": "json_schema", "schema": OUTPUT_SCHEMA}},
+                output_config={"format": {"type": "json_schema", "schema": OPEN_SCHEMA if open_mode else OUTPUT_SCHEMA}},
             )
             text = next((b.text for b in response.content if b.type == "text"), None)
             if text is None:
@@ -73,10 +96,10 @@ async def ask_one(client: "anthropic.AsyncAnthropic", profile: dict, question: s
             return profile, None, str(exc)
 
 
-async def run_panel(profiles: list[dict], question: str, model: str, concurrency: int):
+async def run_panel(profiles: list[dict], question: str, model: str, concurrency: int, open_mode: bool = False):
     client = anthropic.AsyncAnthropic()
     sem = asyncio.Semaphore(concurrency)
-    tasks = [ask_one(client, p, question, model, sem) for p in profiles]
+    tasks = [ask_one(client, p, question, model, sem, open_mode) for p in profiles]
     results = []
     done = 0
     total = len(tasks)
@@ -101,9 +124,12 @@ def bucket_age(age: int) -> str:
     return "65+"
 
 
-def print_report(question: str, results: list, model: str):
+def print_report(question: str, results: list, model: str, open_mode: bool = False):
     ok = [(p, d) for p, d, e in results if d is not None]
     failed = [(p, e) for p, d, e in results if d is None]
+
+    # במצב פתוח מסווגים לפי נכונות לשלם במקום לפי עמדה בעד/נגד
+    field, categories = ("pay", PAY_LEVELS) if open_mode else ("stance", STANCES)
 
     print("\n" + "=" * 70)
     print(f"שאלה: {question}")
@@ -116,13 +142,22 @@ def print_report(question: str, results: list, model: str):
             print(f"דוגמת שגיאה: {failed[0][1]}")
         return
 
-    overall = Counter(d["stance"] for _, d in ok)
+    overall = Counter(d[field] for _, d in ok)
     print("\n--- התפלגות כללית (חכמת ההמונים) ---")
-    for stance in STANCES:
-        n = overall.get(stance, 0)
+    for category in categories:
+        n = overall.get(category, 0)
         pct = 100 * n / len(ok)
         bar = "█" * int(pct / 2)
-        print(f"  {stance:<14} {n:>4} ({pct:5.1f}%) {bar}")
+        print(f"  {category:<14} {n:>4} ({pct:5.1f}%) {bar}")
+
+    if open_mode:
+        print("\n--- נושאים שעלו (top 20) ---")
+        topics = Counter(d["topic"].strip() for _, d in ok)
+        for topic, n in topics.most_common(20):
+            pay = Counter(d["pay"] for _, d in ok if d["topic"].strip() == topic)
+            parts = ", ".join(f"{c}: {pay[c]}" for c in PAY_LEVELS if pay.get(c))
+            print(f"  {topic:<30} (n={n:>3})  {parts}")
+        print("\n  (תוויות דומות אינן מאוחדות אוטומטית - הריצו עם --output לניתוח מלא)")
 
     def breakdown(key_fn, title):
         print(f"\n--- פילוח לפי {title} ---")
@@ -130,11 +165,11 @@ def print_report(question: str, results: list, model: str):
         totals = Counter()
         for p, d in ok:
             key = key_fn(p)
-            groups[key][d["stance"]] += 1
+            groups[key][d[field]] += 1
             totals[key] += 1
         for key in sorted(groups, key=lambda k: -totals[k]):
             n = totals[key]
-            parts = ", ".join(f"{s}: {groups[key].get(s, 0)}" for s in STANCES if groups[key].get(s, 0))
+            parts = ", ".join(f"{c}: {groups[key].get(c, 0)}" for c in categories if groups[key].get(c, 0))
             print(f"  {key:<20} (n={n:>3})  {parts}")
 
     breakdown(lambda p: p["sector"], "מגזר")
@@ -142,11 +177,11 @@ def print_report(question: str, results: list, model: str):
     breakdown(lambda p: bucket_age(p["age"]), "קבוצת גיל")
 
     print("\n--- ציטוטים מייצגים ---")
-    for stance in STANCES:
-        quotes = [(p, d) for p, d in ok if d["stance"] == stance]
+    for category in categories:
+        quotes = [(p, d) for p, d in ok if d[field] == category]
         if not quotes:
             continue
-        print(f"\n  [{stance}]")
+        print(f"\n  [{category}]")
         import random as _r
         for p, d in _r.Random(1).sample(quotes, k=min(3, len(quotes))):
             print(f"    “{d['answer']}”")
@@ -164,6 +199,8 @@ def main():
     parser.add_argument("--concurrency", type=int, default=20)
     parser.add_argument("--limit", type=int, default=None, help="הגבלת מספר פרופילים (לבדיקה מהירה/זולה)")
     parser.add_argument("--output", default=None, help="שמירת התוצאות הגולמיות לקובץ JSON")
+    parser.add_argument("--open", dest="open_mode", action="store_true",
+                        help="מצב שאלה פתוחה: נושא חופשי + נכונות לשלם, במקום עמדה בעד/נגד")
     args = parser.parse_args()
 
     if not os.environ.get("ANTHROPIC_API_KEY"):
@@ -175,8 +212,8 @@ def main():
         profiles = profiles[: args.limit]
 
     print(f"שולח את השאלה ל-{len(profiles)} פרופילים (concurrency={args.concurrency})...", file=sys.stderr)
-    results = asyncio.run(run_panel(profiles, args.question, args.model, args.concurrency))
-    print_report(args.question, results, args.model)
+    results = asyncio.run(run_panel(profiles, args.question, args.model, args.concurrency, args.open_mode))
+    print_report(args.question, results, args.model, args.open_mode)
 
     if args.output:
         serializable = [
