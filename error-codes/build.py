@@ -15,6 +15,7 @@
     pages/*.html        – דפי נחיתה נפרדים לכל יצרן+מכשיר (תנועה אורגנית)
 """
 
+import datetime
 import json
 import os
 import re
@@ -412,6 +413,113 @@ body { margin:0; background:%(page_bg)s; color:%(fg)s;
 
 
 # --------------------------------------------------------------------------
+# קובצי גילוי: robots.txt, מפת אתר, ו-llms.txt למנועי בינה מלאכותית
+# --------------------------------------------------------------------------
+
+# סורקים של מנועי חיפוש ו-AI. הקבוצה הראשונה היא זו שמביאה ציטוטים והפניות;
+# הקבוצה השנייה משמשת גם לאימון מודלים – אם לא רוצים, מוחקים אותה מהרשימה.
+AI_CITATION_BOTS = [
+    ("OAI-SearchBot", "האינדקס של ChatGPT – זה מה שמאפשר להופיע כמקור בתשובות"),
+    ("ChatGPT-User", "גלישה של ChatGPT בעקבות בקשת משתמש"),
+    ("PerplexityBot", "האינדקס של Perplexity"),
+    ("Perplexity-User", "גלישה של Perplexity בעקבות בקשת משתמש"),
+    ("Claude-SearchBot", "האינדקס של Claude"),
+    ("Claude-User", "גלישה של Claude בעקבות בקשת משתמש"),
+    ("Applebot", "Siri וחיפוש של אפל"),
+    ("Bingbot", "Bing – מזין גם כלי AI שונים"),
+]
+AI_TRAINING_BOTS = [
+    ("GPTBot", "OpenAI – אימון מודלים"),
+    ("ClaudeBot", "Anthropic – אימון מודלים"),
+    ("Google-Extended", "Gemini – שימוש בתוכן וביסוס תשובות"),
+    ("Applebot-Extended", "Apple Intelligence"),
+    ("meta-externalagent", "Meta AI"),
+]
+
+
+def build_discovery(site, devices, brands, codes, notes):
+    base = site["url"].rstrip("/")
+    hub = base + "/error-codes/"
+    today = datetime.date.today().isoformat()
+    prim = primary_brands(brands)
+    pages = [(b, device_by_id(devices, did)) for b in prim for did in b["devices"]]
+
+    # ---- robots.txt ----
+    rb = ["# %s – robots.txt" % site["businessName"],
+          "# נוצר על ידי error-codes/build.py",
+          "",
+          "User-agent: *",
+          "Allow: /",
+          "",
+          "# מנועי חיפוש מבוססי AI – סריקה מותרת כדי שנוכל להופיע כמקור בתשובות"]
+    for ua, why in AI_CITATION_BOTS:
+        rb += ["# %s" % why, "User-agent: %s" % ua, "Allow: /", ""]
+    rb += ["# סורקים שמשמשים גם לאימון מודלים – מחקו את הבלוק אם אינכם מעוניינים"]
+    for ua, why in AI_TRAINING_BOTS:
+        rb += ["# %s" % why, "User-agent: %s" % ua, "Allow: /", ""]
+    rb += ["Sitemap: %s/sitemap.xml" % base, ""]
+    robots = "\n".join(rb)
+
+    # ---- sitemap.xml ----
+    urls = [(base + "/", "1.0"), (hub, "0.9")] + \
+           [(base + "/error-codes/%s-%s/" % (b["id"], d["id"]), "0.8") for b, d in pages]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for url, prio in urls:
+        sm += ["  <url>", "    <loc>%s</loc>" % url, "    <lastmod>%s</lastmod>" % today,
+               "    <changefreq>monthly</changefreq>", "    <priority>%s</priority>" % prio, "  </url>"]
+    sm.append("</urlset>")
+    sitemap = "\n".join(sm) + "\n"
+
+    # ---- llms.txt : מפת תוכן קריאה למודלים ----
+    lt = ["# %s" % site["businessName"],
+          "",
+          "> %s. אנחנו מתחזקים אינדקס פתוח של קודי תקלות במוצרי חשמל ביתיים: "
+          "%d קודים, %d יצרנים, %d סוגי מכשירים – עם המשמעות של כל קוד, מה אפשר לבדוק לבד ומתי נדרש טכנאי."
+          % (site.get("legalName", site["businessName"]),
+             sum(len(v) for fam in codes.values() for v in fam.values()),
+             len([b for b in brands if b.get("family")]),
+             len({d for fam in codes.values() for d in fam})),
+          "",
+          "אזורי שירות: %s." % ", ".join(site.get("areaServed", [])),
+          "טלפון: %s" % site.get("phone", ""),
+          "",
+          "## אינדקס קודי תקלות", ""]
+    for b, d in pages:
+        entries = codes[b["family"]][d["id"]]
+        rest = len(entries) - 6
+        lt.append("- [קודי תקלות %s %s](%s/error-codes/%s-%s/): %s%s."
+                  % (b["name"], d["name"], base, b["id"], d["id"],
+                     ", ".join(e["code"] for e in entries[:6]),
+                     (" ועוד %d קודים" % rest) if rest > 0 else ""))
+    lt += ["", "## אופציונלי", "",
+           "- [כל הקודים כטקסט אחד](%s/llms-full.txt)" % base, ""]
+    llms = "\n".join(lt)
+
+    # ---- llms-full.txt : כל התוכן כטקסט נקי ----
+    lf = ["# אינדקס קודי תקלות – %s" % site["businessName"],
+          "עודכן: %s" % today,
+          "",
+          site["disclaimer"], ""]
+    for b, d in pages:
+        sibs = siblings(brands, b["family"], b["id"])
+        lf.append("## %s %s" % (b["name"], d["name"]))
+        if sibs:
+            lf.append("קודים זהים גם ב: %s." % ", ".join(sibs))
+        if notes.get(b["family"]):
+            lf.append(notes[b["family"]])
+        lf.append("")
+        for e in codes[b["family"]][d["id"]]:
+            alt = (" (מוצג גם כ: %s)" % ", ".join(e["alt"])) if e.get("alt") else ""
+            lf.append("### %s %s – קוד %s%s: %s" % (b["name"], d["name"], e["code"], alt, e["title"]))
+            lf.append(answer_text(e))
+            lf.append("")
+    llms_full = "\n".join(lf)
+
+    return robots, sitemap, llms, llms_full
+
+
+# --------------------------------------------------------------------------
 def main():
     site, devices, brands, codes, notes = load()
     total = sum(len(v) for fam in codes.values() for v in fam.values())
@@ -428,6 +536,12 @@ def main():
     write_text(os.path.join(DIST, "embed-full-lite.html"), widget + "\n\n" + lite_html)
     write_text(os.path.join(DIST, "schema.jsonld"), schema_json + "\n")
     write_text(os.path.join(DIST, "schema-lite.jsonld"), lite_schema + "\n")
+
+    robots, sitemap, llms, llms_full = build_discovery(site, devices, brands, codes, notes)
+    write_text(os.path.join(DIST, "robots.txt"), robots)
+    write_text(os.path.join(DIST, "sitemap.xml"), sitemap)
+    write_text(os.path.join(DIST, "llms.txt"), llms)
+    write_text(os.path.join(DIST, "llms-full.txt"), llms_full)
 
     preview = """<!doctype html>
 <html lang="he" dir="rtl">
@@ -460,7 +574,8 @@ def main():
     print("  יצרנים: %d (מתוכם %d עם טבלת קודים)" % (len(brands), len([b for b in brands if b.get("family")])))
     print("  קודים סה\"כ: %d | שאלות ב-Schema: %d | דפי נחיתה: %d" % (total, faq_count, len(pages)))
     for name in ("embed-widget.html", "embed-seo.html", "embed-seo-lite.html",
-                 "embed-full.html", "embed-full-lite.html", "schema.jsonld"):
+                 "embed-full.html", "embed-full-lite.html", "schema.jsonld",
+                 "robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt"):
         print("  %-22s %6.1f KB" % (name, kb(name)))
     print("  (הגרסה המקוצרת כוללת %d שאלות – עד %d קודים לכל יצרן+מכשיר)" % (lite_count, LITE_LIMIT))
 

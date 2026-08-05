@@ -1,0 +1,61 @@
+# נאור פיקס – robots.txt
+# נוצר על ידי error-codes/build.py
+
+User-agent: *
+Allow: /
+
+# מנועי חיפוש מבוססי AI – סריקה מותרת כדי שנוכל להופיע כמקור בתשובות
+# האינדקס של ChatGPT – זה מה שמאפשר להופיע כמקור בתשובות
+User-agent: OAI-SearchBot
+Allow: /
+
+# גלישה של ChatGPT בעקבות בקשת משתמש
+User-agent: ChatGPT-User
+Allow: /
+
+# האינדקס של Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# גלישה של Perplexity בעקבות בקשת משתמש
+User-agent: Perplexity-User
+Allow: /
+
+# האינדקס של Claude
+User-agent: Claude-SearchBot
+Allow: /
+
+# גלישה של Claude בעקבות בקשת משתמש
+User-agent: Claude-User
+Allow: /
+
+# Siri וחיפוש של אפל
+User-agent: Applebot
+Allow: /
+
+# Bing – מזין גם כלי AI שונים
+User-agent: Bingbot
+Allow: /
+
+# סורקים שמשמשים גם לאימון מודלים – מחקו את הבלוק אם אינכם מעוניינים
+# OpenAI – אימון מודלים
+User-agent: GPTBot
+Allow: /
+
+# Anthropic – אימון מודלים
+User-agent: ClaudeBot
+Allow: /
+
+# Gemini – שימוש בתוכן וביסוס תשובות
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://www.naorfix.co.il/sitemap.xml
