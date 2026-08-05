@@ -1,0 +1,52 @@
+{
+  "devices": [
+    { "id": "washer",     "name": "מכונת כביסה",        "seoName": "מכונות כביסה",   "emoji": "🌀" },
+    { "id": "dryer",      "name": "מייבש כביסה",         "seoName": "מייבשי כביסה",   "emoji": "♨️" },
+    { "id": "dishwasher", "name": "מדיח כלים",           "seoName": "מדיחי כלים",     "emoji": "🍽️" },
+    { "id": "oven",       "name": "תנור אפייה",          "seoName": "תנורי אפייה",    "emoji": "🔥" },
+    { "id": "fridge",     "name": "מקרר",                "seoName": "מקררים",         "emoji": "❄️" },
+    { "id": "microwave",  "name": "מיקרוגל",             "seoName": "מיקרוגלים",      "emoji": "📻" }
+  ],
+
+  "brands": [
+    { "id": "bosch",      "name": "בוש",              "en": "Bosch",       "codesFrom": "bosch" },
+    { "id": "siemens",    "name": "סימנס",            "en": "Siemens",     "codesFrom": "bosch" },
+    { "id": "constructa", "name": "קונסטרוקטה",       "en": "Constructa",  "codesFrom": "bosch" },
+    { "id": "neff",       "name": "נף",               "en": "Neff",        "codesFrom": "bosch" },
+    { "id": "pitsos",     "name": "פיצוס",            "en": "Pitsos",      "codesFrom": "bosch" },
+
+    { "id": "electrolux", "name": "אלקטרולוקס",       "en": "Electrolux",  "codesFrom": "electrolux" },
+    { "id": "aeg",        "name": "AEG",              "en": "AEG",         "codesFrom": "electrolux" },
+    { "id": "zanussi",    "name": "זנוסי",            "en": "Zanussi",     "codesFrom": "electrolux" },
+
+    { "id": "samsung",    "name": "סמסונג",           "en": "Samsung",     "codesFrom": "samsung" },
+    { "id": "lg",         "name": "אל ג'י",           "en": "LG",          "codesFrom": "lg" },
+
+    { "id": "whirlpool",  "name": "וירפול",           "en": "Whirlpool",   "codesFrom": "whirlpool" },
+    { "id": "bauknecht",  "name": "באוקנכט",          "en": "Bauknecht",   "codesFrom": "whirlpool" },
+
+    { "id": "beko",       "name": "בקו",              "en": "Beko",        "codesFrom": "beko" },
+    { "id": "blomberg",   "name": "בלומברג",          "en": "Blomberg",    "codesFrom": "beko" },
+    { "id": "grundig",    "name": "גרונדיג",          "en": "Grundig",     "codesFrom": "beko" },
+
+    { "id": "candy",      "name": "קנדי",             "en": "Candy",       "codesFrom": "candy" },
+    { "id": "hoover",     "name": "הוובר",            "en": "Hoover",      "codesFrom": "candy" },
+
+    { "id": "indesit",    "name": "אינדזיט",          "en": "Indesit",     "codesFrom": "indesit" },
+    { "id": "ariston",    "name": "אריסטון",          "en": "Ariston",     "codesFrom": "indesit" },
+    { "id": "hotpoint",   "name": "הוטפוינט",         "en": "Hotpoint",    "codesFrom": "indesit" },
+
+    { "id": "miele",      "name": "מילה",             "en": "Miele",       "codesFrom": "miele" },
+
+    { "id": "haier",      "name": "האייר",            "en": "Haier",       "codesFrom": "haier" },
+    { "id": "hisense",    "name": "הייסנס",           "en": "Hisense",     "codesFrom": "hisense" },
+    { "id": "midea",      "name": "מידאה",            "en": "Midea",       "codesFrom": "hisense" },
+
+    { "id": "crystal",    "name": "קריסטל",           "en": "Crystal",     "noData": true },
+    { "id": "normande",   "name": "נורמנדה",          "en": "Normande",    "noData": true },
+    { "id": "amcor",      "name": "אמקור",            "en": "Amcor",       "noData": true },
+    { "id": "sauter",     "name": "סאוטר",            "en": "Sauter",      "noData": true },
+    { "id": "general",    "name": "ג'נרל",            "en": "General",     "noData": true },
+    { "id": "other",      "name": "יצרן אחר / לא בטוח", "en": "Other",      "noData": true }
+  ]
+}

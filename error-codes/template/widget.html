@@ -1,0 +1,42 @@
+<div id="nfx-ec" class="nfx-ec" dir="rtl" lang="he">
+  <div class="nfx-card">
+    <header class="nfx-head">
+      <h2>__TITLE__</h2>
+      <p>__SUBTITLE__</p>
+    </header>
+
+    <div class="nfx-body">
+      <form id="nfx-form" class="nfx-form" novalidate>
+        <div class="nfx-field">
+          <label for="nfx-brand">יצרן</label>
+          <select id="nfx-brand" name="brand"></select>
+        </div>
+
+        <div class="nfx-field">
+          <label for="nfx-device">סוג מכשיר</label>
+          <select id="nfx-device" name="device" disabled>
+            <option value="">בחרו קודם יצרן</option>
+          </select>
+        </div>
+
+        <div class="nfx-field nfx-field-code">
+          <label for="nfx-code">קוד השגיאה שבצג</label>
+          <input id="nfx-code" class="nfx-code-input" name="code" type="text"
+                 list="nfx-codes" autocomplete="off" spellcheck="false" placeholder="לדוגמה: E18">
+          <datalist id="nfx-codes"></datalist>
+        </div>
+
+        <button type="submit" class="nfx-btn">בדיקת הקוד</button>
+      </form>
+
+      <div id="nfx-chips" class="nfx-chips">
+        <div class="nfx-chips-title">קודים נפוצים למכשיר שבחרתם – לחיצה תציג הסבר:</div>
+        <div id="nfx-chips-list" class="nfx-chips-list"></div>
+      </div>
+
+      <div id="nfx-result" class="nfx-result" role="status" aria-live="polite"></div>
+
+      <p class="nfx-disclaimer">__DISCLAIMER__</p>
+    </div>
+  </div>
+</div>
