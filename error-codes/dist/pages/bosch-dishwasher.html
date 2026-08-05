@@ -8,251 +8,428 @@
 <link rel="canonical" href="https://www.naorfix.co.il/error-codes/bosch-dishwasher/">
 <style>
 /* ==========================================================================
-   נאור פיקס – מאתר קודי תקלות
-   כל המחלקות מתחילות ב-nfx- כדי לא להתנגש בעיצוב של האתר.
-   כדי לשנות צבעים – ערכו רק את המשתנים ב-.nfx-ec למטה.
+   נאור פיקס · מאתר קודי תקלות
+   כל המחלקות מתחילות ב-nfx- כדי לא להתנגש בעיצוב האתר.
+   ערכת נושא: data-theme="dark" (ברירת מחדל) או data-theme="light".
+   צבעי המותג נשלטים מ-data/site.json.
    ========================================================================== */
 
-.nfx-ec {
-  --nfx-brand: #0d6efd;
-  --nfx-brand-dark: #0a58ca;
-  --nfx-accent: #ff7a18;
-  --nfx-bg: #ffffff;
-  --nfx-bg-soft: #f5f7fa;
-  --nfx-border: #e2e8f0;
-  --nfx-text: #16202e;
-  --nfx-muted: #64748b;
-  --nfx-radius: 16px;
-  --nfx-shadow: 0 10px 30px rgba(16, 32, 56, .08);
-  --nfx-low: #16a34a;
-  --nfx-med: #d97706;
-  --nfx-high: #dc2626;
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap');
 
+.nfx-ec {
+  /* --- צבעי המותג (מוזרקים מ-site.json) --- */
+  --nfx-1: #3b82f6;
+  --nfx-2: #1d4ed8;
+  --nfx-3: #22d3ee;
+  --nfx-grad: linear-gradient(135deg, var(--nfx-1), var(--nfx-3));
+
+  /* --- מצב כהה --- */
+  --nfx-bg: #080d18;
+  --nfx-bg2: #0d1424;
+  --nfx-panel: rgba(255, 255, 255, .038);
+  --nfx-panel-2: rgba(255, 255, 255, .062);
+  --nfx-line: rgba(255, 255, 255, .09);
+  --nfx-line-2: rgba(255, 255, 255, .15);
+  --nfx-fg: #eaf0fb;
+  --nfx-mut: #8fa0bd;
+  --nfx-mut-2: #6b7c99;
+  --nfx-ok: #34d399;
+  --nfx-warn: #fbbf24;
+  --nfx-bad: #fb7185;
+  --nfx-shadow: 0 30px 70px -20px rgba(0, 0, 0, .75);
+  --nfx-r: 22px;
+
+  position: relative;
+  isolation: isolate;
   direction: rtl;
   text-align: right;
   font-family: "Assistant", "Rubik", "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  color: var(--nfx-text);
-  line-height: 1.65;
   font-size: 16px;
-  max-width: 900px;
+  line-height: 1.6;
+  color: var(--nfx-fg);
+  max-width: 980px;
   margin: 0 auto;
-  box-sizing: border-box;
+  padding: 4px;
+  -webkit-font-smoothing: antialiased;
 }
+
+.nfx-ec[data-theme="light"] {
+  --nfx-bg: #f7f9fd;
+  --nfx-bg2: #ffffff;
+  --nfx-panel: rgba(13, 26, 51, .028);
+  --nfx-panel-2: rgba(13, 26, 51, .05);
+  --nfx-line: rgba(13, 26, 51, .1);
+  --nfx-line-2: rgba(13, 26, 51, .18);
+  --nfx-fg: #0e1b2e;
+  --nfx-mut: #5a6b85;
+  --nfx-mut-2: #78889f;
+  --nfx-ok: #059669;
+  --nfx-warn: #b45309;
+  --nfx-bad: #dc2626;
+  --nfx-shadow: 0 24px 60px -24px rgba(13, 26, 51, .3);
+}
+
 .nfx-ec *, .nfx-ec *::before, .nfx-ec *::after { box-sizing: border-box; }
-.nfx-ec p, .nfx-ec ul, .nfx-ec ol, .nfx-ec h2, .nfx-ec h3, .nfx-ec h4 { margin: 0; padding: 0; }
+.nfx-ec p, .nfx-ec ul, .nfx-ec ol, .nfx-ec h2, .nfx-ec h3, .nfx-ec h4, .nfx-ec figure { margin: 0; padding: 0; }
 .nfx-ec ul, .nfx-ec ol { list-style: none; }
+.nfx-ec button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+.nfx-sr {
+  position: absolute !important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
-/* ---------- מסגרת ---------- */
+/* ---------- המעטפת ---------- */
 .nfx-card {
-  background: var(--nfx-bg);
-  border: 1px solid var(--nfx-border);
-  border-radius: var(--nfx-radius);
-  box-shadow: var(--nfx-shadow);
+  position: relative;
   overflow: hidden;
+  border-radius: var(--nfx-r);
+  border: 1px solid var(--nfx-line);
+  background:
+    radial-gradient(120% 90% at 88% -10%, color-mix(in srgb, var(--nfx-1) 32%, transparent) 0%, transparent 58%),
+    radial-gradient(90% 80% at 5% 0%, color-mix(in srgb, var(--nfx-3) 20%, transparent) 0%, transparent 52%),
+    linear-gradient(180deg, var(--nfx-bg2), var(--nfx-bg));
+  box-shadow: var(--nfx-shadow);
 }
-.nfx-head {
-  background: linear-gradient(135deg, var(--nfx-brand), var(--nfx-brand-dark));
-  color: #fff;
-  padding: 22px 24px;
+/* רשת עדינה ברקע – נותנת את התחושה הטכנית */
+.nfx-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--nfx-line) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--nfx-line) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(115% 85% at 78% 0%, #000 0%, transparent 62%);
+          mask-image: radial-gradient(115% 85% at 78% 0%, #000 0%, transparent 62%);
+  opacity: .5;
+  pointer-events: none;
 }
-.nfx-head h2 { font-size: 1.45rem; font-weight: 800; letter-spacing: -.01em; }
-.nfx-head p { margin-top: 6px; font-size: .95rem; opacity: .92; }
-.nfx-body { padding: 22px 24px 24px; }
+.nfx-card > * { position: relative; z-index: 1; }
 
-/* ---------- טופס ---------- */
-.nfx-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 12px;
-  align-items: end;
+/* ---------- כותרת ---------- */
+.nfx-head { padding: 30px 30px 24px; border-bottom: 1px solid var(--nfx-line); }
+.nfx-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78rem; font-weight: 700; letter-spacing: .02em;
+  color: var(--nfx-mut);
+  background: var(--nfx-panel);
+  border: 1px solid var(--nfx-line);
+  border-radius: 999px; padding: 5px 13px 5px 11px;
 }
-.nfx-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.nfx-field label { font-size: .85rem; font-weight: 700; color: var(--nfx-muted); }
-.nfx-ec select, .nfx-ec input[type="text"] {
-  width: 100%;
-  font: inherit;
-  font-size: 1rem;
-  color: var(--nfx-text);
-  background: var(--nfx-bg-soft);
-  border: 1.5px solid var(--nfx-border);
-  border-radius: 12px;
-  padding: 11px 13px;
-  appearance: none;
-  transition: border-color .15s, box-shadow .15s, background .15s;
+.nfx-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--nfx-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-ok) 22%, transparent);
+  animation: nfx-pulse 2.4s ease-in-out infinite;
 }
-.nfx-ec select:focus, .nfx-ec input[type="text"]:focus {
-  outline: none;
-  background: #fff;
-  border-color: var(--nfx-brand);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-brand) 18%, transparent);
-}
-.nfx-ec select:disabled { opacity: .55; cursor: not-allowed; }
-.nfx-ec input::placeholder { color: #a3aec0; }
-.nfx-code-input { text-transform: uppercase; font-weight: 700; letter-spacing: .04em; }
-.nfx-btn {
-  font: inherit;
-  font-weight: 800;
-  font-size: 1rem;
-  color: #fff;
-  background: var(--nfx-accent);
-  border: 0;
-  border-radius: 12px;
-  padding: 12px 22px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform .12s, filter .15s;
-}
-.nfx-btn:hover { filter: brightness(1.06); }
-.nfx-btn:active { transform: translateY(1px); }
+@keyframes nfx-pulse { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
 
-/* ---------- צ'יפים של קודים נפוצים ---------- */
-.nfx-chips { margin-top: 16px; display: none; }
+.nfx-head h2 {
+  margin-top: 14px;
+  font-size: clamp(1.55rem, 3.4vw, 2.15rem);
+  font-weight: 800; line-height: 1.18; letter-spacing: -.02em;
+}
+.nfx-head h2 em {
+  font-style: normal;
+  background: var(--nfx-grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.nfx-head > p { margin-top: 10px; max-width: 62ch; color: var(--nfx-mut); font-size: 1rem; }
+
+.nfx-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.nfx-fact {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .82rem; color: var(--nfx-mut);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 10px; padding: 6px 12px;
+}
+.nfx-fact b { font-size: .95rem; font-weight: 800; color: var(--nfx-fg); }
+
+/* ---------- גוף ---------- */
+.nfx-body { padding: 26px 30px 30px; }
+
+/* ---------- שדות ---------- */
+.nfx-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.55fr); gap: 18px; }
+.nfx-field { min-width: 0; }
+.nfx-lbl {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 9px;
+  font-size: .82rem; font-weight: 700; letter-spacing: .01em; color: var(--nfx-mut);
+}
+/* מספר השלב בתווית – נצבע כשהשלב הושלם */
+.nfx-num {
+  display: grid; place-items: center; flex: none;
+  width: 21px; height: 21px; border-radius: 7px;
+  font-size: .72rem; font-weight: 800;
+  color: var(--nfx-mut-2); background: var(--nfx-panel-2);
+  border: 1px solid var(--nfx-line); transition: .22s;
+}
+.is-done .nfx-num {
+  color: #fff; background: var(--nfx-grad); border-color: transparent;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-1) 16%, transparent);
+}
+.nfx-i { width: 18px; height: 18px; flex: none; }
+
+/* תיבת בחירה מותאמת (יצרן) */
+.nfx-combo { position: relative; }
+.nfx-combo-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 13px 16px;
+  font-size: 1rem; font-weight: 600; text-align: start;
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 14px; transition: .18s;
+}
+.nfx-combo-btn:hover { background: var(--nfx-panel-2); border-color: var(--nfx-line-2); }
+.nfx-combo-btn[aria-expanded="true"] {
+  border-color: color-mix(in srgb, var(--nfx-1) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nfx-1) 14%, transparent);
+}
+.nfx-combo-btn.is-empty .nfx-combo-val { color: var(--nfx-mut-2); font-weight: 500; }
+.nfx-combo-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nfx-combo-val small { color: var(--nfx-mut); font-weight: 600; }
+.nfx-chev { flex: none; width: 16px; height: 16px; opacity: .55; transition: transform .2s; }
+.nfx-combo-btn[aria-expanded="true"] .nfx-chev { transform: rotate(180deg); }
+
+.nfx-pop {
+  position: absolute; z-index: 40; inset-inline: 0; top: calc(100% + 8px);
+  background: var(--nfx-bg2);
+  border: 1px solid var(--nfx-line-2);
+  border-radius: 16px;
+  box-shadow: 0 26px 50px -16px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  animation: nfx-pop .16s ease-out;
+}
+@keyframes nfx-pop { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+.nfx-pop[hidden] { display: none; }
+.nfx-pop-search { padding: 10px; border-bottom: 1px solid var(--nfx-line); }
+.nfx-pop-search input {
+  width: 100%; font: inherit; font-size: .95rem; color: var(--nfx-fg);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 10px; padding: 9px 12px; outline: none;
+}
+.nfx-pop-search input::placeholder { color: var(--nfx-mut-2); }
+.nfx-pop-search input:focus { border-color: color-mix(in srgb, var(--nfx-1) 55%, transparent); }
+.nfx-opts { max-height: 274px; overflow-y: auto; padding: 6px; }
+.nfx-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 9px 12px; border-radius: 10px;
+  font-size: .96rem; font-weight: 600; text-align: start; transition: background .12s;
+}
+.nfx-opt small { color: var(--nfx-mut-2); font-weight: 600; font-size: .8rem; }
+.nfx-opt:hover, .nfx-opt.act { background: var(--nfx-panel-2); }
+.nfx-opt[aria-selected="true"] { color: color-mix(in srgb, var(--nfx-1) 75%, var(--nfx-fg)); }
+.nfx-opt-none { padding: 16px 12px; color: var(--nfx-mut-2); font-size: .92rem; text-align: center; }
+
+/* בחירת סוג מכשיר */
+.nfx-devs { display: flex; flex-wrap: wrap; gap: 8px; }
+.nfx-dev {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 15px; border-radius: 13px;
+  font-size: .93rem; font-weight: 700;
+  color: var(--nfx-mut);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  transition: .18s;
+}
+.nfx-dev .nfx-i { width: 19px; height: 19px; opacity: .85; }
+.nfx-dev:hover:not(.on) { color: var(--nfx-fg); border-color: var(--nfx-line-2); transform: translateY(-1px); }
+.nfx-dev.on {
+  color: #fff; border-color: transparent;
+  background: var(--nfx-grad);
+  box-shadow: 0 8px 22px -8px color-mix(in srgb, var(--nfx-1) 85%, transparent);
+}
+.nfx-devs-empty { font-size: .92rem; color: var(--nfx-mut-2); padding: 12px 2px; }
+
+/* שדה הקוד */
+.nfx-search { margin-top: 18px; }
+.nfx-search-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 16px; padding: 7px 7px 7px 7px;
+  transition: .18s;
+}
+.nfx-search-row:focus-within {
+  border-color: color-mix(in srgb, var(--nfx-1) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nfx-1) 13%, transparent);
+}
+.nfx-search-ico { flex: none; width: 20px; height: 20px; margin-inline-start: 12px; opacity: .5; }
+.nfx-ec input.nfx-code {
+  flex: 1 1 auto; min-width: 0;
+  font: inherit; font-size: 1.12rem; font-weight: 800; letter-spacing: .07em;
+  color: var(--nfx-fg); background: none; border: 0; outline: none;
+  padding: 10px 0; text-transform: uppercase;
+}
+.nfx-ec input.nfx-code::placeholder {
+  color: var(--nfx-mut-2); font-weight: 500; letter-spacing: normal; text-transform: none;
+}
+.nfx-go {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: 12px;
+  font-size: 1rem; font-weight: 800; color: #fff;
+  background: var(--nfx-grad);
+  box-shadow: 0 10px 26px -10px color-mix(in srgb, var(--nfx-1) 90%, transparent);
+  transition: .16s;
+}
+.nfx-go:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.nfx-go:active { transform: translateY(1px); }
+
+/* צ'יפים של קודים נפוצים */
+.nfx-chips { margin-top: 14px; display: none; }
 .nfx-chips.is-on { display: block; }
-.nfx-chips-title { font-size: .85rem; font-weight: 700; color: var(--nfx-muted); margin-bottom: 8px; }
-.nfx-chips-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.nfx-chips-t { font-size: .8rem; color: var(--nfx-mut-2); margin-bottom: 9px; font-weight: 600; }
+.nfx-chips-l { display: flex; flex-wrap: wrap; gap: 7px; }
 .nfx-chip {
-  font: inherit;
-  font-size: .85rem;
-  font-weight: 700;
-  color: var(--nfx-brand-dark);
-  background: color-mix(in srgb, var(--nfx-brand) 9%, #fff);
-  border: 1.5px solid color-mix(in srgb, var(--nfx-brand) 25%, #fff);
-  border-radius: 999px;
-  padding: 5px 13px;
-  cursor: pointer;
-  transition: background .15s, border-color .15s;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .85rem; font-weight: 700; letter-spacing: .04em; direction: ltr;
+  color: color-mix(in srgb, var(--nfx-fg) 82%, transparent);
+  background: var(--nfx-panel-2); border: 1px solid var(--nfx-line-2);
+  border-radius: 10px; padding: 7px 13px; transition: .16s;
 }
-.nfx-chip:hover { background: color-mix(in srgb, var(--nfx-brand) 18%, #fff); }
+.nfx-chip:hover {
+  color: var(--nfx-fg); border-color: color-mix(in srgb, var(--nfx-1) 55%, transparent);
+  background: color-mix(in srgb, var(--nfx-1) 12%, transparent);
+}
 
 /* ---------- תוצאה ---------- */
 .nfx-result:empty { display: none; }
-.nfx-result { margin-top: 18px; }
+.nfx-result { margin-top: 22px; }
 .nfx-res {
-  border: 1px solid var(--nfx-border);
-  border-radius: 14px;
-  overflow: hidden;
-  animation: nfx-in .22s ease-out;
+  border: 1px solid var(--nfx-line-2);
+  border-radius: 18px; overflow: hidden;
+  background: var(--nfx-panel);
+  animation: nfx-rise .3s cubic-bezier(.2, .7, .3, 1);
 }
-@keyframes nfx-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.nfx-res-head {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 14px 16px;
-  background: var(--nfx-bg-soft);
-  border-bottom: 1px solid var(--nfx-border);
+@keyframes nfx-rise { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+.nfx-res-top {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 16px 18px;
+  background: linear-gradient(180deg, var(--nfx-panel-2), transparent);
+  border-bottom: 1px solid var(--nfx-line);
 }
-.nfx-res-code {
+.nfx-code-badge {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem; font-weight: 800; letter-spacing: .06em;
-  color: #fff; background: var(--nfx-brand-dark);
-  border-radius: 9px; padding: 4px 12px; direction: ltr;
+  font-size: 1.15rem; font-weight: 800; letter-spacing: .08em; direction: ltr;
+  color: #fff; background: var(--nfx-grad);
+  border-radius: 11px; padding: 7px 15px;
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--nfx-1) 90%, transparent);
 }
-.nfx-res-title { font-size: 1.08rem; font-weight: 800; flex: 1 1 220px; }
-.nfx-badge {
-  font-size: .78rem; font-weight: 800; border-radius: 999px;
-  padding: 3px 11px; color: #fff; white-space: nowrap;
+.nfx-res-h { flex: 1 1 240px; min-width: 0; }
+.nfx-res-h h3 { font-size: 1.14rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.35; }
+.nfx-res-h p { font-size: .82rem; color: var(--nfx-mut-2); margin-top: 2px; }
+.nfx-sev {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: .8rem; font-weight: 800; white-space: nowrap;
+  border-radius: 999px; padding: 6px 13px;
+  border: 1px solid currentColor;
 }
-.nfx-badge.low  { background: var(--nfx-low); }
-.nfx-badge.med  { background: var(--nfx-med); }
-.nfx-badge.high { background: var(--nfx-high); }
-.nfx-res-body { padding: 16px; display: grid; gap: 14px; }
-.nfx-sec h4 { font-size: .9rem; font-weight: 800; color: var(--nfx-muted); margin-bottom: 5px; }
-.nfx-sec p { font-size: .98rem; }
-.nfx-sec ul li { position: relative; padding-inline-start: 20px; margin-bottom: 4px; font-size: .96rem; }
-.nfx-sec ul li::before {
-  content: ""; position: absolute; inset-inline-start: 6px; top: .62em;
-  width: 6px; height: 6px; border-radius: 50%; background: var(--nfx-brand);
+.nfx-sev i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.nfx-sev.low { color: var(--nfx-ok); background: color-mix(in srgb, var(--nfx-ok) 12%, transparent); }
+.nfx-sev.med { color: var(--nfx-warn); background: color-mix(in srgb, var(--nfx-warn) 12%, transparent); }
+.nfx-sev.high { color: var(--nfx-bad); background: color-mix(in srgb, var(--nfx-bad) 12%, transparent); }
+
+.nfx-res-body { padding: 18px; display: grid; gap: 16px; }
+.nfx-lead { font-size: 1.02rem; }
+.nfx-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.nfx-box { background: var(--nfx-panel); border: 1px solid var(--nfx-line); border-radius: 14px; padding: 14px 16px; }
+.nfx-box h4 {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .84rem; font-weight: 800; color: var(--nfx-mut); margin-bottom: 10px;
 }
-.nfx-sec ol { counter-reset: nfx; }
-.nfx-sec ol li { position: relative; padding-inline-start: 28px; margin-bottom: 6px; font-size: .96rem; counter-increment: nfx; }
-.nfx-sec ol li::before {
+.nfx-box h4 .nfx-i { width: 17px; height: 17px; color: color-mix(in srgb, var(--nfx-1) 70%, var(--nfx-fg)); }
+.nfx-box li { font-size: .95rem; margin-bottom: 6px; position: relative; padding-inline-start: 22px; }
+.nfx-box li:last-child { margin-bottom: 0; }
+.nfx-box ul li::before {
+  content: ""; position: absolute; inset-inline-start: 7px; top: .6em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--nfx-mut-2);
+}
+.nfx-box ol { counter-reset: nfx; }
+.nfx-box ol li { counter-increment: nfx; }
+.nfx-box ol li::before {
   content: counter(nfx);
-  position: absolute; inset-inline-start: 0; top: .18em;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--nfx-brand); color: #fff;
-  font-size: .74rem; font-weight: 800; line-height: 20px; text-align: center;
+  position: absolute; inset-inline-start: 0; top: .2em;
+  width: 18px; height: 18px; border-radius: 6px;
+  background: color-mix(in srgb, var(--nfx-1) 22%, transparent);
+  color: color-mix(in srgb, var(--nfx-1) 70%, var(--nfx-fg));
+  font-size: .72rem; font-weight: 800; line-height: 18px; text-align: center;
 }
 .nfx-pro {
-  background: color-mix(in srgb, var(--nfx-accent) 8%, #fff);
-  border-inline-start: 4px solid var(--nfx-accent);
-  border-radius: 10px; padding: 11px 14px; font-size: .96rem;
+  display: flex; gap: 12px; align-items: flex-start;
+  background: color-mix(in srgb, var(--nfx-3) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--nfx-3) 32%, transparent);
+  border-radius: 14px; padding: 13px 16px; font-size: .96rem;
 }
-.nfx-note { font-size: .85rem; color: var(--nfx-muted); }
+.nfx-pro b { font-weight: 800; }
+.nfx-pro .nfx-i { width: 19px; height: 19px; margin-top: 3px; color: var(--nfx-3); }
+.nfx-cta .nfx-i { width: 17px; height: 17px; }
+.nfx-note { font-size: .82rem; color: var(--nfx-mut-2); }
 
-/* ---------- לא נמצא / הודעות ---------- */
+/* ---------- הודעות ---------- */
 .nfx-msg {
-  border: 1px dashed var(--nfx-border);
-  background: var(--nfx-bg-soft);
-  border-radius: 14px; padding: 16px;
+  border: 1px dashed var(--nfx-line-2); border-radius: 18px;
+  padding: 20px; background: var(--nfx-panel);
+  animation: nfx-rise .3s cubic-bezier(.2, .7, .3, 1);
 }
-.nfx-msg h4 { font-size: 1.02rem; font-weight: 800; margin-bottom: 6px; }
-.nfx-msg p { font-size: .95rem; color: var(--nfx-muted); }
-.nfx-sugg { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.nfx-msg h4 { font-size: 1.06rem; font-weight: 800; margin-bottom: 6px; }
+.nfx-msg > p { font-size: .96rem; color: var(--nfx-mut); }
+.nfx-sugg { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.nfx-sugg .nfx-chip { font-family: inherit; letter-spacing: normal; direction: rtl; }
 
 /* ---------- קריאה לפעולה ---------- */
 .nfx-cta {
-  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-  margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--nfx-border);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--nfx-line);
 }
-.nfx-cta-text { font-size: .95rem; font-weight: 700; flex: 1 1 200px; }
+.nfx-cta-t { flex: 1 1 210px; font-size: .96rem; font-weight: 700; }
 .nfx-cta a {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 8px;
   font-size: .95rem; font-weight: 800; text-decoration: none;
-  border-radius: 11px; padding: 10px 18px; white-space: nowrap;
+  border-radius: 12px; padding: 11px 20px; transition: .16s;
 }
-.nfx-call { background: var(--nfx-brand); color: #fff !important; }
-.nfx-wa { background: #25d366; color: #fff !important; }
-.nfx-cta a:hover { filter: brightness(1.06); }
+.nfx-cta a:hover { transform: translateY(-1px); filter: brightness(1.07); }
+.nfx-tel { background: var(--nfx-grad); color: #fff !important; box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--nfx-1) 90%, transparent); }
+.nfx-wa { background: #25d366; color: #04331a !important; }
 
-.nfx-disclaimer {
-  margin-top: 16px; font-size: .78rem; color: var(--nfx-muted);
-  background: var(--nfx-bg-soft); border-radius: 10px; padding: 10px 13px;
+.nfx-legal {
+  margin-top: 20px; padding: 13px 16px;
+  font-size: .78rem; line-height: 1.55; color: var(--nfx-mut-2);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line); border-radius: 13px;
 }
 
 /* ---------- מובייל ---------- */
-@media (max-width: 720px) {
-  .nfx-form { grid-template-columns: 1fr 1fr; }
-  .nfx-field-code { grid-column: 1 / -1; }
-  .nfx-btn { grid-column: 1 / -1; width: 100%; padding: 13px; }
-  .nfx-head { padding: 18px; }
-  .nfx-head h2 { font-size: 1.25rem; }
-  .nfx-body { padding: 18px; }
+@media (max-width: 780px) {
+  .nfx-ec { font-size: 15.5px; }
+  .nfx-head { padding: 24px 20px 20px; }
+  .nfx-body { padding: 22px 20px 24px; }
+  .nfx-grid { grid-template-columns: 1fr; gap: 18px; }
+  .nfx-cols { grid-template-columns: 1fr; }
+  .nfx-search-row { flex-wrap: wrap; }
+  .nfx-ec input.nfx-code { flex-basis: 100%; padding-inline: 12px; }
+  .nfx-search-ico { display: none; }
+  .nfx-go { width: 100%; justify-content: center; }
 }
 
-/* ---------- אינדקס ה-SEO (נפתח בלחיצה) ---------- */
-.nfx-seo { max-width: 900px; margin: 28px auto 0; font-family: inherit; direction: rtl; text-align: right; }
-.nfx-seo h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; color: var(--nfx-text, #16202e); }
-.nfx-seo > p { font-size: .9rem; color: #64748b; margin-bottom: 14px; }
-.nfx-seo details {
-  border: 1px solid #e2e8f0; border-radius: 12px;
-  margin-bottom: 8px; background: #fff; overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .nfx-ec *, .nfx-ec *::before { animation: none !important; transition: none !important; }
 }
-.nfx-seo summary {
-  cursor: pointer; padding: 12px 16px; font-weight: 700; font-size: .98rem;
-  list-style: none; display: flex; justify-content: space-between; gap: 10px;
-}
-.nfx-seo summary::-webkit-details-marker { display: none; }
-.nfx-seo summary::after { content: "+"; color: #64748b; font-weight: 800; }
-.nfx-seo details[open] summary::after { content: "−"; }
-.nfx-seo details[open] summary { border-bottom: 1px solid #e2e8f0; }
-.nfx-seo-inner { padding: 14px 16px; display: grid; gap: 16px; }
-.nfx-seo-item h3 { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
-.nfx-seo-item p { font-size: .93rem; margin-bottom: 4px; }
-.nfx-seo-item ul { margin: 0 0 4px; padding-inline-start: 18px; list-style: disc; font-size: .9rem; color: #475569; }
 
-body { margin:0; background:#f0f3f8; font-family:"Assistant","Rubik","Heebo",Arial,sans-serif; color:#16202e; }
-.pg { max-width:900px; margin:0 auto; padding:28px 16px 60px; }
-.pg h1 { font-size:1.7rem; line-height:1.3; margin:0 0 10px; }
-.pg .lede { color:#475569; margin:0 0 22px; }
-.pg h2 { font-size:1.25rem; margin:32px 0 10px; }
-.pg table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 6px 18px rgba(16,32,56,.07); }
-.pg th, .pg td { padding:10px 12px; text-align:right; border-bottom:1px solid #e2e8f0; font-size:.94rem; vertical-align:top; }
-.pg th { background:#eef2f7; font-weight:800; }
-.pg td.c { font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; direction:ltr; white-space:nowrap; }
-.pg-item { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:12px; }
-.pg-item h3 { font-size:1.05rem; margin:0 0 6px; }
-.pg-item h4 { font-size:.88rem; color:#64748b; margin:12px 0 4px; }
-.pg-item ul, .pg-item ol { margin:0; padding-inline-start:20px; font-size:.95rem; }
-.pg-cta { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-top:24px; }
+body { margin:0; background:#070c16; color:#eaf0fb;
+  font-family:"Assistant","Rubik","Heebo",-apple-system,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+.pg { max-width:980px; margin:0 auto; padding:36px 16px 70px; }
+.pg h1 { font-size:clamp(1.5rem,3.6vw,2.1rem); line-height:1.25; letter-spacing:-.02em; margin:0 0 10px; }
+.pg .lede { color:#8fa0bd; margin:0 0 26px; max-width:70ch; }
+.pg h2 { font-size:1.3rem; letter-spacing:-.01em; margin:38px 0 12px; }
+.pg-wrap { overflow-x:auto; border-radius:16px; border:1px solid rgba(255,255,255,.09); }
+.pg table { width:100%; border-collapse:collapse; background:rgba(255,255,255,.04); font-size:.94rem; }
+.pg th, .pg td { padding:12px 14px; text-align:right; border-bottom:1px solid rgba(255,255,255,.09); vertical-align:top; }
+.pg tr:last-child td { border-bottom:0; }
+.pg th { background:rgba(255,255,255,.07); font-weight:800; }
+.pg td.c { font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; direction:ltr; white-space:nowrap; color:#3b82f6; }
+.pg-item { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+.pg-item h3 { font-size:1.06rem; margin:0 0 6px; letter-spacing:-.01em; }
+.pg-item h4 { font-size:.85rem; color:#8fa0bd; margin:14px 0 5px; }
+.pg-item p { margin:0; }
+.pg-item ul, .pg-item ol { margin:0; padding-inline-start:20px; font-size:.95rem; color:#8fa0bd; }
+.pg-cta { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:18px; padding:22px; margin-top:28px; }
+.pg-cta a { display:inline-block; margin-top:6px; padding:11px 22px; border-radius:12px; text-decoration:none;
+  font-weight:800; color:#fff; background:#3b82f6; }
 </style>
 </head>
 <body>
@@ -263,278 +440,488 @@ body { margin:0; background:#f0f3f8; font-family:"Assistant","Rubik","Heebo",Ari
 <!-- נאור פיקס · מאתר קודי תקלות · נוצר על ידי error-codes/build.py – אין לערוך ידנית -->
 <style>
 /* ==========================================================================
-   נאור פיקס – מאתר קודי תקלות
-   כל המחלקות מתחילות ב-nfx- כדי לא להתנגש בעיצוב של האתר.
-   כדי לשנות צבעים – ערכו רק את המשתנים ב-.nfx-ec למטה.
+   נאור פיקס · מאתר קודי תקלות
+   כל המחלקות מתחילות ב-nfx- כדי לא להתנגש בעיצוב האתר.
+   ערכת נושא: data-theme="dark" (ברירת מחדל) או data-theme="light".
+   צבעי המותג נשלטים מ-data/site.json.
    ========================================================================== */
 
-.nfx-ec {
-  --nfx-brand: #0d6efd;
-  --nfx-brand-dark: #0a58ca;
-  --nfx-accent: #ff7a18;
-  --nfx-bg: #ffffff;
-  --nfx-bg-soft: #f5f7fa;
-  --nfx-border: #e2e8f0;
-  --nfx-text: #16202e;
-  --nfx-muted: #64748b;
-  --nfx-radius: 16px;
-  --nfx-shadow: 0 10px 30px rgba(16, 32, 56, .08);
-  --nfx-low: #16a34a;
-  --nfx-med: #d97706;
-  --nfx-high: #dc2626;
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap');
 
+.nfx-ec {
+  /* --- צבעי המותג (מוזרקים מ-site.json) --- */
+  --nfx-1: #3b82f6;
+  --nfx-2: #1d4ed8;
+  --nfx-3: #22d3ee;
+  --nfx-grad: linear-gradient(135deg, var(--nfx-1), var(--nfx-3));
+
+  /* --- מצב כהה --- */
+  --nfx-bg: #080d18;
+  --nfx-bg2: #0d1424;
+  --nfx-panel: rgba(255, 255, 255, .038);
+  --nfx-panel-2: rgba(255, 255, 255, .062);
+  --nfx-line: rgba(255, 255, 255, .09);
+  --nfx-line-2: rgba(255, 255, 255, .15);
+  --nfx-fg: #eaf0fb;
+  --nfx-mut: #8fa0bd;
+  --nfx-mut-2: #6b7c99;
+  --nfx-ok: #34d399;
+  --nfx-warn: #fbbf24;
+  --nfx-bad: #fb7185;
+  --nfx-shadow: 0 30px 70px -20px rgba(0, 0, 0, .75);
+  --nfx-r: 22px;
+
+  position: relative;
+  isolation: isolate;
   direction: rtl;
   text-align: right;
   font-family: "Assistant", "Rubik", "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  color: var(--nfx-text);
-  line-height: 1.65;
   font-size: 16px;
-  max-width: 900px;
+  line-height: 1.6;
+  color: var(--nfx-fg);
+  max-width: 980px;
   margin: 0 auto;
-  box-sizing: border-box;
+  padding: 4px;
+  -webkit-font-smoothing: antialiased;
 }
+
+.nfx-ec[data-theme="light"] {
+  --nfx-bg: #f7f9fd;
+  --nfx-bg2: #ffffff;
+  --nfx-panel: rgba(13, 26, 51, .028);
+  --nfx-panel-2: rgba(13, 26, 51, .05);
+  --nfx-line: rgba(13, 26, 51, .1);
+  --nfx-line-2: rgba(13, 26, 51, .18);
+  --nfx-fg: #0e1b2e;
+  --nfx-mut: #5a6b85;
+  --nfx-mut-2: #78889f;
+  --nfx-ok: #059669;
+  --nfx-warn: #b45309;
+  --nfx-bad: #dc2626;
+  --nfx-shadow: 0 24px 60px -24px rgba(13, 26, 51, .3);
+}
+
 .nfx-ec *, .nfx-ec *::before, .nfx-ec *::after { box-sizing: border-box; }
-.nfx-ec p, .nfx-ec ul, .nfx-ec ol, .nfx-ec h2, .nfx-ec h3, .nfx-ec h4 { margin: 0; padding: 0; }
+.nfx-ec p, .nfx-ec ul, .nfx-ec ol, .nfx-ec h2, .nfx-ec h3, .nfx-ec h4, .nfx-ec figure { margin: 0; padding: 0; }
 .nfx-ec ul, .nfx-ec ol { list-style: none; }
+.nfx-ec button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+.nfx-sr {
+  position: absolute !important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
-/* ---------- מסגרת ---------- */
+/* ---------- המעטפת ---------- */
 .nfx-card {
-  background: var(--nfx-bg);
-  border: 1px solid var(--nfx-border);
-  border-radius: var(--nfx-radius);
-  box-shadow: var(--nfx-shadow);
+  position: relative;
   overflow: hidden;
+  border-radius: var(--nfx-r);
+  border: 1px solid var(--nfx-line);
+  background:
+    radial-gradient(120% 90% at 88% -10%, color-mix(in srgb, var(--nfx-1) 32%, transparent) 0%, transparent 58%),
+    radial-gradient(90% 80% at 5% 0%, color-mix(in srgb, var(--nfx-3) 20%, transparent) 0%, transparent 52%),
+    linear-gradient(180deg, var(--nfx-bg2), var(--nfx-bg));
+  box-shadow: var(--nfx-shadow);
 }
-.nfx-head {
-  background: linear-gradient(135deg, var(--nfx-brand), var(--nfx-brand-dark));
-  color: #fff;
-  padding: 22px 24px;
+/* רשת עדינה ברקע – נותנת את התחושה הטכנית */
+.nfx-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--nfx-line) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--nfx-line) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(115% 85% at 78% 0%, #000 0%, transparent 62%);
+          mask-image: radial-gradient(115% 85% at 78% 0%, #000 0%, transparent 62%);
+  opacity: .5;
+  pointer-events: none;
 }
-.nfx-head h2 { font-size: 1.45rem; font-weight: 800; letter-spacing: -.01em; }
-.nfx-head p { margin-top: 6px; font-size: .95rem; opacity: .92; }
-.nfx-body { padding: 22px 24px 24px; }
+.nfx-card > * { position: relative; z-index: 1; }
 
-/* ---------- טופס ---------- */
-.nfx-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 12px;
-  align-items: end;
+/* ---------- כותרת ---------- */
+.nfx-head { padding: 30px 30px 24px; border-bottom: 1px solid var(--nfx-line); }
+.nfx-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78rem; font-weight: 700; letter-spacing: .02em;
+  color: var(--nfx-mut);
+  background: var(--nfx-panel);
+  border: 1px solid var(--nfx-line);
+  border-radius: 999px; padding: 5px 13px 5px 11px;
 }
-.nfx-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.nfx-field label { font-size: .85rem; font-weight: 700; color: var(--nfx-muted); }
-.nfx-ec select, .nfx-ec input[type="text"] {
-  width: 100%;
-  font: inherit;
-  font-size: 1rem;
-  color: var(--nfx-text);
-  background: var(--nfx-bg-soft);
-  border: 1.5px solid var(--nfx-border);
-  border-radius: 12px;
-  padding: 11px 13px;
-  appearance: none;
-  transition: border-color .15s, box-shadow .15s, background .15s;
+.nfx-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--nfx-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-ok) 22%, transparent);
+  animation: nfx-pulse 2.4s ease-in-out infinite;
 }
-.nfx-ec select:focus, .nfx-ec input[type="text"]:focus {
-  outline: none;
-  background: #fff;
-  border-color: var(--nfx-brand);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-brand) 18%, transparent);
-}
-.nfx-ec select:disabled { opacity: .55; cursor: not-allowed; }
-.nfx-ec input::placeholder { color: #a3aec0; }
-.nfx-code-input { text-transform: uppercase; font-weight: 700; letter-spacing: .04em; }
-.nfx-btn {
-  font: inherit;
-  font-weight: 800;
-  font-size: 1rem;
-  color: #fff;
-  background: var(--nfx-accent);
-  border: 0;
-  border-radius: 12px;
-  padding: 12px 22px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform .12s, filter .15s;
-}
-.nfx-btn:hover { filter: brightness(1.06); }
-.nfx-btn:active { transform: translateY(1px); }
+@keyframes nfx-pulse { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
 
-/* ---------- צ'יפים של קודים נפוצים ---------- */
-.nfx-chips { margin-top: 16px; display: none; }
+.nfx-head h2 {
+  margin-top: 14px;
+  font-size: clamp(1.55rem, 3.4vw, 2.15rem);
+  font-weight: 800; line-height: 1.18; letter-spacing: -.02em;
+}
+.nfx-head h2 em {
+  font-style: normal;
+  background: var(--nfx-grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.nfx-head > p { margin-top: 10px; max-width: 62ch; color: var(--nfx-mut); font-size: 1rem; }
+
+.nfx-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.nfx-fact {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .82rem; color: var(--nfx-mut);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 10px; padding: 6px 12px;
+}
+.nfx-fact b { font-size: .95rem; font-weight: 800; color: var(--nfx-fg); }
+
+/* ---------- גוף ---------- */
+.nfx-body { padding: 26px 30px 30px; }
+
+/* ---------- שדות ---------- */
+.nfx-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.55fr); gap: 18px; }
+.nfx-field { min-width: 0; }
+.nfx-lbl {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 9px;
+  font-size: .82rem; font-weight: 700; letter-spacing: .01em; color: var(--nfx-mut);
+}
+/* מספר השלב בתווית – נצבע כשהשלב הושלם */
+.nfx-num {
+  display: grid; place-items: center; flex: none;
+  width: 21px; height: 21px; border-radius: 7px;
+  font-size: .72rem; font-weight: 800;
+  color: var(--nfx-mut-2); background: var(--nfx-panel-2);
+  border: 1px solid var(--nfx-line); transition: .22s;
+}
+.is-done .nfx-num {
+  color: #fff; background: var(--nfx-grad); border-color: transparent;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nfx-1) 16%, transparent);
+}
+.nfx-i { width: 18px; height: 18px; flex: none; }
+
+/* תיבת בחירה מותאמת (יצרן) */
+.nfx-combo { position: relative; }
+.nfx-combo-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 13px 16px;
+  font-size: 1rem; font-weight: 600; text-align: start;
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 14px; transition: .18s;
+}
+.nfx-combo-btn:hover { background: var(--nfx-panel-2); border-color: var(--nfx-line-2); }
+.nfx-combo-btn[aria-expanded="true"] {
+  border-color: color-mix(in srgb, var(--nfx-1) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nfx-1) 14%, transparent);
+}
+.nfx-combo-btn.is-empty .nfx-combo-val { color: var(--nfx-mut-2); font-weight: 500; }
+.nfx-combo-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nfx-combo-val small { color: var(--nfx-mut); font-weight: 600; }
+.nfx-chev { flex: none; width: 16px; height: 16px; opacity: .55; transition: transform .2s; }
+.nfx-combo-btn[aria-expanded="true"] .nfx-chev { transform: rotate(180deg); }
+
+.nfx-pop {
+  position: absolute; z-index: 40; inset-inline: 0; top: calc(100% + 8px);
+  background: var(--nfx-bg2);
+  border: 1px solid var(--nfx-line-2);
+  border-radius: 16px;
+  box-shadow: 0 26px 50px -16px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  animation: nfx-pop .16s ease-out;
+}
+@keyframes nfx-pop { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+.nfx-pop[hidden] { display: none; }
+.nfx-pop-search { padding: 10px; border-bottom: 1px solid var(--nfx-line); }
+.nfx-pop-search input {
+  width: 100%; font: inherit; font-size: .95rem; color: var(--nfx-fg);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 10px; padding: 9px 12px; outline: none;
+}
+.nfx-pop-search input::placeholder { color: var(--nfx-mut-2); }
+.nfx-pop-search input:focus { border-color: color-mix(in srgb, var(--nfx-1) 55%, transparent); }
+.nfx-opts { max-height: 274px; overflow-y: auto; padding: 6px; }
+.nfx-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 9px 12px; border-radius: 10px;
+  font-size: .96rem; font-weight: 600; text-align: start; transition: background .12s;
+}
+.nfx-opt small { color: var(--nfx-mut-2); font-weight: 600; font-size: .8rem; }
+.nfx-opt:hover, .nfx-opt.act { background: var(--nfx-panel-2); }
+.nfx-opt[aria-selected="true"] { color: color-mix(in srgb, var(--nfx-1) 75%, var(--nfx-fg)); }
+.nfx-opt-none { padding: 16px 12px; color: var(--nfx-mut-2); font-size: .92rem; text-align: center; }
+
+/* בחירת סוג מכשיר */
+.nfx-devs { display: flex; flex-wrap: wrap; gap: 8px; }
+.nfx-dev {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 15px; border-radius: 13px;
+  font-size: .93rem; font-weight: 700;
+  color: var(--nfx-mut);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  transition: .18s;
+}
+.nfx-dev .nfx-i { width: 19px; height: 19px; opacity: .85; }
+.nfx-dev:hover:not(.on) { color: var(--nfx-fg); border-color: var(--nfx-line-2); transform: translateY(-1px); }
+.nfx-dev.on {
+  color: #fff; border-color: transparent;
+  background: var(--nfx-grad);
+  box-shadow: 0 8px 22px -8px color-mix(in srgb, var(--nfx-1) 85%, transparent);
+}
+.nfx-devs-empty { font-size: .92rem; color: var(--nfx-mut-2); padding: 12px 2px; }
+
+/* שדה הקוד */
+.nfx-search { margin-top: 18px; }
+.nfx-search-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line);
+  border-radius: 16px; padding: 7px 7px 7px 7px;
+  transition: .18s;
+}
+.nfx-search-row:focus-within {
+  border-color: color-mix(in srgb, var(--nfx-1) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nfx-1) 13%, transparent);
+}
+.nfx-search-ico { flex: none; width: 20px; height: 20px; margin-inline-start: 12px; opacity: .5; }
+.nfx-ec input.nfx-code {
+  flex: 1 1 auto; min-width: 0;
+  font: inherit; font-size: 1.12rem; font-weight: 800; letter-spacing: .07em;
+  color: var(--nfx-fg); background: none; border: 0; outline: none;
+  padding: 10px 0; text-transform: uppercase;
+}
+.nfx-ec input.nfx-code::placeholder {
+  color: var(--nfx-mut-2); font-weight: 500; letter-spacing: normal; text-transform: none;
+}
+.nfx-go {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: 12px;
+  font-size: 1rem; font-weight: 800; color: #fff;
+  background: var(--nfx-grad);
+  box-shadow: 0 10px 26px -10px color-mix(in srgb, var(--nfx-1) 90%, transparent);
+  transition: .16s;
+}
+.nfx-go:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.nfx-go:active { transform: translateY(1px); }
+
+/* צ'יפים של קודים נפוצים */
+.nfx-chips { margin-top: 14px; display: none; }
 .nfx-chips.is-on { display: block; }
-.nfx-chips-title { font-size: .85rem; font-weight: 700; color: var(--nfx-muted); margin-bottom: 8px; }
-.nfx-chips-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.nfx-chips-t { font-size: .8rem; color: var(--nfx-mut-2); margin-bottom: 9px; font-weight: 600; }
+.nfx-chips-l { display: flex; flex-wrap: wrap; gap: 7px; }
 .nfx-chip {
-  font: inherit;
-  font-size: .85rem;
-  font-weight: 700;
-  color: var(--nfx-brand-dark);
-  background: color-mix(in srgb, var(--nfx-brand) 9%, #fff);
-  border: 1.5px solid color-mix(in srgb, var(--nfx-brand) 25%, #fff);
-  border-radius: 999px;
-  padding: 5px 13px;
-  cursor: pointer;
-  transition: background .15s, border-color .15s;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .85rem; font-weight: 700; letter-spacing: .04em; direction: ltr;
+  color: color-mix(in srgb, var(--nfx-fg) 82%, transparent);
+  background: var(--nfx-panel-2); border: 1px solid var(--nfx-line-2);
+  border-radius: 10px; padding: 7px 13px; transition: .16s;
 }
-.nfx-chip:hover { background: color-mix(in srgb, var(--nfx-brand) 18%, #fff); }
+.nfx-chip:hover {
+  color: var(--nfx-fg); border-color: color-mix(in srgb, var(--nfx-1) 55%, transparent);
+  background: color-mix(in srgb, var(--nfx-1) 12%, transparent);
+}
 
 /* ---------- תוצאה ---------- */
 .nfx-result:empty { display: none; }
-.nfx-result { margin-top: 18px; }
+.nfx-result { margin-top: 22px; }
 .nfx-res {
-  border: 1px solid var(--nfx-border);
-  border-radius: 14px;
-  overflow: hidden;
-  animation: nfx-in .22s ease-out;
+  border: 1px solid var(--nfx-line-2);
+  border-radius: 18px; overflow: hidden;
+  background: var(--nfx-panel);
+  animation: nfx-rise .3s cubic-bezier(.2, .7, .3, 1);
 }
-@keyframes nfx-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.nfx-res-head {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 14px 16px;
-  background: var(--nfx-bg-soft);
-  border-bottom: 1px solid var(--nfx-border);
+@keyframes nfx-rise { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+.nfx-res-top {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 16px 18px;
+  background: linear-gradient(180deg, var(--nfx-panel-2), transparent);
+  border-bottom: 1px solid var(--nfx-line);
 }
-.nfx-res-code {
+.nfx-code-badge {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem; font-weight: 800; letter-spacing: .06em;
-  color: #fff; background: var(--nfx-brand-dark);
-  border-radius: 9px; padding: 4px 12px; direction: ltr;
+  font-size: 1.15rem; font-weight: 800; letter-spacing: .08em; direction: ltr;
+  color: #fff; background: var(--nfx-grad);
+  border-radius: 11px; padding: 7px 15px;
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--nfx-1) 90%, transparent);
 }
-.nfx-res-title { font-size: 1.08rem; font-weight: 800; flex: 1 1 220px; }
-.nfx-badge {
-  font-size: .78rem; font-weight: 800; border-radius: 999px;
-  padding: 3px 11px; color: #fff; white-space: nowrap;
+.nfx-res-h { flex: 1 1 240px; min-width: 0; }
+.nfx-res-h h3 { font-size: 1.14rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.35; }
+.nfx-res-h p { font-size: .82rem; color: var(--nfx-mut-2); margin-top: 2px; }
+.nfx-sev {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: .8rem; font-weight: 800; white-space: nowrap;
+  border-radius: 999px; padding: 6px 13px;
+  border: 1px solid currentColor;
 }
-.nfx-badge.low  { background: var(--nfx-low); }
-.nfx-badge.med  { background: var(--nfx-med); }
-.nfx-badge.high { background: var(--nfx-high); }
-.nfx-res-body { padding: 16px; display: grid; gap: 14px; }
-.nfx-sec h4 { font-size: .9rem; font-weight: 800; color: var(--nfx-muted); margin-bottom: 5px; }
-.nfx-sec p { font-size: .98rem; }
-.nfx-sec ul li { position: relative; padding-inline-start: 20px; margin-bottom: 4px; font-size: .96rem; }
-.nfx-sec ul li::before {
-  content: ""; position: absolute; inset-inline-start: 6px; top: .62em;
-  width: 6px; height: 6px; border-radius: 50%; background: var(--nfx-brand);
+.nfx-sev i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.nfx-sev.low { color: var(--nfx-ok); background: color-mix(in srgb, var(--nfx-ok) 12%, transparent); }
+.nfx-sev.med { color: var(--nfx-warn); background: color-mix(in srgb, var(--nfx-warn) 12%, transparent); }
+.nfx-sev.high { color: var(--nfx-bad); background: color-mix(in srgb, var(--nfx-bad) 12%, transparent); }
+
+.nfx-res-body { padding: 18px; display: grid; gap: 16px; }
+.nfx-lead { font-size: 1.02rem; }
+.nfx-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.nfx-box { background: var(--nfx-panel); border: 1px solid var(--nfx-line); border-radius: 14px; padding: 14px 16px; }
+.nfx-box h4 {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .84rem; font-weight: 800; color: var(--nfx-mut); margin-bottom: 10px;
 }
-.nfx-sec ol { counter-reset: nfx; }
-.nfx-sec ol li { position: relative; padding-inline-start: 28px; margin-bottom: 6px; font-size: .96rem; counter-increment: nfx; }
-.nfx-sec ol li::before {
+.nfx-box h4 .nfx-i { width: 17px; height: 17px; color: color-mix(in srgb, var(--nfx-1) 70%, var(--nfx-fg)); }
+.nfx-box li { font-size: .95rem; margin-bottom: 6px; position: relative; padding-inline-start: 22px; }
+.nfx-box li:last-child { margin-bottom: 0; }
+.nfx-box ul li::before {
+  content: ""; position: absolute; inset-inline-start: 7px; top: .6em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--nfx-mut-2);
+}
+.nfx-box ol { counter-reset: nfx; }
+.nfx-box ol li { counter-increment: nfx; }
+.nfx-box ol li::before {
   content: counter(nfx);
-  position: absolute; inset-inline-start: 0; top: .18em;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--nfx-brand); color: #fff;
-  font-size: .74rem; font-weight: 800; line-height: 20px; text-align: center;
+  position: absolute; inset-inline-start: 0; top: .2em;
+  width: 18px; height: 18px; border-radius: 6px;
+  background: color-mix(in srgb, var(--nfx-1) 22%, transparent);
+  color: color-mix(in srgb, var(--nfx-1) 70%, var(--nfx-fg));
+  font-size: .72rem; font-weight: 800; line-height: 18px; text-align: center;
 }
 .nfx-pro {
-  background: color-mix(in srgb, var(--nfx-accent) 8%, #fff);
-  border-inline-start: 4px solid var(--nfx-accent);
-  border-radius: 10px; padding: 11px 14px; font-size: .96rem;
+  display: flex; gap: 12px; align-items: flex-start;
+  background: color-mix(in srgb, var(--nfx-3) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--nfx-3) 32%, transparent);
+  border-radius: 14px; padding: 13px 16px; font-size: .96rem;
 }
-.nfx-note { font-size: .85rem; color: var(--nfx-muted); }
+.nfx-pro b { font-weight: 800; }
+.nfx-pro .nfx-i { width: 19px; height: 19px; margin-top: 3px; color: var(--nfx-3); }
+.nfx-cta .nfx-i { width: 17px; height: 17px; }
+.nfx-note { font-size: .82rem; color: var(--nfx-mut-2); }
 
-/* ---------- לא נמצא / הודעות ---------- */
+/* ---------- הודעות ---------- */
 .nfx-msg {
-  border: 1px dashed var(--nfx-border);
-  background: var(--nfx-bg-soft);
-  border-radius: 14px; padding: 16px;
+  border: 1px dashed var(--nfx-line-2); border-radius: 18px;
+  padding: 20px; background: var(--nfx-panel);
+  animation: nfx-rise .3s cubic-bezier(.2, .7, .3, 1);
 }
-.nfx-msg h4 { font-size: 1.02rem; font-weight: 800; margin-bottom: 6px; }
-.nfx-msg p { font-size: .95rem; color: var(--nfx-muted); }
-.nfx-sugg { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.nfx-msg h4 { font-size: 1.06rem; font-weight: 800; margin-bottom: 6px; }
+.nfx-msg > p { font-size: .96rem; color: var(--nfx-mut); }
+.nfx-sugg { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.nfx-sugg .nfx-chip { font-family: inherit; letter-spacing: normal; direction: rtl; }
 
 /* ---------- קריאה לפעולה ---------- */
 .nfx-cta {
-  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-  margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--nfx-border);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--nfx-line);
 }
-.nfx-cta-text { font-size: .95rem; font-weight: 700; flex: 1 1 200px; }
+.nfx-cta-t { flex: 1 1 210px; font-size: .96rem; font-weight: 700; }
 .nfx-cta a {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 8px;
   font-size: .95rem; font-weight: 800; text-decoration: none;
-  border-radius: 11px; padding: 10px 18px; white-space: nowrap;
+  border-radius: 12px; padding: 11px 20px; transition: .16s;
 }
-.nfx-call { background: var(--nfx-brand); color: #fff !important; }
-.nfx-wa { background: #25d366; color: #fff !important; }
-.nfx-cta a:hover { filter: brightness(1.06); }
+.nfx-cta a:hover { transform: translateY(-1px); filter: brightness(1.07); }
+.nfx-tel { background: var(--nfx-grad); color: #fff !important; box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--nfx-1) 90%, transparent); }
+.nfx-wa { background: #25d366; color: #04331a !important; }
 
-.nfx-disclaimer {
-  margin-top: 16px; font-size: .78rem; color: var(--nfx-muted);
-  background: var(--nfx-bg-soft); border-radius: 10px; padding: 10px 13px;
+.nfx-legal {
+  margin-top: 20px; padding: 13px 16px;
+  font-size: .78rem; line-height: 1.55; color: var(--nfx-mut-2);
+  background: var(--nfx-panel); border: 1px solid var(--nfx-line); border-radius: 13px;
 }
 
 /* ---------- מובייל ---------- */
-@media (max-width: 720px) {
-  .nfx-form { grid-template-columns: 1fr 1fr; }
-  .nfx-field-code { grid-column: 1 / -1; }
-  .nfx-btn { grid-column: 1 / -1; width: 100%; padding: 13px; }
-  .nfx-head { padding: 18px; }
-  .nfx-head h2 { font-size: 1.25rem; }
-  .nfx-body { padding: 18px; }
+@media (max-width: 780px) {
+  .nfx-ec { font-size: 15.5px; }
+  .nfx-head { padding: 24px 20px 20px; }
+  .nfx-body { padding: 22px 20px 24px; }
+  .nfx-grid { grid-template-columns: 1fr; gap: 18px; }
+  .nfx-cols { grid-template-columns: 1fr; }
+  .nfx-search-row { flex-wrap: wrap; }
+  .nfx-ec input.nfx-code { flex-basis: 100%; padding-inline: 12px; }
+  .nfx-search-ico { display: none; }
+  .nfx-go { width: 100%; justify-content: center; }
 }
 
-/* ---------- אינדקס ה-SEO (נפתח בלחיצה) ---------- */
-.nfx-seo { max-width: 900px; margin: 28px auto 0; font-family: inherit; direction: rtl; text-align: right; }
-.nfx-seo h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; color: var(--nfx-text, #16202e); }
-.nfx-seo > p { font-size: .9rem; color: #64748b; margin-bottom: 14px; }
-.nfx-seo details {
-  border: 1px solid #e2e8f0; border-radius: 12px;
-  margin-bottom: 8px; background: #fff; overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .nfx-ec *, .nfx-ec *::before { animation: none !important; transition: none !important; }
 }
-.nfx-seo summary {
-  cursor: pointer; padding: 12px 16px; font-weight: 700; font-size: .98rem;
-  list-style: none; display: flex; justify-content: space-between; gap: 10px;
-}
-.nfx-seo summary::-webkit-details-marker { display: none; }
-.nfx-seo summary::after { content: "+"; color: #64748b; font-weight: 800; }
-.nfx-seo details[open] summary::after { content: "−"; }
-.nfx-seo details[open] summary { border-bottom: 1px solid #e2e8f0; }
-.nfx-seo-inner { padding: 14px 16px; display: grid; gap: 16px; }
-.nfx-seo-item h3 { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
-.nfx-seo-item p { font-size: .93rem; margin-bottom: 4px; }
-.nfx-seo-item ul { margin: 0 0 4px; padding-inline-start: 18px; list-style: disc; font-size: .9rem; color: #475569; }
 
 </style>
 
-<div id="nfx-ec" class="nfx-ec" data-brand="bosch" data-device="dishwasher" dir="rtl" lang="he">
+<div id="nfx-ec" class="nfx-ec" data-brand="bosch" data-device="dishwasher" dir="rtl" lang="he" data-theme="dark">
   <div class="nfx-card">
+
     <header class="nfx-head">
-      <h2>מאתר קודי תקלות למוצרי חשמל</h2>
-      <p>בוחרים יצרן וסוג מכשיר, מזינים את קוד השגיאה שמופיע בצג — ומקבלים מיד מה המשמעות, מה אפשר לנסות לבד ומתי צריך טכנאי.</p>
+      <span class="nfx-eyebrow"><i class="nfx-dot"></i> אבחון מיידי · ללא עלות</span>
+      <h2>מה אומר <em>קוד השגיאה</em> שבמכשיר שלכם?</h2>
+      <p>בוחרים יצרן וסוג מכשיר, מזינים את הקוד שמופיע בצג — ומקבלים מיד את המשמעות, מה אפשר לבדוק לבד ומתי באמת צריך טכנאי.</p>
+      <div class="nfx-facts">
+        <div class="nfx-fact"><b>238</b> קודי תקלה</div>
+        <div class="nfx-fact"><b>24</b> יצרנים</div>
+        <div class="nfx-fact"><b>6</b> סוגי מכשירים</div>
+        <div class="nfx-fact">תשובה תוך <b>שניות</b></div>
+      </div>
     </header>
 
     <div class="nfx-body">
-      <form id="nfx-form" class="nfx-form" novalidate>
-        <div class="nfx-field">
-          <label for="nfx-brand">יצרן</label>
-          <select id="nfx-brand" name="brand"></select>
+      <form id="nfx-form" novalidate>
+        <div class="nfx-grid">
+
+          <div class="nfx-field" data-step="1">
+            <label class="nfx-lbl" for="nfx-brand-btn"><b class="nfx-num">1</b> יצרן המכשיר</label>
+            <div class="nfx-combo">
+              <button type="button" id="nfx-brand-btn" class="nfx-combo-btn is-empty"
+                      aria-haspopup="listbox" aria-expanded="false" aria-controls="nfx-brand-pop">
+                <span class="nfx-combo-val">בחרו יצרן…</span>
+                <svg class="nfx-chev" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="nfx-pop" id="nfx-brand-pop" hidden>
+                <div class="nfx-pop-search">
+                  <input type="text" id="nfx-brand-q" placeholder="חיפוש יצרן (עברית או אנגלית)…"
+                         autocomplete="off" spellcheck="false">
+                </div>
+                <ul class="nfx-opts" id="nfx-brand-opts" role="listbox" aria-label="יצרנים"></ul>
+              </div>
+            </div>
+            <!-- שדה נסתר: מקור האמת לטפסים ולנגישות -->
+            <select id="nfx-brand" class="nfx-sr" tabindex="-1" aria-hidden="true"></select>
+          </div>
+
+          <div class="nfx-field" data-step="2">
+            <span class="nfx-lbl"><b class="nfx-num">2</b> סוג המכשיר</span>
+            <div class="nfx-devs" id="nfx-devs" role="group" aria-label="סוג מכשיר">
+              <p class="nfx-devs-empty">בחרו קודם יצרן כדי לראות אילו מכשירים זמינים</p>
+            </div>
+            <select id="nfx-device" class="nfx-sr" tabindex="-1" aria-hidden="true"></select>
+          </div>
         </div>
 
-        <div class="nfx-field">
-          <label for="nfx-device">סוג מכשיר</label>
-          <select id="nfx-device" name="device" disabled>
-            <option value="">בחרו קודם יצרן</option>
-          </select>
+        <div class="nfx-search" data-step="3">
+          <label class="nfx-lbl" for="nfx-code"><b class="nfx-num">3</b> קוד השגיאה שמופיע בצג</label>
+          <div class="nfx-search-row">
+            <svg class="nfx-search-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+              <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="nfx-code" class="nfx-code" type="text" list="nfx-codes" autocomplete="off"
+                   spellcheck="false" placeholder="לדוגמה: E18, 4E, F05, d90">
+            <datalist id="nfx-codes"></datalist>
+            <button type="submit" class="nfx-go">
+              בדיקת הקוד
+              <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div class="nfx-field nfx-field-code">
-          <label for="nfx-code">קוד השגיאה שבצג</label>
-          <input id="nfx-code" class="nfx-code-input" name="code" type="text"
-                 list="nfx-codes" autocomplete="off" spellcheck="false" placeholder="לדוגמה: E18">
-          <datalist id="nfx-codes"></datalist>
+        <div id="nfx-chips" class="nfx-chips">
+          <div class="nfx-chips-t">קודים נפוצים למכשיר שבחרתם — לחיצה מציגה את ההסבר:</div>
+          <div id="nfx-chips-list" class="nfx-chips-l"></div>
         </div>
-
-        <button type="submit" class="nfx-btn">בדיקת הקוד</button>
       </form>
-
-      <div id="nfx-chips" class="nfx-chips">
-        <div class="nfx-chips-title">קודים נפוצים למכשיר שבחרתם – לחיצה תציג הסבר:</div>
-        <div id="nfx-chips-list" class="nfx-chips-list"></div>
-      </div>
 
       <div id="nfx-result" class="nfx-result" role="status" aria-live="polite"></div>
 
-      <p class="nfx-disclaimer">המידע כללי ומיועד לאבחון ראשוני בלבד. קודים ומשמעותם משתנים בין דגמים ושנות ייצור — יש לאמת מול ספר ההוראות של הדגם. אין לבצע פעולות חשמל או פירוק פנימי ללא ידע מתאים; נתקו את המכשיר מהחשמל ומהמים לפני כל בדיקה.</p>
+      <p class="nfx-legal">המידע כללי ומיועד לאבחון ראשוני בלבד. קודים ומשמעותם משתנים בין דגמים ושנות ייצור — יש לאמת מול ספר ההוראות של הדגם. אין לבצע פעולות חשמל או פירוק פנימי ללא ידע מתאים; נתקו את המכשיר מהחשמל ומהמים לפני כל בדיקה.</p>
     </div>
   </div>
 </div>
@@ -544,8 +931,10 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
 </script>
 <script>
 /* ==========================================================================
-   נאור פיקס – מאתר קודי תקלות (לוגיקה)
-   אין תלות בספריות חיצוניות. הנתונים מוזרקים ל-window.NFX_DATA בזמן הבנייה.
+   נאור פיקס · מאתר קודי תקלות – לוגיקה
+   ללא ספריות חיצוניות. הנתונים מוזרקים ל-window.NFX_DATA בזמן הבנייה.
+   מקור האמת לבחירות הוא שני שדות ה-select הנסתרים (#nfx-brand, #nfx-device);
+   הממשק הגרפי הוא תצוגה מעליהם, כך שהטופס נשאר נגיש וניתן למילוי אוטומטי.
    ========================================================================== */
 (function () {
   "use strict";
@@ -557,16 +946,51 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
   if (!root || root.dataset.nfxReady === "1") return;
   root.dataset.nfxReady = "1";
 
-  var elBrand  = root.querySelector("#nfx-brand");
-  var elDevice = root.querySelector("#nfx-device");
-  var elCode   = root.querySelector("#nfx-code");
-  var elList   = root.querySelector("#nfx-codes");
-  var elForm   = root.querySelector("#nfx-form");
-  var elChips  = root.querySelector("#nfx-chips");
-  var elChipsL = root.querySelector("#nfx-chips-list");
-  var elResult = root.querySelector("#nfx-result");
+  var $ = function (id) { return root.querySelector("#" + id); };
+  var elBrand = $("nfx-brand"), elDevice = $("nfx-device"), elCode = $("nfx-code");
+  var elBtn = $("nfx-brand-btn"), elPop = $("nfx-brand-pop"), elQ = $("nfx-brand-q"), elOpts = $("nfx-brand-opts");
+  var elDevs = $("nfx-devs"), elList = $("nfx-codes"), elForm = $("nfx-form");
+  var elChips = $("nfx-chips"), elChipsL = $("nfx-chips-list"), elResult = $("nfx-result");
 
   var SEV = { low: "טיפול עצמי אפשרי", med: "נדרשת בדיקה", high: "מומלץ להפסיק שימוש" };
+
+  /* אייקונים וקטוריים – אמינים יותר מאמוג'י, שלא תמיד קיים בכל מכשיר */
+  var SVG = '<svg class="nfx-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var ICON = {
+    /* מכונת כביסה – תוף עם גל מים בתוכו */
+    washer: SVG + '<rect x="3.5" y="2.5" width="17" height="19" rx="3.5"/><circle cx="12" cy="13.5" r="5.4"/>' +
+                  '<path d="M7.4 14.6c1.2-1.1 2.3.9 3.5 0s2.3.9 3.5 0 2.3-1.1 3.5 0"/>' +
+                  '<circle cx="6.6" cy="5.7" r=".95" fill="currentColor" stroke="none"/></svg>',
+    /* מייבש – תוף עם גלי חום עולים */
+    dryer: SVG + '<rect x="3.5" y="2.5" width="17" height="19" rx="3.5"/><circle cx="12" cy="14.5" r="4.6"/>' +
+                 '<path d="M10.2 16c.9-.8 1.7.8 2.6 0M10.5 12.7c.9-.8 1.7.8 2.6 0"/>' +
+                 '<path d="M6.3 6.6c0-1 1.4-1 1.4-2M9.3 6.6c0-1 1.4-1 1.4-2"/></svg>',
+    /* מדיח – צלחת וסכו"ם */
+    dishwasher: SVG + '<rect x="3" y="2.5" width="18" height="19" rx="3.5"/><path d="M3 7.4h18"/>' +
+                      '<circle cx="10.5" cy="14.8" r="4"/><circle cx="10.5" cy="14.8" r="1.4"/>' +
+                      '<path d="M17.4 11.4v7M15.6 11.4v2.4"/></svg>',
+    /* תנור – כפתורים למעלה, ידית וחלון */
+    oven: SVG + '<rect x="2.5" y="3" width="19" height="18" rx="3.5"/><path d="M2.5 8.2h19"/>' +
+                '<path d="M6 11.4h12"/><rect x="6" y="13.4" width="12" height="5.6" rx="1.8"/>' +
+                '<circle cx="6.4" cy="5.6" r="1" fill="currentColor" stroke="none"/>' +
+                '<circle cx="10" cy="5.6" r="1" fill="currentColor" stroke="none"/></svg>',
+    /* מקרר – שתי דלתות וידיות */
+    fridge: SVG + '<rect x="5.5" y="2" width="13" height="20" rx="3.2"/><path d="M5.5 9.4h13"/>' +
+                  '<path d="M8.6 5.6v2.2M8.6 11.6v3.4"/></svg>',
+    /* מיקרוגל – חלון ולוח הפעלה */
+    microwave: SVG + '<rect x="2" y="5.5" width="20" height="13" rx="3"/><rect x="4.6" y="8.4" width="10" height="7.6" rx="1.8"/>' +
+                     '<path d="M17.6 8.6v3.2"/><circle cx="17.6" cy="14.6" r=".95" fill="currentColor" stroke="none"/></svg>',
+    warn: SVG + '<path d="M10.7 3.9 2.6 17.6A1.5 1.5 0 0 0 3.9 20h16.2a1.5 1.5 0 0 0 1.3-2.4L13.3 3.9a1.5 1.5 0 0 0-2.6 0Z"/>' +
+                '<path d="M12 9v4M12 16.5v.01"/></svg>',
+    check: SVG + '<path d="M3.5 6.5 5 8l2.5-2.5M3.5 12.5 5 14l2.5-2.5M3.5 18.5 5 20l2.5-2.5"/>' +
+                 '<path d="M11 7h9.5M11 13h9.5M11 19h9.5"/></svg>',
+    tool: SVG + '<path d="M14.6 6.3a3.9 3.9 0 0 0 5.1 5.1l-8.3 8.3a2.2 2.2 0 0 1-3.1-3.1Z"/>' +
+                '<path d="M14.6 6.3 17.8 3a4.6 4.6 0 0 1 3.2 3.2Z"/></svg>',
+    phone: SVG + '<path d="M6.3 3.5h3l1.4 3.6-1.8 1.3a12 12 0 0 0 5.7 5.7l1.3-1.8 3.6 1.4v3a1.8 1.8 0 0 1-2 1.8A15.5 15.5 0 0 1 4.5 5.5a1.8 1.8 0 0 1 1.8-2Z"/></svg>',
+    chat: SVG + '<path d="M20.5 11.6a8 8 0 0 1-11.7 7.1L4 20l1.3-4.7A8 8 0 1 1 20.5 11.6Z"/></svg>'
+  };
+  function icon(k) { return ICON[k] || ""; }
 
   /* ---------- עזרי טקסט ---------- */
   function esc(s) {
@@ -574,11 +998,7 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  // נרמול קשיח: אותיות גדולות, בלי רווחים/מקפים/נקודות/נקודתיים
-  function norm(s) {
-    return String(s || "").toUpperCase().replace(/[\s\-_.:\/]/g, "");
-  }
-  // נרמול רך: מטפל בבלבול נפוץ בין O ל-0, I ל-1, ובאפסים מובילים (E01 = E1)
+  function norm(s) { return String(s || "").toUpperCase().replace(/[\s\-_.:\/]/g, ""); }
   function loose(s) {
     return norm(s).replace(/O/g, "0").replace(/I/g, "1").replace(/(^|[^0-9])0+(\d)/g, "$1$2");
   }
@@ -609,42 +1029,98 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
     var b = brandById(brandId);
     if (!b || !b.family) return [];
     var fam = D.codes[b.family];
-    if (!fam || !fam[deviceId]) return [];
-    return fam[deviceId];
+    return (fam && fam[deviceId]) ? fam[deviceId] : [];
   }
   function familyNote(brandId) {
     var b = brandById(brandId);
-    return b && b.family && D.notes[b.family] ? D.notes[b.family] : "";
+    return (b && b.family && D.notes[b.family]) ? D.notes[b.family] : "";
   }
 
-  /* ---------- אכלוס תפריטים ---------- */
-  function fillBrands() {
-    var html = '<option value="">בחרו יצרן…</option>';
-    D.brands.forEach(function (b) {
-      html += '<option value="' + esc(b.id) + '">' + esc(b.name) + (b.en ? " · " + esc(b.en) : "") + "</option>";
-    });
-    elBrand.innerHTML = html;
+  /* ---------- בחירת יצרן ---------- */
+  function buildBrandOptions() {
+    elBrand.innerHTML = '<option value="">בחרו יצרן…</option>' + D.brands.map(function (b) {
+      return '<option value="' + esc(b.id) + '">' + esc(b.name) + "</option>";
+    }).join("");
   }
-  function fillDevices() {
+  function paintOptions(filter) {
+    var q = (filter || "").trim().toLowerCase();
+    var list = D.brands.filter(function (b) {
+      return !q || b.name.toLowerCase().indexOf(q) > -1 || (b.en || "").toLowerCase().indexOf(q) > -1;
+    });
+    if (!list.length) { elOpts.innerHTML = '<li class="nfx-opt-none">לא נמצא יצרן בשם הזה</li>'; return; }
+    elOpts.innerHTML = list.map(function (b) {
+      var sel = elBrand.value === b.id ? "true" : "false";
+      return '<li><button type="button" class="nfx-opt" role="option" aria-selected="' + sel + '"' +
+        ' data-id="' + esc(b.id) + '"><span>' + esc(b.name) + "</span>" +
+        (b.en ? "<small>" + esc(b.en) + "</small>" : "") + "</button></li>";
+    }).join("");
+  }
+
+  function openPop() {
+    elPop.hidden = false;
+    elBtn.setAttribute("aria-expanded", "true");
+    elQ.value = "";
+    paintOptions("");
+    elQ.focus();
+  }
+  function closePop() {
+    elPop.hidden = true;
+    elBtn.setAttribute("aria-expanded", "false");
+  }
+  function setBrand(id) {
+    elBrand.value = id;
+    elBrand.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  function paintBrandButton() {
+    var b = brandById(elBrand.value);
+    var val = elBtn.querySelector(".nfx-combo-val");
+    if (b) {
+      val.innerHTML = esc(b.name) + (b.en ? ' <small>· ' + esc(b.en) + "</small>" : "");
+      elBtn.classList.remove("is-empty");
+    } else {
+      val.textContent = "בחרו יצרן…";
+      elBtn.classList.add("is-empty");
+    }
+  }
+
+  /* ---------- בחירת סוג מכשיר ---------- */
+  function paintDevices() {
     var b = brandById(elBrand.value);
     if (!b) {
-      elDevice.innerHTML = '<option value="">בחרו קודם יצרן</option>';
-      elDevice.disabled = true;
+      elDevs.innerHTML = '<p class="nfx-devs-empty">בחרו קודם יצרן כדי לראות אילו מכשירים זמינים</p>';
+      elDevice.innerHTML = "";
       return;
     }
-    var list = (b.devices && b.devices.length) ? b.devices : D.devices.map(function (d) { return d.id; });
-    var html = '<option value="">בחרו סוג מכשיר…</option>';
-    list.forEach(function (id) {
-      var d = deviceById(id);
-      if (d) html += '<option value="' + esc(d.id) + '">' + esc(d.emoji + " " + d.name) + "</option>";
-    });
-    elDevice.innerHTML = html;
-    elDevice.disabled = false;
-  }
-  function fillCodeHints() {
-    var list = entriesFor(elBrand.value, elDevice.value);
-    elList.innerHTML = list.map(function (e) { return '<option value="' + esc(e.code) + '">' + esc(e.title) + "</option>"; }).join("");
+    var ids = (b.devices && b.devices.length) ? b.devices : D.devices.map(function (d) { return d.id; });
+    if (b.noData) ids = D.devices.map(function (d) { return d.id; });
 
+    // בנייה מחדש של ה-select מאפסת את הערך, לכן שומרים ומחזירים אותו
+    var keep = elDevice.value;
+    elDevice.innerHTML = '<option value=""></option>' + ids.map(function (id) {
+      var d = deviceById(id);
+      return d ? '<option value="' + esc(d.id) + '">' + esc(d.name) + "</option>" : "";
+    }).join("");
+    if (ids.indexOf(keep) > -1) elDevice.value = keep;
+
+    elDevs.innerHTML = ids.map(function (id) {
+      var d = deviceById(id);
+      if (!d) return "";
+      var on = elDevice.value === d.id;
+      return '<button type="button" class="nfx-dev' + (on ? " on" : "") + '" data-id="' + esc(d.id) + '"' +
+        ' aria-pressed="' + on + '">' + icon(d.id) + esc(d.name) + "</button>";
+    }).join("");
+  }
+  function setDevice(id) {
+    elDevice.value = id;
+    elDevice.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  /* ---------- קודים נפוצים ---------- */
+  function paintCodes() {
+    var list = entriesFor(elBrand.value, elDevice.value);
+    elList.innerHTML = list.map(function (e) {
+      return '<option value="' + esc(e.code) + '">' + esc(e.title) + "</option>";
+    }).join("");
     if (!list.length) { elChips.classList.remove("is-on"); elChipsL.innerHTML = ""; return; }
     elChipsL.innerHTML = list.map(function (e) {
       return '<button type="button" class="nfx-chip" data-code="' + esc(e.code) + '">' + esc(e.code) + "</button>";
@@ -652,80 +1128,94 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
     elChips.classList.add("is-on");
   }
 
+  function paintSteps() {
+    var done = { 1: !!elBrand.value, 2: !!elDevice.value, 3: !!(elCode.value || "").trim() };
+    Array.prototype.forEach.call(root.querySelectorAll("[data-step]"), function (el) {
+      el.classList.toggle("is-done", !!done[el.getAttribute("data-step")]);
+    });
+  }
+
   /* ---------- חיפוש ---------- */
   function lookup(brandId, deviceId, raw) {
-    var list = entriesFor(brandId, deviceId);
-    var q = norm(raw), ql = loose(raw), i, j, keys;
-
-    for (i = 0; i < list.length; i++) {                    // התאמה מדויקת
+    var list = entriesFor(brandId, deviceId), q = norm(raw), ql = loose(raw), i, j, keys;
+    for (i = 0; i < list.length; i++) {
       keys = [list[i].code].concat(list[i].alt || []);
       for (j = 0; j < keys.length; j++) if (norm(keys[j]) === q) return { hit: list[i] };
     }
-    for (i = 0; i < list.length; i++) {                    // התאמה גמישה (0/O, 1/I, אפס מוביל)
+    for (i = 0; i < list.length; i++) {
       keys = [list[i].code].concat(list[i].alt || []);
       for (j = 0; j < keys.length; j++) if (loose(keys[j]) === ql) return { hit: list[i], fuzzy: true };
     }
-    var sugg = list.map(function (e) {                     // הצעות קרובות
+    var sugg = list.map(function (e) {
       var best = 99;
       [e.code].concat(e.alt || []).forEach(function (k) { best = Math.min(best, lev(loose(k), ql)); });
       return { e: e, d: best };
     }).filter(function (x) { return x.d <= 2; })
       .sort(function (a, b) { return a.d - b.d; })
-      .slice(0, 5)
-      .map(function (x) { return x.e; });
+      .slice(0, 5).map(function (x) { return x.e; });
     return { hit: null, suggestions: sugg };
   }
 
-  /* ---------- תצוגה ---------- */
-  function ctaHtml(text) {
-    var s = D.site, out = '<div class="nfx-cta"><span class="nfx-cta-text">' + esc(text) + "</span>";
-    if (s.phoneE164) out += '<a class="nfx-call" href="tel:' + esc(s.phoneE164) + '">📞 ' + esc(s.phone || "התקשרו אלינו") + "</a>";
-    if (s.whatsapp) out += '<a class="nfx-wa" target="_blank" rel="noopener" href="https://wa.me/' + esc(s.whatsapp) + "?text=" + encodeURIComponent(s.whatsappText || "") + '">💬 וואטסאפ</a>';
+  /* ---------- תצוגת התוצאה ---------- */
+  function cta(text) {
+    var s = D.site, out = '<div class="nfx-cta"><span class="nfx-cta-t">' + esc(text) + "</span>";
+    if (s.phoneE164) {
+      out += '<a class="nfx-tel" href="tel:' + esc(s.phoneE164) + '">' + icon("phone") + esc(s.phone || "התקשרו") + "</a>";
+    }
+    if (s.whatsapp) {
+      out += '<a class="nfx-wa" target="_blank" rel="noopener" href="https://wa.me/' + esc(s.whatsapp) +
+        "?text=" + encodeURIComponent(s.whatsappText || "") + '">' + icon("chat") + "וואטסאפ</a>";
+    }
     return out + "</div>";
   }
 
   function renderHit(e, brandId, deviceId, fuzzy) {
     var b = brandById(brandId), d = deviceById(deviceId), note = familyNote(brandId);
-    var h = '<article class="nfx-res"><div class="nfx-res-head">' +
-      '<span class="nfx-res-code">' + esc(e.code) + "</span>" +
-      '<h3 class="nfx-res-title">' + esc(e.title) + "</h3>" +
-      '<span class="nfx-badge ' + esc(e.severity) + '">' + esc(SEV[e.severity] || "") + "</span>" +
-      "</div><div class=\"nfx-res-body\">";
+    var h = '<article class="nfx-res"><div class="nfx-res-top">' +
+      '<span class="nfx-code-badge">' + esc(e.code) + "</span>" +
+      '<div class="nfx-res-h"><h3>' + esc(e.title) + "</h3><p>" + esc(b.name + " · " + d.name) +
+      (fuzzy ? " · התאמה קרובה לקוד שהוזן" : "") + "</p></div>" +
+      '<span class="nfx-sev ' + esc(e.severity) + '"><i></i>' + esc(SEV[e.severity] || "") + "</span>" +
+      '</div><div class="nfx-res-body">' +
+      '<p class="nfx-lead">' + esc(e.meaning) + "</p>";
 
-    h += '<div class="nfx-sec"><h4>' + esc(b.name + " · " + d.name) + (fuzzy ? " (התאמה קרובה)" : "") + "</h4><p>" + esc(e.meaning) + "</p></div>";
-
+    var cols = "";
     if (e.causes && e.causes.length) {
-      h += '<div class="nfx-sec"><h4>סיבות אפשריות</h4><ul>' +
+      cols += '<div class="nfx-box"><h4>' + icon("warn") + " סיבות אפשריות</h4><ul>" +
         e.causes.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul></div>";
     }
     if (e.steps && e.steps.length) {
-      h += '<div class="nfx-sec"><h4>מה כדאי לנסות לפני שמזמינים טכנאי</h4><ol>' +
+      cols += '<div class="nfx-box"><h4>' + icon("check") + " מה לבדוק לפני שמזמינים טכנאי</h4><ol>" +
         e.steps.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ol></div>";
     }
-    if (e.pro) h += '<div class="nfx-pro"><strong>מתי צריך טכנאי:</strong> ' + esc(e.pro) + "</div>";
-    if (note) h += '<p class="nfx-note">' + esc(note) + "</p>";
+    if (cols) h += '<div class="nfx-cols">' + cols + "</div>";
 
-    h += ctaHtml("הקוד חוזר גם אחרי הבדיקות? נשמח לעזור.");
-    return h + "</div></article>";
+    if (e.pro) h += '<div class="nfx-pro">' + icon("tool") + "<div><b>מתי צריך טכנאי:</b> " + esc(e.pro) + "</div></div>";
+    if (note) h += '<p class="nfx-note">' + esc(note) + "</p>";
+    return h + cta("הקוד חוזר גם אחרי הבדיקות? נשמח לעזור.") + "</div></article>";
   }
 
   function renderMiss(res, brandId, deviceId, raw) {
     var b = brandById(brandId), d = deviceById(deviceId);
     var h = '<div class="nfx-msg"><h4>לא מצאנו את הקוד "' + esc(raw) + '" ל' + esc(b.name + " " + d.name) + "</h4>" +
-      "<p>ייתכן שהקוד שייך לדגם ספציפי או שהוא מוצג בצורה קצת שונה בצג. שלחו לנו את הדגם והקוד ונאתר לכם את המשמעות.</p>";
+      "<p>ייתכן שהקוד שייך לדגם ספציפי, או שהוא מוצג בצג בצורה מעט שונה. שלחו לנו את הדגם ואת הקוד ונאתר עבורכם את המשמעות.</p>";
     if (res.suggestions && res.suggestions.length) {
       h += '<div class="nfx-sugg">' + res.suggestions.map(function (e) {
         return '<button type="button" class="nfx-chip" data-code="' + esc(e.code) + '">האם התכוונתם ל-' + esc(e.code) + "?</button>";
       }).join("") + "</div>";
     }
-    return h + ctaHtml("שלחו לנו את הדגם והקוד:") + "</div>";
+    return h + cta("שלחו לנו את הדגם והקוד:") + "</div>";
   }
 
   function renderNoData(brandId) {
     var b = brandById(brandId);
     return '<div class="nfx-msg"><h4>' + esc(b.name) + " – עדיין אין אצלנו טבלת קודים</h4>" +
-      "<p>הרבה מכשירים מהמותג הזה מיוצרים על ידי יצרנים אחרים, ולכן הקודים משתנים בין דגם לדגם. שלחו לנו צילום של מדבקת הדגם ואת הקוד שמופיע בצג – נאתר עבורכם.</p>" +
-      ctaHtml("שלחו לנו את פרטי המכשיר:") + "</div>";
+      "<p>חלק גדול מהמכשירים במותג הזה מיוצרים על ידי יצרנים אחרים, ולכן הקודים משתנים מדגם לדגם. שלחו לנו צילום של מדבקת הדגם ואת הקוד שבצג – נאתר עבורכם.</p>" +
+      cta("שלחו לנו את פרטי המכשיר:") + "</div>";
+  }
+
+  function note(title, body) {
+    return '<div class="nfx-msg"><h4>' + esc(title) + "</h4><p>" + esc(body) + "</p></div>";
   }
 
   function track(brandId, deviceId, code, found) {
@@ -735,15 +1225,18 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
     } catch (err) { /* לא קריטי */ }
   }
 
-  /* ---------- אירועים ---------- */
+  /* ---------- הרצת חיפוש ---------- */
   function run() {
     var brandId = elBrand.value, deviceId = elDevice.value, raw = (elCode.value || "").trim();
     var b = brandById(brandId);
 
-    if (!brandId) { elResult.innerHTML = '<div class="nfx-msg"><h4>בחרו יצרן</h4><p>כדי שנוכל לאתר את הקוד, בחרו קודם את יצרן המכשיר.</p></div>'; return; }
-    if (b && b.noData) { elResult.innerHTML = renderNoData(brandId); track(brandId, deviceId, raw, false); return; }
-    if (!deviceId) { elResult.innerHTML = '<div class="nfx-msg"><h4>בחרו סוג מכשיר</h4><p>מכונת כביסה, מדיח, מייבש, תנור או מקרר.</p></div>'; return; }
-    if (!raw) { elResult.innerHTML = '<div class="nfx-msg"><h4>הזינו את קוד השגיאה</h4><p>הקוד שמופיע בצג המכשיר, למשל E18. אפשר גם ללחוץ על אחד הקודים הנפוצים למעלה.</p></div>'; return; }
+    if (!brandId) { elResult.innerHTML = note("בחרו יצרן", "כדי לאתר את הקוד, בחרו קודם את יצרן המכשיר."); return; }
+    if (b.noData) { elResult.innerHTML = renderNoData(brandId); track(brandId, deviceId, raw, false); return; }
+    if (!deviceId) { elResult.innerHTML = note("בחרו סוג מכשיר", "מכונת כביסה, מייבש, מדיח, תנור, מקרר או מיקרוגל."); return; }
+    if (!raw) {
+      elResult.innerHTML = note("הזינו את קוד השגיאה", "הקוד שמופיע בצג המכשיר, למשל E18. אפשר גם ללחוץ על אחד הקודים הנפוצים שמוצגים למעלה.");
+      return;
+    }
 
     var res = lookup(brandId, deviceId, raw);
     elResult.innerHTML = res.hit ? renderHit(res.hit, brandId, deviceId, res.fuzzy) : renderMiss(res, brandId, deviceId, raw);
@@ -753,31 +1246,79 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
     }
   }
 
-  elBrand.addEventListener("change", function () { fillDevices(); fillCodeHints(); elResult.innerHTML = ""; });
-  elDevice.addEventListener("change", function () { fillCodeHints(); elResult.innerHTML = ""; });
-  elForm.addEventListener("submit", function (ev) { ev.preventDefault(); run(); });
-  root.addEventListener("click", function (ev) {
-    var chip = ev.target.closest && ev.target.closest(".nfx-chip");
-    if (!chip) return;
-    elCode.value = chip.getAttribute("data-code");
-    run();
-    elResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  /* ---------- אירועים ---------- */
+  elBrand.addEventListener("change", function () {
+    paintBrandButton();
+    paintDevices();
+    paintCodes();
+    paintSteps();
+    elResult.innerHTML = "";
+    var b = brandById(elBrand.value);
+    if (b && b.noData) elResult.innerHTML = renderNoData(b.id);
+  });
+  elDevice.addEventListener("change", function () {
+    paintDevices();
+    paintCodes();
+    paintSteps();
+    elResult.innerHTML = "";
   });
 
+  elBtn.addEventListener("click", function () { elPop.hidden ? openPop() : closePop(); });
+  elQ.addEventListener("input", function () { paintOptions(elQ.value); });
+  elQ.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape") { closePop(); elBtn.focus(); }
+    if (ev.key === "ArrowDown") { ev.preventDefault(); var f = elOpts.querySelector(".nfx-opt"); if (f) f.focus(); }
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      var first = elOpts.querySelector(".nfx-opt");
+      if (first) { setBrand(first.getAttribute("data-id")); closePop(); elBtn.focus(); }
+    }
+  });
+  elOpts.addEventListener("keydown", function (ev) {
+    var items = Array.prototype.slice.call(elOpts.querySelectorAll(".nfx-opt"));
+    var i = items.indexOf(document.activeElement);
+    if (ev.key === "ArrowDown") { ev.preventDefault(); (items[i + 1] || items[0]).focus(); }
+    if (ev.key === "ArrowUp") { ev.preventDefault(); i <= 0 ? elQ.focus() : items[i - 1].focus(); }
+    if (ev.key === "Escape") { closePop(); elBtn.focus(); }
+  });
+  document.addEventListener("click", function (ev) {
+    if (!elPop.hidden && !ev.target.closest(".nfx-combo")) closePop();
+  });
+
+  root.addEventListener("click", function (ev) {
+    var opt = ev.target.closest(".nfx-opt");
+    if (opt) { setBrand(opt.getAttribute("data-id")); closePop(); elBtn.focus(); return; }
+
+    var dev = ev.target.closest(".nfx-dev");
+    if (dev) { setDevice(dev.getAttribute("data-id")); elCode.focus(); return; }
+
+    var chip = ev.target.closest(".nfx-chip");
+    if (chip) {
+      elCode.value = chip.getAttribute("data-code");
+      run();
+      elResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  });
+
+  elCode.addEventListener("input", paintSteps);
+  elForm.addEventListener("submit", function (ev) { ev.preventDefault(); run(); });
+
   /* ---------- אתחול ---------- */
-  fillBrands();
-  fillDevices();
+  buildBrandOptions();
+  paintOptions("");
+  paintBrandButton();
+  paintDevices();
+  paintSteps();
 
   var m = /#nfx=([^|]+)\|([^|]+)\|(.+)/.exec(window.location.hash || "");
   if (m) {
-    elBrand.value = decodeURIComponent(m[1]); fillDevices();
-    elDevice.value = decodeURIComponent(m[2]); fillCodeHints();
+    setBrand(decodeURIComponent(m[1]));
+    setDevice(decodeURIComponent(m[2]));
     elCode.value = decodeURIComponent(m[3]);
     run();
-  } else if (root.dataset.brand) {          // שימוש בדפי נחיתה: data-brand / data-device
-    elBrand.value = root.dataset.brand; fillDevices();
-    if (root.dataset.device) { elDevice.value = root.dataset.device; }
-    fillCodeHints();
+  } else if (root.dataset.brand) {          // דפי נחיתה: data-brand / data-device
+    setBrand(root.dataset.brand);
+    if (root.dataset.device) setDevice(root.dataset.device);
   }
 })();
 
@@ -785,7 +1326,7 @@ window.NFX_DATA={"site":{"businessName":"נאור פיקס","phone":"050-0000000
 
 
 <h2>טבלת הקודים המלאה</h2>
-<table><thead><tr><th>קוד</th><th>התקלה</th><th>משמעות</th></tr></thead><tbody><tr><td class="c">E01</td><td>תקלת כרטיס בקרה</td><td>הבקר מדווח על תקלה פנימית.</td></tr><tr><td class="c">E03</td><td>המדיח לא מתמלא מים</td><td>לא נכנסה כמות המים הדרושה בזמן.</td></tr><tr><td class="c">E05</td><td>עודף מים במדיח</td><td>נכנסו יותר מים מהדרוש.</td></tr><tr><td class="c">E09</td><td>תקלת גוף חימום</td><td>המים לא מתחממים – הכלים יוצאים לא נקיים ולא יבשים.</td></tr><tr><td class="c">E14</td><td>תקלת חיישן זרימה (פלואומטר)</td><td>הבקר לא מקבל מדידת כמות מים.</td></tr><tr><td class="c">E15</td><td>אקווסטופ – מים במגש התחתון</td><td>מצוף הבטיחות בתחתית המדיח זיהה מים והמדיח נעצר, לרוב עם משאבה שרועשת ברקע.</td></tr><tr><td class="c">E22</td><td>פילטרים סתומים</td><td>זרימת המים במערכת חסומה בגלל לכלוך שהצטבר.</td></tr><tr><td class="c">E24</td><td>המים לא מתנקזים – סתימה</td><td>המדיח לא מצליח לפנות את המים.</td></tr><tr><td class="c">E25</td><td>משאבת ניקוז חסומה או תקולה</td><td>המשאבה לא מצליחה לפנות את המים.</td></tr><tr><td class="c">E27</td><td>מתח חשמל נמוך</td><td>המדיח מזהה מתח רשת נמוך מהנדרש.</td></tr></tbody></table>
+<div class="pg-wrap"><table><thead><tr><th>קוד</th><th>התקלה</th><th>משמעות</th></tr></thead><tbody><tr><td class="c">E01</td><td>תקלת כרטיס בקרה</td><td>הבקר מדווח על תקלה פנימית.</td></tr><tr><td class="c">E03</td><td>המדיח לא מתמלא מים</td><td>לא נכנסה כמות המים הדרושה בזמן.</td></tr><tr><td class="c">E05</td><td>עודף מים במדיח</td><td>נכנסו יותר מים מהדרוש.</td></tr><tr><td class="c">E09</td><td>תקלת גוף חימום</td><td>המים לא מתחממים – הכלים יוצאים לא נקיים ולא יבשים.</td></tr><tr><td class="c">E14</td><td>תקלת חיישן זרימה (פלואומטר)</td><td>הבקר לא מקבל מדידת כמות מים.</td></tr><tr><td class="c">E15</td><td>אקווסטופ – מים במגש התחתון</td><td>מצוף הבטיחות בתחתית המדיח זיהה מים והמדיח נעצר, לרוב עם משאבה שרועשת ברקע.</td></tr><tr><td class="c">E22</td><td>פילטרים סתומים</td><td>זרימת המים במערכת חסומה בגלל לכלוך שהצטבר.</td></tr><tr><td class="c">E24</td><td>המים לא מתנקזים – סתימה</td><td>המדיח לא מצליח לפנות את המים.</td></tr><tr><td class="c">E25</td><td>משאבת ניקוז חסומה או תקולה</td><td>המשאבה לא מצליחה לפנות את המים.</td></tr><tr><td class="c">E27</td><td>מתח חשמל נמוך</td><td>המדיח מזהה מתח רשת נמוך מהנדרש.</td></tr></tbody></table></div>
 
 <h2>הסבר מפורט לכל קוד</h2>
 <article class="pg-item" id="code-e01"><h3>בוש מדיח כלים E01 – תקלת כרטיס בקרה</h3><p>הבקר מדווח על תקלה פנימית.</p><h4>סיבות אפשריות</h4><ul><li>כרטיס בקרה</li><li>הפרעות מתח</li></ul><h4>מה לבדוק לפני הזמנת טכנאי</h4><ol><li>נתקו מהחשמל ל-15 דקות והפעילו מחדש</li></ol><p><strong>מתי צריך טכנאי:</strong> לרוב בדיקה/החלפת כרטיס.</p></article>

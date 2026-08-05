@@ -144,15 +144,30 @@ def answer_text(entry):
 # --------------------------------------------------------------------------
 # הווידג'ט
 # --------------------------------------------------------------------------
+def theme_of(site):
+    return "light" if str(site.get("theme", "dark")).lower() == "light" else "dark"
+
+
+def widget_css(site):
+    return (read_text(os.path.join(TPL, "widget.css"))
+            .replace("__BRAND__", site["brandColor"])
+            .replace("__BRAND_DARK__", site["brandColorDark"])
+            .replace("__ACCENT__", site["accentColor"]))
+
+
 def build_widget(site, devices, brands, codes, notes):
-    css = (read_text(os.path.join(TPL, "widget.css"))
-           .replace("__BRAND__", site["brandColor"])
-           .replace("__BRAND_DARK__", site["brandColorDark"])
-           .replace("__ACCENT__", site["accentColor"]))
+    css = widget_css(site)
+    n_codes = sum(len(v) for fam in codes.values() for v in fam.values())
+    n_brands = len([b for b in brands if b.get("family")])
+    n_devices = len({d for fam in codes.values() for d in fam})
     html = (read_text(os.path.join(TPL, "widget.html"))
-            .replace("__TITLE__", esc(site["widgetTitle"]))
+            .replace("__THEME__", theme_of(site))
+            .replace("__TITLE__", site["widgetTitle"])
             .replace("__SUBTITLE__", esc(site["widgetSubtitle"]))
-            .replace("__DISCLAIMER__", esc(site["disclaimer"])))
+            .replace("__DISCLAIMER__", esc(site["disclaimer"]))
+            .replace("__STAT_CODES__", str(n_codes))
+            .replace("__STAT_BRANDS__", str(n_brands))
+            .replace("__STAT_DEVICES__", str(n_devices)))
     js = read_text(os.path.join(TPL, "widget.js"))
 
     lean = {fam: {dev: [{k: v for k, v in e.items() if not k.startswith("_")} for e in entries]
@@ -178,7 +193,8 @@ def build_widget(site, devices, brands, codes, notes):
 def build_seo(site, devices, brands, codes, notes, standalone_schema=True, limit=None):
     """limit – מספר מרבי של קודים לכל יצרן+מכשיר (לגרסה המקוצרת לדף הראשי)."""
     prim = primary_brands(brands)
-    parts = ['<section class="nfx-seo" id="nfx-error-code-index">',
+    parts = ["<style>\n" + read_text(os.path.join(TPL, "seo.css")) + "\n</style>",
+             '<section class="nfx-seo" id="nfx-error-code-index" dir="rtl" lang="he" data-theme="%s">' % theme_of(site),
              "<h2>אינדקס קודי תקלות לפי יצרן וסוג מכשיר</h2>",
              "<p>ריכוז קודי השגיאה הנפוצים במוצרי חשמל ביתיים, המשמעות שלהם ומה אפשר לבדוק לפני הזמנת טכנאי. לחצו על יצרן כדי לפתוח את הרשימה.</p>"]
 
@@ -268,10 +284,17 @@ def build_seo(site, devices, brands, codes, notes, standalone_schema=True, limit
 # דפי נחיתה לכל יצרן+מכשיר
 # --------------------------------------------------------------------------
 def build_landing_pages(site, devices, brands, codes, notes, widget):
-    css = (read_text(os.path.join(TPL, "widget.css"))
-           .replace("__BRAND__", site["brandColor"])
-           .replace("__BRAND_DARK__", site["brandColorDark"])
-           .replace("__ACCENT__", site["accentColor"]))
+    css = widget_css(site)
+    dark = theme_of(site) == "dark"
+    skin = {
+        "page_bg": "#070c16" if dark else "#f2f5fa",
+        "fg": "#eaf0fb" if dark else "#0e1b2e",
+        "mut": "#8fa0bd" if dark else "#4a5b75",
+        "panel": "rgba(255,255,255,.04)" if dark else "#ffffff",
+        "panel_2": "rgba(255,255,255,.07)" if dark else "#eef2f8",
+        "line": "rgba(255,255,255,.09)" if dark else "rgba(13,26,51,.1)",
+        "brand": site["brandColor"],
+    }
     pages = []
     for b in primary_brands(brands):
         sibs = siblings(brands, b["family"], b["id"])
@@ -325,20 +348,26 @@ def build_landing_pages(site, devices, brands, codes, notes, widget):
 <link rel="canonical" href="%(url)s">
 <style>
 %(css)s
-body { margin:0; background:#f0f3f8; font-family:"Assistant","Rubik","Heebo",Arial,sans-serif; color:#16202e; }
-.pg { max-width:900px; margin:0 auto; padding:28px 16px 60px; }
-.pg h1 { font-size:1.7rem; line-height:1.3; margin:0 0 10px; }
-.pg .lede { color:#475569; margin:0 0 22px; }
-.pg h2 { font-size:1.25rem; margin:32px 0 10px; }
-.pg table { width:100%%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 6px 18px rgba(16,32,56,.07); }
-.pg th, .pg td { padding:10px 12px; text-align:right; border-bottom:1px solid #e2e8f0; font-size:.94rem; vertical-align:top; }
-.pg th { background:#eef2f7; font-weight:800; }
-.pg td.c { font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; direction:ltr; white-space:nowrap; }
-.pg-item { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:12px; }
-.pg-item h3 { font-size:1.05rem; margin:0 0 6px; }
-.pg-item h4 { font-size:.88rem; color:#64748b; margin:12px 0 4px; }
-.pg-item ul, .pg-item ol { margin:0; padding-inline-start:20px; font-size:.95rem; }
-.pg-cta { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-top:24px; }
+body { margin:0; background:%(page_bg)s; color:%(fg)s;
+  font-family:"Assistant","Rubik","Heebo",-apple-system,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+.pg { max-width:980px; margin:0 auto; padding:36px 16px 70px; }
+.pg h1 { font-size:clamp(1.5rem,3.6vw,2.1rem); line-height:1.25; letter-spacing:-.02em; margin:0 0 10px; }
+.pg .lede { color:%(mut)s; margin:0 0 26px; max-width:70ch; }
+.pg h2 { font-size:1.3rem; letter-spacing:-.01em; margin:38px 0 12px; }
+.pg-wrap { overflow-x:auto; border-radius:16px; border:1px solid %(line)s; }
+.pg table { width:100%%; border-collapse:collapse; background:%(panel)s; font-size:.94rem; }
+.pg th, .pg td { padding:12px 14px; text-align:right; border-bottom:1px solid %(line)s; vertical-align:top; }
+.pg tr:last-child td { border-bottom:0; }
+.pg th { background:%(panel_2)s; font-weight:800; }
+.pg td.c { font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; direction:ltr; white-space:nowrap; color:%(brand)s; }
+.pg-item { background:%(panel)s; border:1px solid %(line)s; border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+.pg-item h3 { font-size:1.06rem; margin:0 0 6px; letter-spacing:-.01em; }
+.pg-item h4 { font-size:.85rem; color:%(mut)s; margin:14px 0 5px; }
+.pg-item p { margin:0; }
+.pg-item ul, .pg-item ol { margin:0; padding-inline-start:20px; font-size:.95rem; color:%(mut)s; }
+.pg-cta { background:%(panel)s; border:1px solid %(line)s; border-radius:18px; padding:22px; margin-top:28px; }
+.pg-cta a { display:inline-block; margin-top:6px; padding:11px 22px; border-radius:12px; text-decoration:none;
+  font-weight:800; color:#fff; background:%(brand)s; }
 </style>
 </head>
 <body>
@@ -349,7 +378,7 @@ body { margin:0; background:#f0f3f8; font-family:"Assistant","Rubik","Heebo",Ari
 %(widget)s
 
 <h2>טבלת הקודים המלאה</h2>
-<table><thead><tr><th>קוד</th><th>התקלה</th><th>משמעות</th></tr></thead><tbody>%(rows)s</tbody></table>
+<div class="pg-wrap"><table><thead><tr><th>קוד</th><th>התקלה</th><th>משמעות</th></tr></thead><tbody>%(rows)s</tbody></table></div>
 
 <h2>הסבר מפורט לכל קוד</h2>
 %(blocks)s
@@ -373,6 +402,8 @@ body { margin:0; background:#f0f3f8; font-family:"Assistant","Rubik","Heebo",Ari
                 "widget": widget.replace('id="nfx-ec" class="nfx-ec"',
                                          'id="nfx-ec" class="nfx-ec" data-brand="%s" data-device="%s"' % (b["id"], did)),
                 "rows": rows, "blocks": "\n".join(blocks),
+                "page_bg": skin["page_bg"], "fg": skin["fg"], "mut": skin["mut"],
+                "panel": skin["panel"], "panel_2": skin["panel_2"], "line": skin["line"], "brand": skin["brand"],
                 "tel": esc(site.get("phoneE164", "")), "phone": esc(site.get("phone", "")),
                 "schema": json.dumps(schema, ensure_ascii=False, indent=1),
             }
@@ -404,14 +435,16 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>תצוגה מקדימה – מאתר קודי תקלות | %s</title>
-<style>body{margin:0;background:#f0f3f8;padding:30px 16px 70px;font-family:"Assistant","Rubik",Arial,sans-serif}</style>
+<style>body{margin:0;background:%s;padding:34px 16px 80px;font-family:"Assistant","Rubik",Arial,sans-serif}</style>
 </head>
 <body>
 %s
 %s
 </body>
 </html>
-""" % (esc(site["businessName"]), widget, seo_only_html)
+""" % (esc(site["businessName"]),
+       "#070c16" if theme_of(site) == "dark" else "#f2f5fa",
+       widget, seo_only_html)
     write_text(os.path.join(DIST, "index.html"), preview)
 
     pages_dir = os.path.join(DIST, "pages")

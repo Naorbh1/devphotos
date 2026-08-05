@@ -1,4 +1,39 @@
-<section class="nfx-seo" id="nfx-error-code-index">
+<style>
+/* ==========================================================================
+   אינדקס הקודים שמתחת לטבלה (תוכן ל-SEO, נפתח בלחיצה)
+   ========================================================================== */
+.nfx-seo {
+  max-width: 980px; margin: 26px auto 0; padding: 4px;
+  direction: rtl; text-align: right;
+  font-family: "Assistant", "Rubik", "Heebo", -apple-system, Arial, sans-serif;
+  --s-fg: #0e1b2e; --s-mut: #5a6b85; --s-line: rgba(13, 26, 51, .1); --s-panel: #fff;
+  color: var(--s-fg);
+}
+.nfx-seo[data-theme="dark"] {
+  --s-fg: #eaf0fb; --s-mut: #8fa0bd; --s-line: rgba(255, 255, 255, .09); --s-panel: rgba(255, 255, 255, .035);
+}
+.nfx-seo h2 { font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; letter-spacing: -.01em; }
+.nfx-seo > p { font-size: .93rem; color: var(--s-mut); margin: 0 0 16px; }
+.nfx-seo details {
+  border: 1px solid var(--s-line); border-radius: 14px;
+  margin-bottom: 8px; background: var(--s-panel); overflow: hidden;
+}
+.nfx-seo summary {
+  cursor: pointer; padding: 13px 17px; font-weight: 700; font-size: .97rem;
+  list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+}
+.nfx-seo summary::-webkit-details-marker { display: none; }
+.nfx-seo summary::after { content: "+"; color: var(--s-mut); font-weight: 800; font-size: 1.15rem; }
+.nfx-seo details[open] summary::after { content: "−"; }
+.nfx-seo details[open] summary { border-bottom: 1px solid var(--s-line); }
+.nfx-seo-inner { padding: 16px 17px; display: grid; gap: 18px; }
+.nfx-seo-item h3 { font-size: 1rem; font-weight: 800; margin: 0 0 5px; }
+.nfx-seo-item p { font-size: .93rem; margin: 0 0 5px; }
+.nfx-seo-item ul { margin: 0 0 6px; padding-inline-start: 19px; list-style: disc; font-size: .9rem; color: var(--s-mut); }
+.nfx-seo .nfx-note { font-size: .84rem; color: var(--s-mut); }
+
+</style>
+<section class="nfx-seo" id="nfx-error-code-index" dir="rtl" lang="he" data-theme="dark">
 <h2>אינדקס קודי תקלות לפי יצרן וסוג מכשיר</h2>
 <p>ריכוז קודי השגיאה הנפוצים במוצרי חשמל ביתיים, המשמעות שלהם ומה אפשר לבדוק לפני הזמנת טכנאי. לחצו על יצרן כדי לפתוח את הרשימה.</p>
 <details id="idx-bosch-washer"><summary><span>בוש – מכונת כביסה (3 קודים)</span></summary><div class="nfx-seo-inner">

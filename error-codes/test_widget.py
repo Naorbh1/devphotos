@@ -46,16 +46,19 @@ def main():
         exe = chromium_path()
         browser = p.chromium.launch(executable_path=exe) if exe else p.chromium.launch()
         page = browser.new_page()
-        errors = []
+        # רק חריגות JavaScript נחשבות כישלון. שגיאות רשת (למשל טעינת הגופן
+        # מ-Google Fonts כשאין אינטרנט בסביבת הבדיקה) מדווחות לידיעה בלבד.
+        errors, net = [], []
         page.on("pageerror", lambda e: errors.append(str(e)))
-        page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        page.on("console", lambda m: (net if "net::" in m.text else errors).append(m.text)
+                if m.type == "error" else None)
         page.goto(PREVIEW)
 
         def lookup(brand, device, code):
             page.select_option("#nfx-brand", brand)
             page.select_option("#nfx-device", device)
             page.fill("#nfx-code", code)
-            page.click(".nfx-btn")
+            page.click(".nfx-go")
             return page.inner_text("#nfx-result")
 
         for brand, device, code, expect in CASES:
@@ -73,9 +76,37 @@ def main():
             if not ok:
                 failures.append("%s/%s/%s: ציפינו ל-'%s'" % (brand, device, code, expect))
 
+        # מסלול מלא דרך הממשק הגרפי: חיפוש יצרן ← לחיצה על אריח מכשיר ← קוד
+        page.goto(PREVIEW)
+        page.click("#nfx-brand-btn")
+        page.fill("#nfx-brand-q", "samsung")
+        page.click(".nfx-opt")
+        page.click('.nfx-dev[data-id="dishwasher"]')
+        page.fill("#nfx-code", "5C")
+        page.click(".nfx-go")
+        txt = page.inner_text("#nfx-result")
+        ok = "מתנקזים" in txt and "סמסונג" in page.inner_text("#nfx-brand-btn")
+        print(("  ✓ " if ok else "  ✗ ") + "מסלול מלא בממשק: חיפוש יצרן, בחירת מכשיר וקוד")
+        if not ok:
+            failures.append("מסלול ממשק: " + txt[:200])
+
+        # מחוון השלבים נדלק ככל שמתקדמים
+        lit = page.eval_on_selector_all("[data-step].is-done", "els => els.length")
+        ok = lit == 3
+        print(("  ✓ " if ok else "  ✗ ") + "מחוון השלבים: %d/3 שלבים דולקים" % lit)
+        if not ok:
+            failures.append("מחוון שלבים: %d" % lit)
+
+        # קישור עמוק משחזר את הבחירה
+        page.goto(PREVIEW + "#nfx=lg|washer|OE")
+        ok = "מתנקזים" in page.inner_text("#nfx-result")
+        print(("  ✓ " if ok else "  ✗ ") + "קישור עמוק #nfx=lg|washer|OE משחזר את התוצאה")
+        if not ok:
+            failures.append("קישור עמוק לא עבד")
+
         # מותג ללא נתונים
         page.select_option("#nfx-brand", "crystal")
-        page.click(".nfx-btn")
+        page.click(".nfx-go")
         txt = page.inner_text("#nfx-result")
         ok = "עדיין אין אצלנו" in txt
         print(("  ✓ " if ok else "  ✗ ") + "מותג ללא טבלת קודים מציג פנייה ליצירת קשר")
@@ -99,7 +130,9 @@ def main():
             failures.append("מספר צ'יפים: %d" % chips)
 
         if errors:
-            failures.append("שגיאות JavaScript בקונסולה: %s" % errors[:3])
+            failures.append("שגיאות JavaScript: %s" % errors[:3])
+        if net:
+            print("  ℹ משאבים חיצוניים שלא נטענו בסביבת הבדיקה: %d (בדרך כלל הגופן)" % len(net))
         browser.close()
 
     print()

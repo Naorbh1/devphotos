@@ -1,42 +1,81 @@
-<div id="nfx-ec" class="nfx-ec" dir="rtl" lang="he">
+<div id="nfx-ec" class="nfx-ec" dir="rtl" lang="he" data-theme="__THEME__">
   <div class="nfx-card">
+
     <header class="nfx-head">
+      <span class="nfx-eyebrow"><i class="nfx-dot"></i> אבחון מיידי · ללא עלות</span>
       <h2>__TITLE__</h2>
       <p>__SUBTITLE__</p>
+      <div class="nfx-facts">
+        <div class="nfx-fact"><b>__STAT_CODES__</b> קודי תקלה</div>
+        <div class="nfx-fact"><b>__STAT_BRANDS__</b> יצרנים</div>
+        <div class="nfx-fact"><b>__STAT_DEVICES__</b> סוגי מכשירים</div>
+        <div class="nfx-fact">תשובה תוך <b>שניות</b></div>
+      </div>
     </header>
 
     <div class="nfx-body">
-      <form id="nfx-form" class="nfx-form" novalidate>
-        <div class="nfx-field">
-          <label for="nfx-brand">יצרן</label>
-          <select id="nfx-brand" name="brand"></select>
+      <form id="nfx-form" novalidate>
+        <div class="nfx-grid">
+
+          <div class="nfx-field" data-step="1">
+            <label class="nfx-lbl" for="nfx-brand-btn"><b class="nfx-num">1</b> יצרן המכשיר</label>
+            <div class="nfx-combo">
+              <button type="button" id="nfx-brand-btn" class="nfx-combo-btn is-empty"
+                      aria-haspopup="listbox" aria-expanded="false" aria-controls="nfx-brand-pop">
+                <span class="nfx-combo-val">בחרו יצרן…</span>
+                <svg class="nfx-chev" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="nfx-pop" id="nfx-brand-pop" hidden>
+                <div class="nfx-pop-search">
+                  <input type="text" id="nfx-brand-q" placeholder="חיפוש יצרן (עברית או אנגלית)…"
+                         autocomplete="off" spellcheck="false">
+                </div>
+                <ul class="nfx-opts" id="nfx-brand-opts" role="listbox" aria-label="יצרנים"></ul>
+              </div>
+            </div>
+            <!-- שדה נסתר: מקור האמת לטפסים ולנגישות -->
+            <select id="nfx-brand" class="nfx-sr" tabindex="-1" aria-hidden="true"></select>
+          </div>
+
+          <div class="nfx-field" data-step="2">
+            <span class="nfx-lbl"><b class="nfx-num">2</b> סוג המכשיר</span>
+            <div class="nfx-devs" id="nfx-devs" role="group" aria-label="סוג מכשיר">
+              <p class="nfx-devs-empty">בחרו קודם יצרן כדי לראות אילו מכשירים זמינים</p>
+            </div>
+            <select id="nfx-device" class="nfx-sr" tabindex="-1" aria-hidden="true"></select>
+          </div>
         </div>
 
-        <div class="nfx-field">
-          <label for="nfx-device">סוג מכשיר</label>
-          <select id="nfx-device" name="device" disabled>
-            <option value="">בחרו קודם יצרן</option>
-          </select>
+        <div class="nfx-search" data-step="3">
+          <label class="nfx-lbl" for="nfx-code"><b class="nfx-num">3</b> קוד השגיאה שמופיע בצג</label>
+          <div class="nfx-search-row">
+            <svg class="nfx-search-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+              <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="nfx-code" class="nfx-code" type="text" list="nfx-codes" autocomplete="off"
+                   spellcheck="false" placeholder="לדוגמה: E18, 4E, F05, d90">
+            <datalist id="nfx-codes"></datalist>
+            <button type="submit" class="nfx-go">
+              בדיקת הקוד
+              <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div class="nfx-field nfx-field-code">
-          <label for="nfx-code">קוד השגיאה שבצג</label>
-          <input id="nfx-code" class="nfx-code-input" name="code" type="text"
-                 list="nfx-codes" autocomplete="off" spellcheck="false" placeholder="לדוגמה: E18">
-          <datalist id="nfx-codes"></datalist>
+        <div id="nfx-chips" class="nfx-chips">
+          <div class="nfx-chips-t">קודים נפוצים למכשיר שבחרתם — לחיצה מציגה את ההסבר:</div>
+          <div id="nfx-chips-list" class="nfx-chips-l"></div>
         </div>
-
-        <button type="submit" class="nfx-btn">בדיקת הקוד</button>
       </form>
-
-      <div id="nfx-chips" class="nfx-chips">
-        <div class="nfx-chips-title">קודים נפוצים למכשיר שבחרתם – לחיצה תציג הסבר:</div>
-        <div id="nfx-chips-list" class="nfx-chips-list"></div>
-      </div>
 
       <div id="nfx-result" class="nfx-result" role="status" aria-live="polite"></div>
 
-      <p class="nfx-disclaimer">__DISCLAIMER__</p>
+      <p class="nfx-legal">__DISCLAIMER__</p>
     </div>
   </div>
 </div>
