@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #fff1f4;
+  --color-brand-100: #ffe0e7;
+  --color-brand-200: #ffc6d4;
+  --color-brand-300: #ff9db4;
+  --color-brand-400: #fb6588;
+  --color-brand-500: #f13a64;
+  --color-brand-600: #de1a4c;
+  --color-brand-700: #bb0f3d;
+  --color-brand-800: #9c1039;
+  --color-brand-900: #851236;
+
+  --color-ink-50: #f7f7f8;
+  --color-ink-100: #eeeef1;
+  --color-ink-200: #d9d9e0;
+  --color-ink-300: #b8b8c4;
+  --color-ink-400: #8f8fa1;
+  --color-ink-500: #6f6f85;
+  --color-ink-600: #59596c;
+  --color-ink-700: #494958;
+  --color-ink-800: #3e3e4a;
+  --color-ink-900: #26262e;
+
+  --font-sans: "Assistant", "Rubik", ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-ink-50);
+  color: var(--color-ink-900);
+}
+
+/* שדות טופס אחידים */
+.field {
+  @apply w-full rounded-xl border border-ink-200 bg-white px-3 py-2 text-[15px]
+         outline-none transition placeholder:text-ink-400
+         focus:border-brand-400 focus:ring-2 focus:ring-brand-100;
+}
+
+.label {
+  @apply mb-1 block text-sm font-medium text-ink-700;
+}
+
+/* @utility ולא .btn רגיל — כדי ש-@apply של הווריאנטים למטה יוכל להשתמש בו */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2
+         text-[15px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-primary {
+  @apply btn bg-brand-600 text-white hover:bg-brand-700;
+}
+
+.btn-secondary {
+  @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-100;
+}
+
+.btn-ghost {
+  @apply btn text-ink-600 hover:bg-ink-100;
+}
+
+.card {
+  @apply rounded-2xl border border-ink-200 bg-white shadow-sm;
+}
+
+.chip {
+  @apply inline-flex items-center rounded-full bg-ink-100 px-2.5 py-1 text-xs font-medium text-ink-700;
+}
