@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>דיבנט הפקות</title>
+<meta name="description" content="דיבנט – סוכנות להפקת אירועים: חתונות, בר ובת מצווה, אירועי חברה והשקות. מהרעיון ועד הרגע האחרון על הרחבה.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Karantina:wght@400;700&display=swap">
+<style>
+  :root {
+    --ground: #F5F3F8;
+    --surface: #FFFFFF;
+    --ink: #1D1830;
+    --muted: #625B78;
+    --line: #DDD8E6;
+    --accent: #C92D62;
+    --accent-ink: #FFFFFF;
+    --spot: #F0B23E;
+    --stage: #1D1830;
+    --stage-ink: #F5F3F8;
+    --display: "Karantina", "Arial Narrow", "Assistant", sans-serif;
+    --body: "Assistant", "Segoe UI", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #15121F;
+      --surface: #1F1A2E;
+      --ink: #F1EEF7;
+      --muted: #A9A2BD;
+      --line: #342D47;
+      --accent: #FF5C8D;
+      --accent-ink: #1D1830;
+      --spot: #F5C35F;
+      --stage: #0E0B16;
+      --stage-ink: #F1EEF7;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #15121F;
+    --surface: #1F1A2E;
+    --ink: #F1EEF7;
+    --muted: #A9A2BD;
+    --line: #342D47;
+    --accent: #FF5C8D;
+    --accent-ink: #1D1830;
+    --spot: #F5C35F;
+    --stage: #0E0B16;
+    --stage-ink: #F1EEF7;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--spot); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1120px; margin-inline: auto; padding-inline: 20px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: .95; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+  h2 { font-size: clamp(2.8rem, 6vw, 4.2rem); }
+  h3 { font-size: 2rem; }
+  p { margin: 0; }
+  .eyebrow { font-size: .85rem; font-weight: 700; letter-spacing: .08em; color: var(--accent); }
+  .lede { color: var(--muted); max-width: 58ch; font-size: 1.15rem; }
+
+  /* header */
+  .top {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .logo { font-family: var(--display); font-size: 2.2rem; font-weight: 700; text-decoration: none; line-height: 1; }
+  .logo span { color: var(--accent); }
+  .nav { display: flex; gap: 24px; align-items: center; }
+  .nav a { text-decoration: none; font-weight: 600; }
+  .nav a:hover { color: var(--accent); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    font: 700 1rem var(--body); text-decoration: none;
+    padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer;
+    transition: transform .15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+  @media (max-width: 760px) { .nav a:not(.btn) { display: none; } }
+
+  /* hero */
+  .hero { padding-block: 56px 72px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; }
+  .hero h1 { font-size: clamp(3.6rem, 8.5vw, 7rem); }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .lede { margin-top: 20px; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .cue {
+    background: var(--stage); color: var(--stage-ink);
+    border-radius: 18px; padding: 24px 24px 18px;
+    box-shadow: 0 24px 60px -30px rgba(29, 24, 48, .55);
+    transform: rotate(-1.5deg);
+  }
+  .cue header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 1px dashed color-mix(in srgb, var(--stage-ink) 30%, transparent); }
+  .cue header b { font-family: var(--display); font-size: 1.9rem; font-weight: 700; }
+  .cue header small { opacity: .7; font-size: .85rem; }
+  .cue ol { list-style: none; margin: 0; padding: 0; }
+  .cue li { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: baseline; padding-block: 10px; border-bottom: 1px solid color-mix(in srgb, var(--stage-ink) 12%, transparent); }
+  .cue li:last-child { border-bottom: 0; }
+  .cue time { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--spot); direction: ltr; text-align: right; }
+  .cue .who { font-size: .8rem; opacity: .65; }
+  .cue li.live { color: var(--spot); }
+  .cue li.live .who::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-inline-end: 6px; animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .cue { transform: none; }
+  }
+
+  /* stats strip */
+  .strip { border-block: 1px solid var(--line); }
+  .strip .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .strip div { padding-block: 22px; padding-inline: 16px; border-inline-start: 1px solid var(--line); }
+  .strip div:first-child { border-inline-start: 0; padding-inline-start: 0; }
+  .strip b { display: block; font-family: var(--display); font-size: 2.8rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .strip span { color: var(--muted); font-size: .95rem; }
+  @media (max-width: 700px) {
+    .strip .wrap { grid-template-columns: 1fr 1fr; }
+    .strip div:nth-child(3) { border-inline-start: 0; padding-inline-start: 0; }
+    .strip div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  }
+
+  section.block { padding-block: 88px; }
+  .head { display: grid; gap: 14px; margin-bottom: 44px; }
+
+  /* services */
+  .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+  .service { padding: 26px 22px 30px 22px; border-bottom: 1px solid var(--line); border-inline-start: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+  .service:nth-child(4n+1) { border-inline-start: 0; }
+  .service .tag { font-size: .8rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+  .service p { color: var(--muted); }
+  .service ul { margin: 4px 0 0; padding-inline-start: 18px; font-size: .95rem; }
+  @media (max-width: 1060px) { .service { border-inline-start: 0; } }
+
+  /* process */
+  .process { background: var(--stage); color: var(--stage-ink); }
+  .process .lede { color: color-mix(in srgb, var(--stage-ink) 72%, transparent); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: step; }
+  .steps li { counter-increment: step; display: grid; gap: 10px; align-content: start; padding-top: 18px; border-top: 2px solid var(--spot); }
+  .steps li::before { content: "שלב " counter(step); font-weight: 700; font-size: .85rem; color: var(--spot); letter-spacing: .06em; }
+  .steps .when { font-size: .85rem; opacity: .65; }
+  .steps p { color: color-mix(in srgb, var(--stage-ink) 78%, transparent); }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+  /* portfolio */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .chip { font: 600 .95rem var(--body); background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .shot { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 5; max-width: 100%; color: #fff; text-decoration: none; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; isolation: isolate; }
+  .shot::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--bg); }
+  .shot::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(14, 11, 22, .82), transparent 55%); }
+  .shot b { font-family: var(--display); font-size: 1.9rem; line-height: 1; }
+  .shot small { opacity: .85; }
+  .shot.wide { grid-column: span 2; aspect-ratio: auto; }
+  @media (max-width: 760px) { .gallery { grid-template-columns: 1fr 1fr; } .shot.wide { grid-column: span 2; aspect-ratio: 16 / 10; } }
+  @media (max-width: 480px) { .gallery { grid-template-columns: 1fr; } .shot.wide { grid-column: auto; } }
+
+  /* testimonials */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .quotes figure { margin: 0; display: grid; gap: 14px; align-content: start; }
+  .quotes blockquote { margin: 0; font-size: 1.2rem; line-height: 1.55; }
+  .quotes blockquote::before { content: "״"; display: block; font-family: var(--display); font-size: 4rem; line-height: .6; color: var(--accent); }
+  .quotes figcaption { color: var(--muted); font-size: .95rem; }
+  .quotes figcaption b { color: var(--ink); }
+  @media (max-width: 860px) { .quotes { grid-template-columns: 1fr; } }
+
+  /* contact */
+  .contact .wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start; }
+  .details { display: grid; gap: 18px; margin-top: 28px; }
+  .details div { display: grid; gap: 2px; }
+  .details dt { font-size: .8rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+  .details dd { margin: 0; font-weight: 600; font-size: 1.15rem; }
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: grid; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  label { font-weight: 600; font-size: .95rem; }
+  input, select, textarea { font: inherit; color: var(--ink); background: var(--ground); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; width: 100%; }
+  textarea { min-height: 110px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+  .form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .status { color: var(--muted); font-size: .95rem; }
+  .status.ok { color: var(--ink); font-weight: 600; }
+  @media (max-width: 860px) { .contact .wrap { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { form { grid-template-columns: 1fr; padding: 20px; } }
+
+  footer { border-top: 1px solid var(--line); padding-block: 28px; color: var(--muted); font-size: .9rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">דיבנט<span>.</span></a>
+    <nav class="nav" aria-label="ניווט ראשי">
+      <a href="#services">שירותים</a>
+      <a href="#process">איך זה עובד</a>
+      <a href="#work">אירועים שהפקנו</a>
+      <a class="btn" href="#contact">בואו נדבר</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">סוכנות להפקת אירועים</p>
+        <h1>אתם חוגגים.<br><em>אנחנו מחזיקים את הלו״ז.</em></h1>
+        <p class="lede">דיבנט מפיקה חתונות, בר ובת מצווה, אירועי חברה והשקות – מבחירת המקום ועד השיר האחרון על הרחבה. מפיק אחד מלווה אתכם לאורך כל הדרך, עם צוות ספקים שעבדנו איתו מאות פעמים.</p>
+        <div class="actions">
+          <a class="btn" href="#contact">קבעו שיחת היכרות</a>
+          <a class="btn ghost" href="#work">לאירועים שהפקנו</a>
+        </div>
+      </div>
+
+      <article class="cue" aria-label="דוגמה ללו״ז הפקה של ערב אירוע">
+        <header>
+          <b>לו״ז ערב האירוע</b>
+          <small>חתונה · 280 אורחים · גן אירועים, עמק חפר</small>
+        </header>
+        <ol>
+          <li><time>16:30</time><span>בדיקת סאונד ותאורה</span><span class="who">טכני</span></li>
+          <li><time>18:45</time><span>צילומי זוג בשקיעה</span><span class="who">צלמים</span></li>
+          <li class="live"><time>19:30</time><span>קבלת פנים ובר קוקטיילים</span><span class="who">עכשיו</span></li>
+          <li><time>20:45</time><span>חופה – כניסת הכלה</span><span class="who">רב · נגנים</span></li>
+          <li><time>21:15</time><span>סבב ריקודים ראשון</span><span class="who">DJ</span></li>
+          <li><time>22:00</time><span>מנה עיקרית ונאומים</span><span class="who">קייטרינג</span></li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <div class="strip" aria-label="דיבנט במספרים">
+    <div class="wrap">
+      <div><b>640+</b><span>אירועים שהפקנו</span></div>
+      <div><b>12</b><span>שנות ניסיון בשטח</span></div>
+      <div><b>85</b><span>ספקים קבועים ובדוקים</span></div>
+      <div><b>1</b><span>מפיק צמוד לכל אירוע</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">שירותים</p>
+        <h2>כל סוג של ערב, אותה רמת שליטה</h2>
+        <p class="lede">אפשר לקחת מאיתנו הפקה מלאה, או רק את החלקים שחסרים לכם. בכל מקרה, יש לכם כתובת אחת.</p>
+      </div>
+      <div class="services">
+        <article class="service">
+          <span class="tag">150–600 אורחים</span>
+          <h3>חתונות</h3>
+          <p>מבחירת הגן ועד פירוק הבר – כולל ניהול חופה, תזמון ספקים וטיפול באורחים.</p>
+          <ul><li>ליווי מול האולם והקייטרינג</li><li>עיצוב, פרחים ותאורה</li><li>מפיקה בשטח עד הסוף</li></ul>
+        </article>
+        <article class="service">
+          <span class="tag">משפחתי ועד מסיבה</span>
+          <h3>בר ובת מצווה</h3>
+          <p>אירוע שהילדים זוכרים וההורים נהנים בו – קונספט, מופע, תוכן לסרט ומשחקי רחבה.</p>
+          <ul><li>קונספט וצבעוניות</li><li>הנחיה ואטרקציות</li><li>סרטון ומצגת</li></ul>
+        </article>
+        <article class="service">
+          <span class="tag">20–2,000 משתתפים</span>
+          <h3>אירועי חברה</h3>
+          <p>כנסים, ערבי גיבוש, ימי כיף וחגיגות סוף שנה – כולל רישום משתתפים ולוגיסטיקה.</p>
+          <ul><li>מערכת הרשמה ושילוט</li><li>במה, מסכים והגברה</li><li>הסעות והפעלות</li></ul>
+        </article>
+        <article class="service">
+          <span class="tag">מותגים ומוצרים</span>
+          <h3>השקות ואירועי מותג</h3>
+          <p>ערב שנראה טוב במצלמה – עיצוב חלל, קהל, יח״צ ותוכן לרשתות כבר מאותו לילה.</p>
+          <ul><li>עיצוב חלל ממותג</li><li>צילום וידאו וסטילס</li><li>ניהול משפיענים ואורחים</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block process" id="process">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow" style="color: var(--spot)">איך זה עובד</p>
+        <h2>מהשיחה הראשונה ועד הבוקר שאחרי</h2>
+        <p class="lede">ארבעה שלבים, ולוח זמנים שאתם רואים בכל רגע. הזמנים מתייחסים לחתונה טיפוסית – אירועי חברה זזים מהר יותר.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="when">כ־9 חודשים לפני</span><h3>היכרות ותקציב</h3><p>שיחה על מה חשוב לכם, כמה אורחים ובאיזה תקציב. יוצאים עם הצעה כתובה ופירוט עלויות.</p></li>
+        <li><span class="when">6–8 חודשים לפני</span><h3>מקום וספקים</h3><p>שלוש הצעות מקום שמתאימות לכם, סיורים משותפים וסגירת ספקים במחירי הסוכנות.</p></li>
+        <li><span class="when">חודש לפני</span><h3>לו״ז ועיצוב</h3><p>סקיצת עיצוב, תוכנית ישיבה ולו״ז דקה־אחר־דקה שכל ספק מקבל לנייד.</p></li>
+        <li><span class="when">ביום עצמו</span><h3>הפקה בשטח</h3><p>המפיק שלכם מגיע ראשון ויוצא אחרון. אתם רק צריכים להגיע.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">אירועים שהפקנו</p>
+        <h2>מהעונה האחרונה</h2>
+      </div>
+      <div class="filters" role="group" aria-label="סינון לפי סוג אירוע">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">הכול</button>
+        <button class="chip" type="button" data-filter="wedding" aria-pressed="false">חתונות</button>
+        <button class="chip" type="button" data-filter="mitzvah" aria-pressed="false">בר/בת מצווה</button>
+        <button class="chip" type="button" data-filter="corp" aria-pressed="false">חברות והשקות</button>
+      </div>
+      <div class="gallery">
+        <a class="shot" data-type="wedding" href="#contact" style="--bg: radial-gradient(120% 90% at 20% 10%, #F0B23E, transparent 55%), linear-gradient(135deg, #7A2E5A, #1D1830)"><b>נועה ואיתי</b><small>חתונת שקיעה · קיסריה · 340 אורחים</small></a>
+        <a class="shot" data-type="corp" href="#contact" style="--bg: radial-gradient(90% 70% at 70% 20%, #4FB3C9, transparent 60%), linear-gradient(160deg, #23405E, #0E0B16)"><b>כנס מוצר שנתי</b><small>חברת הייטק · תל אביב · 1,200 משתתפים</small></a>
+        <a class="shot" data-type="mitzvah" href="#contact" style="--bg: radial-gradient(90% 70% at 30% 20%, #FF7AA2, transparent 60%), linear-gradient(160deg, #6B3FA0, #1D1830)"><b>בת המצווה של מאיה</b><small>קונספט ״ניאון״ · הרצליה</small></a>
+        <a class="shot" data-type="wedding" href="#contact" style="--bg: radial-gradient(90% 70% at 50% 15%, #E9D6A8, transparent 60%), linear-gradient(160deg, #5C6B4A, #1D1E14)"><b>שירה ודניאל</b><small>חתונה בכרם · גליל עליון</small></a>
+        <a class="shot" data-type="corp" href="#contact" style="--bg: radial-gradient(90% 70% at 40% 25%, #F07A3E, transparent 60%), linear-gradient(160deg, #8A2D3B, #160E12)"><b>השקת קולקציה</b><small>מותג אופנה · נמל יפו</small></a>
+        <a class="shot" data-type="mitzvah" href="#contact" style="--bg: radial-gradient(90% 70% at 60% 20%, #7BD389, transparent 60%), linear-gradient(160deg, #1F5E57, #0C1A18)"><b>בר המצווה של יונתן</b><small>אירוע כדורגל · מודיעין</small></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 0">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">מה אומרים עלינו</p>
+        <h2>הלקוחות מספרים</h2>
+      </div>
+      <div class="quotes">
+        <figure>
+          <blockquote>ביום החתונה לא הוצאנו את הטלפון מהתיק פעם אחת. כל שאלה של ספק הגיעה לרוני, לא אלינו.</blockquote>
+          <figcaption><b>נועה ואיתי</b> · חתונה, קיסריה</figcaption>
+        </figure>
+        <figure>
+          <blockquote>1,200 איש, שלושה אולמות מקבילים ואפס עיכובים בלו״ז. כבר סגרנו איתם את הכנס של השנה הבאה.</blockquote>
+          <figcaption><b>מנהלת אירועים</b> · חברת הייטק</figcaption>
+        </figure>
+        <figure>
+          <blockquote>מאיה בחרה את הקונספט, והם הפכו אותו לאירוע אמיתי. החברים שלה עדיין מדברים על זה.</blockquote>
+          <figcaption><b>אורית</b> · אמא של בת המצווה</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact" style="padding-top: 0">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">בואו נדבר</p>
+        <h2 style="margin-top: 14px">ספרו לנו על האירוע</h2>
+        <p class="lede" style="margin-top: 14px">שלחו כמה פרטים ונחזור אליכם תוך יום עסקים עם שאלות ראשונות והערכת תקציב.</p>
+        <dl class="details">
+          <div><dt>טלפון</dt><dd dir="ltr" style="text-align: right">050-000-0000</dd></div>
+          <div><dt>אימייל</dt><dd>hello@devent.co.il</dd></div>
+          <div><dt>משרד</dt><dd>תל אביב · מגיעים לכל הארץ</dd></div>
+        </dl>
+      </div>
+
+      <form id="lead-form" novalidate>
+        <div class="field">
+          <label for="f-name">שם מלא</label>
+          <input id="f-name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone">טלפון</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" dir="ltr" required>
+        </div>
+        <div class="field">
+          <label for="f-type">סוג האירוע</label>
+          <select id="f-type" name="type">
+            <option>חתונה</option>
+            <option>בר / בת מצווה</option>
+            <option>אירוע חברה</option>
+            <option>השקה / אירוע מותג</option>
+            <option>אחר</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-guests">מספר אורחים משוער</label>
+          <input id="f-guests" name="guests" type="number" min="1" inputmode="numeric" placeholder="למשל 250">
+        </div>
+        <div class="field full">
+          <label for="f-date">תאריך (אם כבר יש)</label>
+          <input id="f-date" name="date" type="date">
+        </div>
+        <div class="field full">
+          <label for="f-msg">מה חשוב לכם שיקרה בערב הזה?</label>
+          <textarea id="f-msg" name="message"></textarea>
+        </div>
+        <div class="form-foot">
+          <button class="btn" type="submit">שליחת פרטים</button>
+          <p class="status" id="form-status" role="status" aria-live="polite">נחזור אליכם תוך יום עסקים.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> דיבנט הפקות אירועים</span>
+    <span>חתונות · בר ובת מצווה · אירועי חברה · השקות</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Portfolio filter
+  const chips = document.querySelectorAll('.chip');
+  const shots = document.querySelectorAll('.shot');
+  chips.forEach(chip => chip.addEventListener('click', () => {
+    const f = chip.dataset.filter;
+    chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+    shots.forEach(s => { s.hidden = f !== 'all' && s.dataset.type !== f; });
+  }));
+
+  // Lead form. Set FORM_ENDPOINT (e.g. a Formspree URL) to receive submissions.
+  const FORM_ENDPOINT = '';
+  const form = document.getElementById('lead-form');
+  const status = document.getElementById('form-status');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim();
+    const phone = form.elements.phone.value.trim();
+    if (!name || !phone) {
+      status.className = 'status';
+      status.textContent = 'חסרים שם וטלפון – בלעדיהם לא נוכל לחזור אליכם.';
+      (name ? form.elements.phone : form.elements.name).focus();
+      return;
+    }
+    if (!FORM_ENDPOINT) {
+      status.className = 'status';
+      status.textContent = 'הטופס עדיין לא מחובר לתיבת פניות. בינתיים אפשר להתקשר או לכתוב לנו במייל.';
+      return;
+    }
+    status.className = 'status';
+    status.textContent = 'שולחים…';
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+      if (!res.ok) throw new Error(res.status);
+      form.reset();
+      status.className = 'status ok';
+      status.textContent = `תודה ${name}! קיבלנו את הפרטים ונחזור אליכם תוך יום עסקים.`;
+    } catch {
+      status.className = 'status';
+      status.textContent = 'השליחה לא הצליחה. נסו שוב, או התקשרו אלינו ישירות.';
+    }
+  });
+</script>
+</body>
+</html>
