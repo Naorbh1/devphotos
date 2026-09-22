@@ -99,6 +99,9 @@ python maps/search.py "מסעדות" --location "תל אביב" --radius 5 --dry
 
 # איסוף וייצוא
 python maps/search.py "מסעדות" --location "תל אביב" --radius 5 --csv out.csv
+
+# עוטף מקוצר: "שאילתה" lat lng radius_km -> CSV+JSON ב-out/
+./scripts/scrape.sh "coffee shops in Austin TX" 30.2672 -97.7431 5
 ```
 
 התיעוד המלא - כולל כיסוי אזורים רחבים מעבר לתקרת 60 התוצאות של ה-API, מפלסי

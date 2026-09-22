@@ -28,6 +28,8 @@ maps/
   search.py          # CLI: חיפוש עסקים לפי שאילתה ואזור -> CSV/JSON
   details.py         # CLI: העשרה בפרטים מלאים וביקורות
   requirements.txt
+scripts/
+  scrape.sh          # עוטף מקוצר: "שאילתה" lat lng radius -> CSV+JSON ב-out/
 ```
 
 ## התקנה
@@ -54,6 +56,38 @@ export GOOGLE_MAPS_API_KEY="..."
 ```bash
 python maps/search.py "מסעדות" --location "תל אביב" --radius 5 --csv out.csv
 ```
+
+### עוטף מקוצר: scripts/scrape.sh
+
+לשימוש מהיר יש עוטף עם ממשק פוזיציוני (שאילתה, קו רוחב, קו אורך, רדיוס בק"מ):
+
+```bash
+./scripts/scrape.sh "coffee shops in Austin TX" 30.2672 -97.7431 5
+```
+
+העוטף שומר אוטומטית CSV ו-JSON עם חותמת זמן ל-`out/`, ומעביר כל דגל נוסף
+ישר ל-`search.py`:
+
+```bash
+./scripts/scrape.sh "מסעדות" 32.0853 34.7818 10 --grid 3 --auto-split
+./scripts/scrape.sh "מוסך" 31.2530 34.7915 8 --dry-run
+```
+
+בניגוד ל-`search.py`, ברירת המחדל של העוטף היא **en/US** (לא he/IL), כי הוא
+נועד גם לחיפושים מחוץ לישראל. לשינוי:
+
+```bash
+SCRAPE_LANGUAGE=he SCRAPE_REGION=IL ./scripts/scrape.sh "מסעדות" 32.0853 34.7818 5
+```
+
+משתני סביבה: `SCRAPE_LANGUAGE` (ברירת מחדל `en`), `SCRAPE_REGION` (`US`),
+`SCRAPE_TIER` (`contact`), `OUT_DIR` (`out`), `PYTHON` (`python3`).
+
+דגלים שאתם מוסיפים מנצחים את ברירות המחדל של העוטף, כולל `--csv`/`--json`
+(argparse לוקח את הערך האחרון). העוטף בודק טווחי קואורדינטות ורדיוס, קיום
+מפתח API והתקנת `requests` **לפני** שהוא שולח קריאה בתשלום.
+
+העוטף הוא ממשק שורת פקודה סינכרוני - אין כאן שירות, תור עבודות או REST API.
 
 ### כיסוי אזור שלם (מעבר ל-60 תוצאות)
 
