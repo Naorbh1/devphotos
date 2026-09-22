@@ -92,6 +92,22 @@ class PlacesError(RuntimeError):
     """שגיאה שהוחזרה מה-API (או כשל רשת שלא השתקם אחרי ניסיונות חוזרים)."""
 
 
+def _error_text(response: "requests.Response") -> str:
+    """
+    מחלץ את הודעת השגיאה המשמעותית מתשובת שגיאה של Google.
+    בלי זה כל תא כושל היה מדפיס עשרות שורות של JSON גולמי ומקבור את הסיבה.
+    """
+    try:
+        err = (response.json() or {}).get("error", {})
+        message = (err.get("message") or "").strip()
+        status = (err.get("status") or "").strip()
+        if message:
+            return f"HTTP {response.status_code} {status}: {message}".replace("  ", " ")
+    except ValueError:
+        pass
+    return f"HTTP {response.status_code}: {response.text[:200]}"
+
+
 class PlacesClient:
     def __init__(
         self,
@@ -155,7 +171,7 @@ class PlacesClient:
                 if response.status_code == 200:
                     self.calls[label] = self.calls.get(label, 0) + 1
                     return response.json()
-                last_error = f"HTTP {response.status_code}: {response.text[:400]}"
+                last_error = _error_text(response)
                 # 4xx שאינו 429 לא ישתפר בניסיון נוסף - עוצרים מיד.
                 if response.status_code != 429 and response.status_code < 500:
                     raise PlacesError(last_error)
@@ -467,10 +483,18 @@ def flatten_place(place: dict) -> dict:
     }
 
 
+def _ensure_parent(path: str) -> None:
+    """יוצר את תיקיית היעד אם חסרה, כדי ש---csv out/sub/file.csv לא יקרוס."""
+    parent = Path(path).expanduser().parent
+    if str(parent) not in ("", "."):
+        parent.mkdir(parents=True, exist_ok=True)
+
+
 def write_csv(rows: list[dict], path: str, columns: list[str] | None = None) -> None:
     """כותב CSV עם BOM כדי ש-Excel יציג עברית נכון."""
     import csv
 
+    _ensure_parent(path)
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns or CSV_COLUMNS, extrasaction="ignore")
         writer.writeheader()
@@ -479,5 +503,6 @@ def write_csv(rows: list[dict], path: str, columns: list[str] | None = None) -> 
 
 
 def write_json(data: Any, path: str) -> None:
+    _ensure_parent(path)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

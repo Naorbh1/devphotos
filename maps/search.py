@@ -61,14 +61,20 @@ def collect(
     query: str,
     tiles: list[tuple[float, float, float, float]],
     args: argparse.Namespace,
-) -> list[dict]:
+) -> tuple[list[dict], int, int, str]:
     """
     עובר על התאים, אוסף תוצאות ומאחד לפי place_id (סדר הגילוי נשמר).
     התור מחזיק זוגות של (תא, עומק פיצול) כדי להגביל את עומק הפיצול האוטומטי.
+
+    מחזיר (מקומות, מספר תאים שנסרקו, מספר תאים שנכשלו, שגיאה ראשונה) - ספירת
+    הכשלים נחוצה כדי להבדיל בין "אזור באמת ריק" ובין "ההרצה נכשלה", שני מצבים
+    שנראים אחרת לגמרי למי שמריץ אבל מחזירים אפס תוצאות.
     """
     found: dict[str, dict] = {}
     queue: list[tuple[tuple[float, float, float, float], int]] = [(t, 0) for t in tiles]
     processed = 0
+    failures = 0
+    first_error = ""
 
     while queue:
         tile, tile_depth = queue.pop(0)
@@ -86,7 +92,12 @@ def collect(
                 use_cache=not args.no_cache,
             )
         except PlacesError as exc:
-            print(f"\n  תא נכשל, ממשיך הלאה: {exc}", file=sys.stderr)
+            failures += 1
+            if not first_error:
+                first_error = str(exc)
+                print(f"\n  תא נכשל, ממשיך הלאה: {exc}", file=sys.stderr)
+            elif failures == 2:
+                print("\n  (שגיאות נוספות מאותו סוג לא יודפסו שוב)", file=sys.stderr)
             continue
 
         for place in places:
@@ -115,7 +126,9 @@ def collect(
 
     print(file=sys.stderr)
     places = list(found.values())
-    return places[: args.max_results] if args.max_results else places
+    if args.max_results:
+        places = places[: args.max_results]
+    return places, processed, failures, first_error
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -220,9 +233,27 @@ def main() -> int:
         )
         return 0
 
-    places = collect(client, args.query, tiles, args)
+    places, scanned, failures, first_error = collect(client, args.query, tiles, args)
     rows = [flatten_place(p) for p in places]
+
+    # כל התאים נכשלו: זו הרצה כושלת, לא אזור ריק. לא כותבים קובץ פלט - CSV
+    # עם כותרות בלבד נראה כמו "לא נמצאו עסקים" ומטעה את מי שקורא אותו.
+    if failures and not rows:
+        print(
+            f"\nההרצה נכשלה: כל {failures} התאים החזירו שגיאה ולא נאסף אף עסק.\n"
+            f"השגיאה הראשונה: {first_error}",
+            file=sys.stderr,
+        )
+        print(client.usage_report(), file=sys.stderr)
+        return 1
+
     print_results(rows, args.query, label)
+    if failures:
+        print(
+            f"\nאזהרה: {failures} מתוך {scanned} תאים נכשלו - התוצאות חלקיות.\n"
+            f"השגיאה הראשונה: {first_error}",
+            file=sys.stderr,
+        )
 
     if args.csv_path:
         write_csv(rows, args.csv_path)

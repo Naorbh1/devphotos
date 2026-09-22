@@ -127,6 +127,16 @@ def main() -> int:
         print(f"\r[{i}/{len(ordered)}] הושלמו, {len(failed)} נכשלו...", end="", file=sys.stderr, flush=True)
     print(file=sys.stderr)
 
+    # כל הבקשות נכשלו: הרצה כושלת, לא "אין פרטים". לא כותבים קובץ מטעה.
+    if failed and not enriched:
+        print(
+            f"\nההעשרה נכשלה: כל {len(failed)} הבקשות החזירו שגיאה.\n"
+            f"השגיאה הראשונה: {failed[0][1]}",
+            file=sys.stderr,
+        )
+        print(client.usage_report(), file=sys.stderr)
+        return 1
+
     rows = []
     for place in enriched:
         row = flatten_place(place)
