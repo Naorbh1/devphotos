@@ -1,0 +1,479 @@
+<title>תיקון תג איש קשר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&family=Assistant:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one reading column in three parts (Google Ads → Framer → check); code blocks are the only card-like objects */
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --fg: #1b2230;
+    --muted: #5d6676;
+    --line: #dde1e8;
+    --accent: #1f6feb;
+    --accent-ink: #ffffff;
+    --code-bg: #10161f;
+    --code-fg: #e4e9f1;
+    --code-dim: #7f8ea3;
+    --code-hi: #ffd479;
+    --warn-bg: #fff4e0;
+    --warn-fg: #7a4b00;
+    --ok: #1a7f4b;
+    --danger: #b42318;
+    --f-display: "Rubik", "Assistant", system-ui, sans-serif;
+    --f-body: "Assistant", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e131a; --surface: #161d27; --fg: #e6ebf2; --muted: #9aa5b5; --line: #273142;
+      --accent: #5b9dff; --accent-ink: #08111f; --code-bg: #0a0e14; --code-fg: #dbe3ee;
+      --code-dim: #75849a; --code-hi: #ffd479;
+      --warn-bg: #3a2a0c; --warn-fg: #ffd28a; --ok: #4cc38a; --danger: #ff7b6e;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e131a; --surface: #161d27; --fg: #e6ebf2; --muted: #9aa5b5; --line: #273142;
+    --accent: #5b9dff; --accent-ink: #08111f; --code-bg: #0a0e14; --code-fg: #dbe3ee;
+    --code-dim: #75849a; --code-hi: #ffd479;
+    --warn-bg: #3a2a0c; --warn-fg: #ffd28a; --ok: #4cc38a; --danger: #ff7b6e;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--f-body); font-size: 17px; line-height: 1.65;
+    padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 740px; margin-inline: auto; display: flex; flex-direction: column; gap: 30px; }
+  header { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; color: var(--muted); direction: ltr; text-align: right; }
+  h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(26px, 5vw, 34px); line-height: 1.2; margin: 0; text-wrap: balance; }
+  .lede { color: var(--muted); margin: 0; max-width: 62ch; }
+
+  .why { background: var(--warn-bg); color: var(--warn-fg); border-radius: 10px; padding: 14px 16px; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .fact { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; background: var(--surface); min-width: 0; }
+  .fact .k { font-size: 13px; color: var(--muted); }
+  .fact .v { font-family: var(--f-mono); font-size: 14px; direction: ltr; text-align: right; overflow-wrap: anywhere; }
+
+  .part { display: flex; flex-direction: column; gap: 18px; }
+  .part-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--fg); padding-bottom: 6px; }
+  .part-head .tag { font-family: var(--f-mono); font-size: 13px; color: var(--muted); direction: ltr; }
+  .part-head h2 { font-family: var(--f-display); font-weight: 700; font-size: 22px; margin: 0; }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; }
+  .num {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 2px solid var(--line); display: grid; place-items: center;
+    font-family: var(--f-display); font-weight: 700; font-size: 15px; color: var(--muted);
+    cursor: pointer; background: var(--surface); transition: background .15s, border-color .15s, color .15s;
+  }
+  .step.done .num { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .step.done .num span { display: none; }
+  .step.done .num::before { content: "✓"; }
+  .step.done h3 { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .num:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .body { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  h3 { font-family: var(--f-display); font-weight: 500; font-size: 19px; margin: 4px 0 0; line-height: 1.3; }
+  .body p, .body ul, .body ol { margin: 0; }
+  .body ul, .body ol { padding-inline-start: 22px; display: flex; flex-direction: column; gap: 4px; }
+  .path { font-weight: 600; }
+  .ui { font-family: var(--f-mono); font-size: .84em; background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+  .note { font-size: 15px; color: var(--muted); }
+  .bad { color: var(--danger); font-weight: 600; }
+  .good { color: var(--ok); font-weight: 600; }
+
+  .framer-map { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow-x: auto; }
+  .framer-map table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 15px; }
+  .framer-map th, .framer-map td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  .framer-map tr:last-child td { border-bottom: 0; }
+  .framer-map th { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .framer-map td:first-child { font-family: var(--f-mono); font-size: 13.5px; direction: ltr; text-align: left; white-space: nowrap; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-weight: 600; }
+  .field input {
+    font-family: var(--f-mono); font-size: 15px; direction: ltr; text-align: left;
+    padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); width: 100%;
+  }
+  .field input.valid { border-color: var(--ok); }
+  .field input.invalid { border-color: var(--danger); }
+  .status { font-size: 14px; }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn-fg); background: var(--warn-bg); border-radius: 6px; padding: 4px 8px; }
+  .status.err { color: var(--danger); }
+
+  .code { background: var(--code-bg); color: var(--code-fg); border-radius: 12px; overflow: hidden; }
+  .code .bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 10px 8px 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .code .label { font-size: 13px; opacity: .8; }
+  .code pre { margin: 0; padding: 14px 16px; overflow-x: auto; direction: ltr; text-align: left; font-family: var(--f-mono); font-size: 13.5px; line-height: 1.6; tab-size: 2; }
+  .code .c { color: var(--code-dim); }
+  .code .hi { color: var(--code-hi); }
+  button.copy {
+    font-family: var(--f-body); font-weight: 600; font-size: 14px;
+    background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px;
+    padding: 6px 14px; cursor: pointer; min-width: 92px; transition: filter .15s;
+  }
+  button.copy:hover { filter: brightness(1.08); }
+  button.copy.ok { background: var(--ok); color: #fff; }
+
+  .summary { border-top: 1px solid var(--line); padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .summary h2 { font-family: var(--f-display); font-weight: 500; font-size: 18px; margin: 0; }
+  .summary table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  .summary td, .summary th { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: right; }
+  .summary th { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .summary-wrap { overflow-x: auto; }
+  footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap" dir="rtl" lang="he">
+  <header>
+    <div class="eyebrow">naor-fix.com · Framer · Google Ads</div>
+    <h1>מדידת פניות באתר נאור פיקס</h1>
+    <p class="lede">כל מה שצריך כדי ש-Google Ads יספור רק פניות אמיתיות: לחיצה על הטלפון נספרת כ"שיחה", ולחיצה על וואטסאפ או שליחת טופס נספרות כ"איש קשר". זה לוקח בערך 15 דקות.</p>
+  </header>
+
+  <div class="why">
+    <strong>למה צריך את זה:</strong> כרגע ההמרה "איש קשר" נספרת כמעט על כל כניסה לאתר. בשבוע האחרון היו 50 המרות על 49 קליקים, ולכן אי אפשר לדעת אילו מילות מפתח מביאות לקוחות.
+  </div>
+
+  <div class="facts" aria-label="פרטי העסק שהקוד משתמש בהם">
+    <div class="fact"><div class="k">טלפון</div><div class="v">050-5422252</div></div>
+    <div class="fact"><div class="k">וואטסאפ</div><div class="v">wa.me/972505422252</div></div>
+    <div class="fact"><div class="k">מזהה Google Ads</div><div class="v">AW-17515611746</div></div>
+    <div class="fact"><div class="k">המרת "איש קשר" (קיימת)</div><div class="v">AW-17515611746/gxk3CNKHtPEcEOKMjKBB</div></div>
+  </div>
+
+  <!-- ===================== PART A ===================== -->
+  <section class="part" aria-labelledby="pa">
+    <div class="part-head"><span class="tag">A</span><h2 id="pa">ב-Google Ads: ליצור המרה לשיחת טלפון</h2></div>
+    <ol class="steps">
+      <li class="step" data-step="a1">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>1</span></button>
+        <div class="body">
+          <h3>ליצור פעולת המרה חדשה</h3>
+          <ol>
+            <li>ב-Google Ads: <span class="path">יעדים (Goals) ← המרות (Conversions) ← סיכום (Summary)</span>.</li>
+            <li>ללחוץ <span class="path">+ פעולת המרה חדשה</span> ולבחור <span class="path">אתר (Website)</span>.</li>
+            <li>להזין <span class="ui">naor-fix.com</span> וללחוץ <span class="path">סריקה (Scan)</span>.</li>
+            <li>לגלול למטה וללחוץ <span class="path">+ הוספת פעולת המרה באופן ידני</span>.</li>
+          </ol>
+        </div>
+      </li>
+      <li class="step" data-step="a2">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>2</span></button>
+        <div class="body">
+          <h3>למלא את ההגדרות</h3>
+          <ul>
+            <li><span class="path">קטגוריית יעד:</span> ליד טלפוני (Phone call lead)</li>
+            <li><span class="path">שם פעולת ההמרה:</span></li>
+          </ul>
+          <div class="code">
+            <div class="bar"><span class="label">שם ההמרה</span><button class="copy" type="button" data-target="convName">העתק</button></div>
+            <pre id="convName">לחיצה על טלפון באתר</pre>
+          </div>
+          <ul>
+            <li><span class="path">ערך:</span> לא להשתמש בערך</li>
+            <li><span class="path">ספירה:</span> אחת (One). שיחה אחת היא ליד אחד.</li>
+            <li>ללחוץ <span class="path">סיום</span> ואז <span class="path">שמירה והמשך</span>.</li>
+          </ul>
+        </div>
+      </li>
+      <li class="step" data-step="a3">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>3</span></button>
+        <div class="body">
+          <h3>להעתיק את מזהה ההמרה החדשה</h3>
+          <p>במסך ההתקנה לבחור <span class="path">התקנה עצמית של התג (Install the tag yourself)</span>. בקטע <span class="path">קטע קוד של אירוע (Event snippet)</span> מופיעה שורה כזו:</p>
+          <div class="code">
+            <div class="bar"><span class="label">לדוגמה בלבד, אל תעתיק</span></div>
+            <pre>'send_to': '<span class="hi">AW-17515611746/AbCdEfGhIjKlMnOp</span>'</pre>
+          </div>
+          <p>מעתיקים רק את החלק הצהוב, בלי הגרשיים, ומדביקים כאן:</p>
+          <div class="field">
+            <label for="callLabel">מזהה ההמרה "לחיצה על טלפון באתר"</label>
+            <input id="callLabel" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="AW-17515611746/...">
+            <div id="callStatus" class="status warn" role="status">עוד לא הודבק מזהה. הקוד בשלב B יספור בינתיים לחיצות על הטלפון תחת "איש קשר".</div>
+          </div>
+          <p class="note">הקוד בשלב B מתעדכן אוטומטית עם המזהה שהדבקת. את תג הבסיס שגוגל מציג במסך הזה לא צריך להתקין. הוא כבר מופיע בשלב B.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===================== PART B ===================== -->
+  <section class="part" aria-labelledby="pb">
+    <div class="part-head"><span class="tag">B</span><h2 id="pb">ב-Framer: איפה להדביק</h2></div>
+
+    <div class="framer-map">
+      <table>
+        <thead><tr><th>שדה ב-Framer</th><th>מה שמים בו</th></tr></thead>
+        <tbody>
+          <tr><td>Start of &lt;head&gt; tag</td><td>תג הבסיס של גוגל (שלב 2)</td></tr>
+          <tr><td>End of &lt;head&gt; tag</td><td>כלום מהמדריך הזה</td></tr>
+          <tr><td>Start of &lt;body&gt; tag</td><td>כלום מהמדריך הזה</td></tr>
+          <tr><td>End of &lt;body&gt; tag</td><td>קוד המדידה החדש (שלב 4)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ol class="steps">
+      <li class="step" data-step="b1">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>1</span></button>
+        <div class="body">
+          <h3>לפתוח את מסך הקוד</h3>
+          <ol>
+            <li>לפתוח את הפרויקט של naor-fix ב-Framer.</li>
+            <li>ללחוץ על גלגל השיניים <span class="path">Site Settings</span> בסרגל העליון.</li>
+            <li>בתפריט הצד לבחור <span class="path">General</span>.</li>
+            <li>לגלול למטה עד הכותרת <span class="path">Custom Code</span>. שם מופיעים ארבעת השדות מהטבלה למעלה.</li>
+          </ol>
+        </div>
+      </li>
+
+      <li class="step" data-step="b2">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>2</span></button>
+        <div class="body">
+          <h3>לבדוק את תג הבסיס בשדה Start of &lt;head&gt; tag</h3>
+          <p>אם יש שם כבר סקריפט עם <span class="ui">googletagmanager.com/gtag/js</span>, <span class="good">לא מוסיפים אותו שוב</span>. רק לוודא שיש בו את שתי שורות ה-<span class="ui">config</span> שמופיעות למטה, ואם השורה של <span class="ui">AW-17515611746</span> חסרה, להוסיף אותה.</p>
+          <p>אם השדה ריק, להדביק את כל הבלוק:</p>
+          <div class="code">
+            <div class="bar"><span class="label">Start of &lt;head&gt; tag · תג בסיס</span><button class="copy" type="button" data-target="base">העתק</button></div>
+<pre id="base">&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-31BZDL3KQ3"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-31BZDL3KQ3');
+  gtag('config', 'AW-17515611746');
+&lt;/script&gt;</pre>
+          </div>
+        </div>
+      </li>
+
+      <li class="step" data-step="b3">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>3</span></button>
+        <div class="body">
+          <h3>למחוק את הקוד הישן ששולח המרה בכל טעינה</h3>
+          <p>לחפש בכל ארבעת השדות את השורה הזו:</p>
+          <div class="code">
+            <div class="bar"><span class="label">השורה לחיפוש</span><button class="copy" type="button" data-target="old">העתק</button></div>
+            <pre id="old">gtag('event', 'conversion', {'send_to': 'AW-17515611746/gxk3CNKHtPEcEOKMjKBB'});</pre>
+          </div>
+          <ul>
+            <li><span class="bad">למחוק:</span> את השורה הזו, יחד עם ה-<span class="ui">&lt;script&gt;</span> שעוטף אותה אם היא לבד בתוכו.</li>
+            <li><span class="good">להשאיר:</span> את תג הבסיס משלב 2.</li>
+          </ul>
+          <p class="note">אם היא לא נמצאת שם, צריך לבדוק גם בכל עמוד: לחיצה ימנית על העמוד ברשימת העמודים ← <span class="path">Settings</span> ← <span class="path">Custom Code</span>. הכי חשוב לבדוק את עמוד הבית ועמוד "תודה" אם יש כזה.</p>
+        </div>
+      </li>
+
+      <li class="step" data-step="b4">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>4</span></button>
+        <div class="body">
+          <h3>להדביק את קוד המדידה החדש בשדה End of &lt;body&gt; tag</h3>
+          <div id="readyNote" class="status warn" role="status">הקוד מוכן להדבקה, אבל עוד לא הוכנס מזהה המרה לשיחות (שלב A3). אם תדביק אותו עכשיו, לחיצות על הטלפון ייספרו בינתיים כ"איש קשר".</div>
+          <div class="code">
+            <div class="bar"><span class="label">End of &lt;body&gt; tag · קוד מדידה</span><button class="copy" type="button" data-target="newCode">העתק</button></div>
+            <pre id="newCode"></pre>
+          </div>
+          <ul>
+            <li><span class="path">טלפון</span> (<span class="ui">tel:</span> עם 050-5422252): נספר כ"לחיצה על טלפון באתר".</li>
+            <li><span class="path">וואטסאפ</span> (<span class="ui">wa.me/972505422252</span>): נספר כ"איש קשר".</li>
+            <li><span class="path">שליחת טופס:</span> נספרת כ"איש קשר".</li>
+            <li>קישור עם מספר אחר לא נספר בכלל.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="step" data-step="b5">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>5</span></button>
+        <div class="body">
+          <h3>לשמור ולפרסם</h3>
+          <p>ללחוץ <span class="path">Save</span> במסך ההגדרות, ואחר כך <span class="path">Publish</span> בפינה הימנית העליונה. בלי Publish הקוד לא עולה לאתר.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===================== PART C ===================== -->
+  <section class="part" aria-labelledby="pc">
+    <div class="part-head"><span class="tag">C</span><h2 id="pc">לבדוק שזה עובד</h2></div>
+    <ol class="steps">
+      <li class="step" data-step="c1">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>1</span></button>
+        <div class="body">
+          <h3>בדיקה במחשב</h3>
+          <ol>
+            <li>לפתוח את naor-fix.com בחלון גלישה בסתר (<span class="ui">Ctrl+Shift+N</span>).</li>
+            <li>ללחוץ <span class="ui">F12</span> ולעבור ללשונית <span class="path">Network</span>.</li>
+            <li>בתיבת הסינון להדביק:</li>
+          </ol>
+          <div class="code">
+            <div class="bar"><span class="label">סינון ב-Network</span><button class="copy" type="button" data-target="filter">העתק</button></div>
+            <pre id="filter">conversion</pre>
+          </div>
+          <ul>
+            <li><span class="good">בטעינת העמוד:</span> הרשימה נשארת ריקה.</li>
+            <li><span class="good">בלחיצה על הוואטסאפ:</span> מופיעה שורה חדשה.</li>
+            <li><span class="good">בלחיצה על הטלפון:</span> מופיעה שורה חדשה. במחשב ייתכן שייפתח חלון של אפליקציית חיוג, ואפשר לסגור אותו.</li>
+          </ul>
+        </div>
+      </li>
+      <li class="step" data-step="c2">
+        <button class="num" type="button" aria-label="סמן כבוצע"><span>2</span></button>
+        <div class="body">
+          <h3>בדיקה ב-Google Ads אחרי יום-יומיים</h3>
+          <ul>
+            <li>ב-<span class="path">יעדים ← המרות</span>, הסטטוס של "לחיצה על טלפון באתר" יעבור מ"לא מאומת" ל"הוקלטה המרה".</li>
+            <li>בקמפיין, מספר ההמרות צריך לרדת הרבה מתחת למספר הקליקים.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="summary" aria-labelledby="sm">
+    <h2 id="sm">מה נמדד אחרי התיקון</h2>
+    <div class="summary-wrap">
+      <table>
+        <thead><tr><th>פעולה באתר</th><th>המרה ב-Google Ads</th></tr></thead>
+        <tbody>
+          <tr><td>לחיצה על 050-5422252</td><td>לחיצה על טלפון באתר</td></tr>
+          <tr><td>לחיצה על וואטסאפ</td><td>איש קשר</td></tr>
+          <tr><td>שליחת טופס</td><td>איש קשר</td></tr>
+          <tr><td>כניסה לאתר בלבד</td><td>לא נספר</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>אפשר ללחוץ על המספר של כל שלב כדי לסמן אותו כבוצע. הסימון והמזהה שהדבקת נשמרים רק בדפדפן הזה.</footer>
+</div>
+
+<script>
+  (function () {
+    var CONTACT = 'AW-17515611746/gxk3CNKHtPEcEOKMjKBB';
+    var PLACEHOLDER = 'AW-17515611746/PASTE_CALL_LABEL';
+    var STORE = 'naorfix-tag-v2';
+    var state = { done: {}, call: '' };
+    try { var s = JSON.parse(localStorage.getItem(STORE) || 'null'); if (s) state = { done: s.done || {}, call: s.call || '' }; } catch (e) {}
+    function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+    function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function buildCode(callId) {
+      return [
+        '<script>',
+        '  (function () {',
+        '    // נאור פיקס: מדידת פניות אמיתיות בלבד',
+        '    // טלפון / וואטסאפ: 050-5422252 (972505422252)',
+        "    var PHONE = '505422252';",
+        "    var CONTACT_ID = '" + CONTACT + "'; // איש קשר: וואטסאפ וטופס",
+        "    var CALL_ID = '" + callId + "'; // לחיצה על טלפון באתר",
+        '',
+        "    function digits(s) { return (s || '').replace(/\\D/g, ''); }",
+        '',
+        '    function report(id) {',
+        "      if (typeof gtag !== 'function') return;",
+        "      if (id.indexOf('PASTE_') !== -1) id = CONTACT_ID;",
+        "      gtag('event', 'conversion', { 'send_to': id });",
+        '    }',
+        '',
+        '    // לחיצה על טלפון או וואטסאפ, רק עם המספר של העסק',
+        "    document.addEventListener('click', function (e) {",
+        "      var a = e.target.closest && e.target.closest('a[href]');",
+        '      if (!a) return;',
+        "      var href = a.getAttribute('href') || '';",
+        '      if (digits(href).indexOf(PHONE) === -1) return;',
+        '      if (/^tel:/i.test(href)) {',
+        '        report(CALL_ID);',
+        '      } else if (/(wa\\.me|api\\.whatsapp\\.com|web\\.whatsapp\\.com|^whatsapp:)/i.test(href)) {',
+        '        report(CONTACT_ID);',
+        '      }',
+        '    }, true);',
+        '',
+        '    // שליחת טופס יצירת קשר',
+        "    document.addEventListener('submit', function () {",
+        '      report(CONTACT_ID);',
+        '    }, true);',
+        '  })();',
+        '<\/script>'
+      ].join('\n');
+    }
+
+    var input = document.getElementById('callLabel');
+    var status = document.getElementById('callStatus');
+    var ready = document.getElementById('readyNote');
+    var pre = document.getElementById('newCode');
+    var RE = /^AW-\d{6,}\/[A-Za-z0-9_-]{6,}$/;
+
+    function render() {
+      var raw = input.value.trim().replace(/^['"]|['"]$/g, '');
+      var ok = RE.test(raw) && raw !== CONTACT;
+      var id = ok ? raw : PLACEHOLDER;
+      var html = esc(buildCode(id)).replace(/(\/\/[^\n]*)/g, function (m) {
+        return /https?:/.test(m) ? m : '<span class="c">' + m + '</span>';
+      });
+      html = html.replace(esc(id), '<span class="hi">' + esc(id) + '</span>');
+      pre.innerHTML = html;
+      input.classList.toggle('valid', ok);
+      input.classList.toggle('invalid', !!raw && !ok);
+      if (!raw) {
+        status.className = 'status warn';
+        status.textContent = 'עוד לא הודבק מזהה. הקוד בשלב B יספור בינתיים לחיצות על הטלפון תחת "איש קשר".';
+        ready.hidden = false;
+      } else if (raw === CONTACT) {
+        status.className = 'status err';
+        status.textContent = 'זה המזהה של "איש קשר". צריך להדביק את המזהה של ההמרה החדשה לשיחות.';
+        ready.hidden = false;
+      } else if (!ok) {
+        status.className = 'status err';
+        status.textContent = 'המבנה לא נראה נכון. צריך להיות משהו כמו AW-17515611746/AbCdEfGh1234.';
+        ready.hidden = false;
+      } else {
+        status.className = 'status ok';
+        status.textContent = '✓ המזהה נקלט, והקוד בשלב B4 עודכן.';
+        ready.hidden = true;
+      }
+    }
+
+    input.value = state.call;
+    input.addEventListener('input', function () { state.call = input.value.trim(); save(); render(); });
+    render();
+
+    document.querySelectorAll('.step').forEach(function (step) {
+      var id = step.getAttribute('data-step');
+      var btn = step.querySelector('.num');
+      function paint() { step.classList.toggle('done', !!state.done[id]); btn.setAttribute('aria-pressed', state.done[id] ? 'true' : 'false'); }
+      btn.addEventListener('click', function () { state.done[id] = !state.done[id]; save(); paint(); });
+      paint();
+    });
+
+    function selectText(el) {
+      var r = document.createRange(); r.selectNodeContents(el);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.getAttribute('data-target'));
+        var text = el.textContent;
+        function flash(msg, ok) {
+          btn.textContent = msg; btn.classList.toggle('ok', ok);
+          setTimeout(function () { btn.textContent = 'העתק'; btn.classList.remove('ok'); }, 1800);
+        }
+        try {
+          navigator.clipboard.writeText(text).then(function () { flash('הועתק ✓', true); },
+            function () { selectText(el); flash('סומן, Ctrl+C', false); });
+        } catch (e) { selectText(el); flash('סומן, Ctrl+C', false); }
+      });
+    });
+  })();
+</script>
