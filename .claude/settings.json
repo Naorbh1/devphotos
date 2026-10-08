@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "ai-marketing-hub-claude-ads": {
+      "source": {
+        "source": "github",
+        "repo": "agricidaniel/claude-ads"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "claude-ads@ai-marketing-hub-claude-ads": true
+  }
+}
